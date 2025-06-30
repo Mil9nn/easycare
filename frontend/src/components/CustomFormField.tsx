@@ -75,7 +75,7 @@ const RenderInput = <T extends FieldValues>({
               id={props.name}
               checked={field.value}
               onCheckedChange={field.onChange}
-              className="shad-checkbox"
+              className="shad-checkbox data-[state=checked]:bg-blue-500 data-[state=checked]:border-red-500"
               disabled={props.disabled}
             />
             <label htmlFor={props.name} className="shad-checkbox-label">
@@ -86,7 +86,7 @@ const RenderInput = <T extends FieldValues>({
       );
     case FormFieldType.DATE_PICKER:
       return (
-        <div className="flex items-center">
+        <div className="relative flex items-center">
           <Icon className="input-field-icon" />
           <Input
             type="datetime-local"
@@ -115,7 +115,7 @@ const RenderInput = <T extends FieldValues>({
           <Select onValueChange={field.onChange} defaultValue={field.value}>
             <FormControl>
               <SelectTrigger className="shad-select-trigger">
-                <div className="bg-dark-400 px-2 py-1 rounded-md">
+                <div className="bg-dark-400 rounded-md">
                   <SelectValue placeholder={props.placeholder} />
                 </div>
               </SelectTrigger>

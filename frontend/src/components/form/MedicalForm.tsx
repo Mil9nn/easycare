@@ -18,16 +18,15 @@ import {
   GenderOptions,
   IdentificationTypes,
   PatientFormDefaultValues,
-} from './constants';
+} from "./constants";
 import FileUploader from "../FileUploader";
-import { useState } from "react";
-import { Mail, User } from "lucide-react";
+import { Calendar, Mail, User } from "lucide-react";
+import { useFormStore } from "@/hooks/useFormStore";
 
 type PatientFormValues = z.infer<typeof PatientFormValidation>;
 
 export function MedicalForm({ user }: { user: User }) {
-
-  const [isLoading, setIsLoading] = useState(false);
+  const { createPatient, isBooking } = useFormStore();
 
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(PatientFormValidation),
@@ -37,27 +36,39 @@ export function MedicalForm({ user }: { user: User }) {
   });
 
   async function onSubmit(values: PatientFormValues) {
-    setIsLoading(true);
+    const formData = new FormData();
 
-    let formData;
+    // Append all other fields from values
+    Object.entries(values).forEach(([key, value]) => {
+      // Skip the file field for now
+      if (key === "identificationDocument") return;
 
+      // Handle booleans properly
+      if (typeof value === "boolean") {
+        formData.append(key, value.toString());
+      } else {
+        formData.append(key, value as string);
+      }
+    });
+
+    // Append file if available
     if (
       values.identificationDocument &&
       values.identificationDocument.length > 0
     ) {
-      const blobFile = new Blob([values.identificationDocument[0]], {
-        type: values.identificationDocument[0].type,
-      });
-
-      formData = new FormData();
-      formData.append("blobFile", blobFile);
-      formData.append("fileName", values.identificationDocument[0].name);
+      const file = values.identificationDocument[0];
+      formData.append("identificationDocument", file, file.name);
     }
+
+    createPatient(formData);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10 pb-10 medical-form">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="space-y-10 pb-10 medical-form"
+      >
         <section>
           <h2 className="text-2xl font-bold">Welcome👋</h2>
           <p className="text-sm opacity-55 font-extralight">
@@ -68,7 +79,7 @@ export function MedicalForm({ user }: { user: User }) {
           <CustomFormField
             fieldType={FormFieldType.INPUT}
             control={form.control}
-            name="name"
+            name="fullName"
             label="Full name"
             placeholder="John Doe"
             icon={User}
@@ -98,6 +109,7 @@ export function MedicalForm({ user }: { user: User }) {
               control={form.control}
               name="birthDate"
               label="Date of birth"
+              icon={Calendar}
             />
             <CustomFormField
               fieldType={FormFieldType.SKELETON}
@@ -110,7 +122,7 @@ export function MedicalForm({ user }: { user: User }) {
                     {GenderOptions.map((option, i) => (
                       <div key={option + i} className="radio-group">
                         <RadioGroupItem
-                          className="radio-item"
+                          className="radio-item data-[state=checked]:bg-blue-500"
                           value={option}
                           id={option}
                         />
@@ -263,7 +275,10 @@ export function MedicalForm({ user }: { user: User }) {
               label="Scanned copy of identification document"
               renderSkeleton={(field) => (
                 <FormControl>
-                  <FileUploader files={field.value as File[]} onChange={field.onChange} />
+                  <FileUploader
+                    files={field.value as File[]}
+                    onChange={field.onChange}
+                  />
                 </FormControl>
               )}
             ></CustomFormField>
@@ -295,7 +310,7 @@ export function MedicalForm({ user }: { user: User }) {
             />
           </div>
         </section>
-        <SubmitButton label="Submit and continue" isLoading={isLoading} />
+        <SubmitButton label="Submit and continue" isLoading={isBooking} />
       </form>
     </Form>
   );

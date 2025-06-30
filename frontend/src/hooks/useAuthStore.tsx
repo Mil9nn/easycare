@@ -12,6 +12,9 @@ interface AuthStore {
 
 export const useAuthStore = create<AuthStore>((set) => ({
   isAuthenticating: false,
+  isCheckingAuth: false,
+
+  
 
   signup: async (userData, navigate) => {
     set({ isAuthenticating: true });

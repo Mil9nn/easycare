@@ -4,7 +4,7 @@ import { Outlet } from "react-router-dom"
 
 const MainLayout = () => {
   return (
-    <div className="relative">
+    <div>
       <Navbar />
       <div className="outlet">
         <Outlet />
