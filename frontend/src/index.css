@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 @theme {
   --breakpoint-xs: 30rem;
 
@@ -46,6 +48,25 @@
   --color-status-completed: #95A5A6;
 }
 
+.logo {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  color: #2E8B8B;
+  letter-spacing: 0.5px;
+}
+
+.heading-secondary {
+  font-family: "Montserrat", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  color: #2E8B8B;
+  letter-spacing: 0.5px;
+  font-size: 1.5rem;
+}
+
 .remove-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -73,7 +94,7 @@
 }
 
 .medical-form {
-  @apply w-fit h-fit min-w-3xl mx-auto p-10 space-y-5 bg-white/80 backdrop-blur-md shadow-lg border border-gray-300;
+  @apply w-full h-fit mx-auto p-10 space-y-5 bg-white/80 backdrop-blur-md shadow-lg border border-gray-300;
 }
 
 .hero-section {
@@ -148,7 +169,7 @@
 }
 
 .shadcn-input {
-  @apply w-full h-10 px-3 pl-7 border border-zinc-400/50 text-primary-text rounded-md ring-border-focus focus:ring-2 transition-colors duration-200;
+  @apply w-full min-w-sm h-10 px-3 pl-7 border border-zinc-400/50 text-primary-text rounded-md ring-border-focus focus:ring-2 transition-colors duration-200;
 }
 
 .shadcn-textarea {

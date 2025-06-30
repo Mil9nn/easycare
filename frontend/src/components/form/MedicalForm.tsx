@@ -67,10 +67,10 @@ export function MedicalForm({ user }: { user: User }) {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-10 pb-10 medical-form"
+        className="medical-form"
       >
         <section>
-          <h2 className="text-2xl font-bold">Welcome👋</h2>
+          <h2 className="heading-secondary">Welcome👋</h2>
           <p className="text-sm opacity-55 font-extralight">
             Let us know more about yourself
           </p>
@@ -172,7 +172,7 @@ export function MedicalForm({ user }: { user: User }) {
 
         {/* Medical History Form Section */}
         <section className="space-y-5">
-          <h2 className="text-2xl font-bold">Medical Information</h2>
+          <h2 className="heading-secondary">Medical Information</h2>
           <CustomFormField
             fieldType={FormFieldType.SELECT}
             control={form.control}
@@ -245,7 +245,7 @@ export function MedicalForm({ user }: { user: User }) {
           </div>
         </section>
         <section className="space-y-5">
-          <h2 className="text-2xl font-bold">
+          <h2 className="heading-secondary">
             Identification and Verification
           </h2>
           <div className="space-y-5">
@@ -285,7 +285,7 @@ export function MedicalForm({ user }: { user: User }) {
           </div>
         </section>
         <section className="space-y-5">
-          <h2 className="text-2xl font-bold">Consent and Privacy</h2>
+          <h2 className="heading-secondary">Consent and Privacy</h2>
           <div className="space-y-2">
             <CustomFormField
               fieldType={FormFieldType.CHECKBOX}
@@ -310,7 +310,7 @@ export function MedicalForm({ user }: { user: User }) {
             />
           </div>
         </section>
-        <SubmitButton label="Submit and continue" isLoading={isBooking} />
+        <SubmitButton label="Save medical profile" isLoading={isBooking} />
       </form>
     </Form>
   );

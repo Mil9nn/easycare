@@ -1,20 +1,40 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
 import { toast } from "react-hot-toast";
-import type { formSchema, loginSchema } from "@/lib/types";
+
 import type { z } from "zod";
+import type { UserFormValidation } from "@/lib/validation";
 
 interface AuthStore {
     isAuthenticating: boolean;
-    signup: (userData: z.infer<typeof formSchema>, navigate: (path: string) => void) => Promise<void>;
-    login: (userData: z.infer<typeof loginSchema>, navigate: (path: string) => void) => Promise<void>;
+    isCheckingAuth: boolean;
+
+    user: z.infer<typeof UserFormValidation> | null;
+
+    checkAuth: (navigate: (path: string) => void) => Promise<void>;
+    signup: (userData: z.infer<typeof UserFormValidation>, navigate: (path: string) => void) => Promise<void>;
+    login: (userData: z.infer<typeof UserFormValidation>, navigate: (path: string) => void) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
   isAuthenticating: false,
   isCheckingAuth: false,
+  user: null,
 
-  
+  checkAuth: async () => {
+    set({ isCheckingAuth: true });
+    try {
+      const response = await axiosInstance.get("/auth/check");
+      if (response.status === 200) {
+        set({ user: response.data });
+      }
+    } catch (error) {
+      console.error("Authentication check error:", error);
+      throw error;
+    } finally {
+      set({ isCheckingAuth: false});
+    }
+  },
 
   signup: async (userData, navigate) => {
     set({ isAuthenticating: true });

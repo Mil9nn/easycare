@@ -5,15 +5,49 @@ import { SignupPage } from "./components/SignupPage";
 import { LoginPage } from "./components/LoginPage";
 import { Toaster } from "react-hot-toast";
 import { MedicalForm } from "./components/form/MedicalForm";
+import { useEffect } from "react";
+import { useAuthStore } from "./hooks/useAuthStore";
+import { Loader } from "lucide-react";
 
 function App() {
+  const { user, checkAuth, isCheckingAuth } = useAuthStore();
+
+  useEffect(() => {
+    checkAuth();
+  }, [checkAuth]);
+
+  if (isCheckingAuth) {
+    return (
+      <div className="bg-primary flex items-center justify-center gap-1 h-screen w-screen">
+        <Loader className="animate-spin" />
+        Authenticating...
+      </div>
+    );
+  }
+
   return (
     <div className="bg-primary text-textPrimary">
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<><Home /><SignupPage /></>} />
-          <Route path="/login" element={<><Home /><LoginPage /></>} />
+          <Route
+            path="/signup"
+            element={
+              <>
+                <Home />
+                <SignupPage />
+              </>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <>
+                <Home />
+                <LoginPage />
+              </>
+            }
+          />
           <Route path="/medical-form" element={<MedicalForm />} />
         </Route>
       </Routes>
