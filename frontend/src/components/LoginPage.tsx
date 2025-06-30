@@ -6,24 +6,30 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { formSchema } from "@/lib/types";
 import CustomFormField from "./CustomFormField";
 
-import { X } from "lucide-react";
+import { KeyRound, User, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/hooks/useAuthStore";
+import SubmitButton from "./SubmitButton";
+import { FormFieldType, UserFormValidation } from "@/lib/validation";
 
 export function LoginPage() {
   const navigate = useNavigate();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const { login, isAuthenticating } = useAuthStore();
+
+  const form = useForm<z.infer<typeof UserFormValidation>>({
+    resolver: zodResolver(UserFormValidation),
     defaultValues: {
-      name: "",
+      email: '',
+      password: ''
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof UserFormValidation>) {
     console.log(values);
+    login(values, navigate);
   }
 
   return (
@@ -33,21 +39,21 @@ export function LoginPage() {
         className={`relative signup-page`}
       >
         <CustomFormField
-          type="email"
+          fieldType={FormFieldType.INPUT}
           name="email"
           label="Email"
           placeholder="johndoe@example.com"
+          control={form.control}
+          icon={User}
         />
-        <CustomFormField type="password" name="password" label="Password" placeholder="Enter your password" />
+        <CustomFormField control={form.control} fieldType={FormFieldType.INPUT} name="password" label="Password" placeholder="Enter your password" icon={KeyRound} />
         <X
           onClick={() => {
             navigate("/");
           }}
           className="close-dialog"
         />
-        <Button className="submit-btn" type="submit">
-          Submit
-        </Button>
+        <SubmitButton label={"Login"} isLoading={isAuthenticating} />
         {/* Forgot Password */}
         <div className="flex flex-col items-center">
           <p className="text-sm text-gray-500">
