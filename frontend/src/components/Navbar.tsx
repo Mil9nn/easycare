@@ -1,12 +1,20 @@
-import { useAuthStore } from "@/hooks/useAuthStore";
-import { useFormStore } from "@/hooks/useFormStore";
-import { LogIn } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useAuthStore } from "@/components/hooks/useAuthStore";
+import { useFormStore } from "@/components/hooks/useFormStore";
+import { LogIn, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Button } from "./ui/button";
 
 const Navbar = () => {
-  const { user } = useAuthStore();
-  const { patientData } = useFormStore();
-  
+  const navigate = useNavigate();
+
+  const { user, logout } = useAuthStore();
+  const { patientData, setPatientData } = useFormStore();
+
+  const handleLogout = () => {
+    logout(navigate);
+    setPatientData(null);
+  };
+
   return (
     <div className="navbar">
       <Link to="/">
@@ -17,18 +25,26 @@ const Navbar = () => {
       </Link>
       <div className="flex items-center gap-4">
         {!user && (
-          <div className="flex items-center gap-1">
-            <LogIn className="size-5" />
-            <Link className="text-sm" to="/login">
+            <Link className="link btn-primary" to="/login">
+              <LogIn className="size-5" />
               Login
+            </Link>
+        )}
+        {!patientData && user && (
+          <div className="flex items-center gap-1">
+            <Link className="text-sm" to="/medical-form">
+              Register as patient
             </Link>
           </div>
         )}
-        {!patientData && <div className="flex items-center gap-1">
-          <Link className="text-sm" to="/medical-form">
-            Register as patient
-          </Link>
-        </div>}
+        <Link to="/appointment" className="link nav-link">Book Appointment</Link>
+        {user && patientData && <Link to="/profile" className="link nav-link">Profile</Link>}
+        {user && (
+          <Button onClick={handleLogout} className="btn-logout cursor-pointer">
+            <LogOut className="size-5" />
+            Logout
+          </Button>
+        )}
       </div>
     </div>
   );

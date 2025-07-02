@@ -10,24 +10,24 @@ import CustomFormField from "./CustomFormField";
 
 import { KeyRound, User, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/hooks/useAuthStore";
+import { useAuthStore } from "@/components/hooks/useAuthStore";
 import SubmitButton from "./SubmitButton";
-import { FormFieldType, UserFormValidation } from "@/lib/validation";
+import { FormFieldType, LoginFormValidation } from "@/lib/validation";
 
 export function LoginPage() {
   const navigate = useNavigate();
 
   const { login, isAuthenticating } = useAuthStore();
 
-  const form = useForm<z.infer<typeof UserFormValidation>>({
-    resolver: zodResolver(UserFormValidation),
+  const form = useForm<z.infer<typeof LoginFormValidation>>({
+    resolver: zodResolver(LoginFormValidation),
     defaultValues: {
       email: '',
       password: ''
     },
   });
 
-  function onSubmit(values: z.infer<typeof UserFormValidation>) {
+  function onSubmit(values: z.infer<typeof LoginFormValidation>) {
     console.log(values);
     login(values, navigate);
   }

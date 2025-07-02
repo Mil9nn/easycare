@@ -32,6 +32,7 @@ interface CustomProps<T extends FieldValues = PatientFormValues> {
   children?: React.ReactNode;
   renderSkeleton?: (field: ControllerRenderProps<T, Path<T>>) => React.ReactNode;
   fieldType?: FormFieldType;
+  inputType?: React.HTMLInputTypeAttribute;
 }
 
 const RenderInput = <T extends FieldValues>({
@@ -41,7 +42,7 @@ const RenderInput = <T extends FieldValues>({
   field: ControllerRenderProps<T, Path<T>>;
   props: CustomProps<T>;
 }) => {
-  const { fieldType, icon: Icon=FileText, placeholder } = props;
+  const { fieldType, inputType, icon: Icon=FileText, placeholder } = props;
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
@@ -49,6 +50,7 @@ const RenderInput = <T extends FieldValues>({
           <Icon className="input-field-icon" />
           <FormControl>
             <Input
+              type={inputType || "text"}
               placeholder={placeholder}
               {...field}
               className="shadcn-input"

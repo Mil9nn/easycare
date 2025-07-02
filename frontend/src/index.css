@@ -57,14 +57,26 @@
   letter-spacing: 0.5px;
 }
 
+/* #2E8B8B this is my brandname color use a different color for headings */
+
 .heading-secondary {
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 600;
   font-style: normal;
-  color: #2E8B8B;
+  color: #2E4374;
   letter-spacing: 0.5px;
   font-size: 1.5rem;
+}
+
+.heading-tertiary {
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
+  color: #555555;
+  letter-spacing: 0.5px;
+  font-size: 1.25rem;
 }
 
 .remove-scrollbar {
@@ -90,12 +102,12 @@
 .signup-page {
   @apply fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-fit space-y-5
   max-w-md mx-auto mt-10 bg-white/80 backdrop-blur-md rounded-2xl shadow-lg p-8 border border-gray-200
-;
 }
 
 .medical-form {
-  @apply w-full h-fit mx-auto p-10 space-y-5 bg-white/80 backdrop-blur-md shadow-lg border border-gray-300;
+  @apply w-full h-fit mx-auto p-10 space-y-5 bg-white/80 backdrop-blur-md shadow-lg border;
 }
+
 
 .hero-section {
   @apply flex w-full h-screen overflow-hidden overflow-y-auto p-4 space-y-5 min-h-screen py-12 px-4 sm:px-6 lg:px-8;
@@ -137,6 +149,30 @@
     transition-colors duration-200;
 }
 
+.btn-logout {
+  @apply bg-btn-danger text-light-text 
+    px-4 py-2 rounded-full text-sm 
+    hover:bg-btn-danger-hover 
+    transition-colors duration-200;
+}
+
+.link {
+  @apply flex items-center gap-1 text-sm;
+}
+
+.nav-link {
+  @apply text-primary-text font-medium tracking-wide px-4 py-2 rounded-md transition-all duration-200;
+}
+
+.nav-link:hover {
+  @apply text-title-text bg-white/10;
+}
+
+.nav-link-active {
+  @apply text-btn-primary border-b-2 border-btn-primary;
+}
+
+
 .medical-info {
   @apply space-y-4;
 }
@@ -161,6 +197,10 @@
   @apply text-red-500 text-sm;
 }
 
+.edit-field-wrapper {
+  @apply flex items-center gap-1 w-full max-w-sm mx-auto p-1 rounded-lg;
+}
+
 /*****************************************/
 /************ Custom Form Fields ********/
 /****************************************/
@@ -169,7 +209,7 @@
 }
 
 .shadcn-input {
-  @apply w-full min-w-sm h-10 px-3 pl-7 border border-zinc-400/50 text-primary-text rounded-md ring-border-focus focus:ring-2 transition-colors duration-200;
+  @apply w-full h-10 px-3 pl-7 border border-zinc-400/50 text-primary-text rounded-md ring-border-focus focus:ring-2 transition-colors duration-200;
 }
 
 .shadcn-textarea {
@@ -218,5 +258,24 @@
 
 .file-upload-text {
   @apply text-center text-gray-500 text-xs;
+}
+
+
+/*****************************************/
+/************ Profile Page ********/
+/****************************************/
+
+.profile-page {
+  @apply w-full h-full max-w-3xl flex flex-col justify-center p-10 space-y-5 border-gray-300;
+}
+
+.profile-info-row {
+  @apply flex items-center whitespace-pre-wrap font-mono text-sm p-4 border-b border-gray-200;
+}
+
+/* Personal, Medical, and Contact Section of Patient Profile */
+
+.personal {
+  @apply w-full h-fit mx-auto p-10 space-y-5 backdrop-blur-md shadow-lg border border-black/40 rounded-lg;
 }
 

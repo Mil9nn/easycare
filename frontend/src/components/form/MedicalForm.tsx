@@ -21,7 +21,7 @@ import {
 } from "./constants";
 import FileUploader from "../FileUploader";
 import { Calendar, Mail, User } from "lucide-react";
-import { useFormStore } from "@/hooks/useFormStore";
+import { useFormStore } from "@/components/hooks/useFormStore";
 
 type PatientFormValues = z.infer<typeof PatientFormValidation>;
 

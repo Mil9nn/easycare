@@ -11,7 +11,13 @@ export const UserFormValidation = z.object({
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords do not match",
   path: ["confirmPassword"],
-})
+});
+
+export const LoginFormValidation = z.object({
+  email: z.string().email(),
+  password: z.string().min(6),
+});
+
 
 export const PatientFormValidation = z.object({
   fullName: z

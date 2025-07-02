@@ -10,7 +10,7 @@ import CustomFormField from "./CustomFormField";
 
 import { Lock, LockOpen, Mail, User, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/hooks/useAuthStore";
+import { useAuthStore } from "@/components/hooks/useAuthStore";
 import SubmitButton from "./SubmitButton";
 import { FormFieldType, UserFormValidation } from "@/lib/validation";
 
