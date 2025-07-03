@@ -1,5 +1,5 @@
-import { useAuthStore } from "@/components/hooks/useAuthStore";
-import { useFormStore } from "@/components/hooks/useFormStore";
+import { useAuthStore } from "@/hooks/useAuthStore";
+import { useFormStore } from "@/hooks/useFormStore";
 import { LogIn, LogOut } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
@@ -8,11 +8,11 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { user, logout } = useAuthStore();
-  const { patientData, setPatientData } = useFormStore();
+  const { patient } = useFormStore();
 
   const handleLogout = () => {
     logout(navigate);
-    setPatientData(null);
+    window.location.href="/";
   };
 
   return (
@@ -30,15 +30,15 @@ const Navbar = () => {
               Login
             </Link>
         )}
-        {!patientData && user && (
+        {user && !patient && (
           <div className="flex items-center gap-1">
-            <Link className="text-sm" to="/medical-form">
+            <Link className="link nav-link" to="/medical-form">
               Register as patient
             </Link>
           </div>
         )}
-        <Link to="/appointment" className="link nav-link">Book Appointment</Link>
-        {user && patientData && <Link to="/profile" className="link nav-link">Profile</Link>}
+        {user && patient && <Link to="/book-appointment" className="link nav-link">Book Appointment</Link>}
+        {user && patient && <Link to="/profile" className="link nav-link">Profile</Link>}
         {user && (
           <Button onClick={handleLogout} className="btn-logout cursor-pointer">
             <LogOut className="size-5" />

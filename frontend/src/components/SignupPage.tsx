@@ -1,5 +1,3 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,7 +8,7 @@ import CustomFormField from "./CustomFormField";
 
 import { Lock, LockOpen, Mail, User, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/components/hooks/useAuthStore";
+import { useAuthStore } from "@/hooks/useAuthStore";
 import SubmitButton from "./SubmitButton";
 import { FormFieldType, UserFormValidation } from "@/lib/validation";
 
@@ -30,7 +28,6 @@ export function SignupPage() {
   });
 
   function onSubmit(values: z.infer<typeof UserFormValidation>) {
-    console.log(values);
     signup(values, navigate);
   }
 

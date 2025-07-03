@@ -1,8 +1,15 @@
 import { Patient } from "../models/patient.model.js";
 
 export const createPatient = async (req, res) => {
-    console.log("I'm in patient controller");
     try {
+        const userId = req.user._id;
+
+        // Check if patient already exists for this user
+        const existingPatient = await Patient.findOne({ user: userId });
+        if (existingPatient) {
+            return res.status(400).json({ message: "Patient already exists for this user" });
+        }
+
         const {
             fullName,
             email,
@@ -28,39 +35,19 @@ export const createPatient = async (req, res) => {
             fileName,
         } = req.body;
 
-        console.log("I've extracted the fields");
-
         const fileUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-        console.log(fileUrl);
-
         const newPatient = await Patient.create({
-            fullName,
-            email,
-            phone,
-            birthDate,
-            gender,
-            address,
-            occupation,
-            emergencyContactName,
-            emergencyContactNumber,
-            primaryPhysician,
-            insuranceProvider,
-            insurancePolicyNumber,
-            allergies,
-            currentMedication,
-            familyMedicalHistory,
-            pastMedicalHistory,
-            identificationType,
-            identificationNumber,
+            user: userId,
+            ...req.body,
             identificationDocument: {
                 fileName,
                 fileUrl,
             },
             consents: {
-                treatmentConsent,
-                disclosureConsent,
-                privacyConsent,
+                treatmentConsent: req.body.treatmentConsent,
+                disclosureConsent: req.body.disclosureConsent,
+                privacyConsent: req.body.privacyConsent,
             }
         })
 
@@ -107,18 +94,14 @@ export const updatePatient = async (req, res) => {
         const { id } = req.params;
         const updates = req.body;
 
-        console.log("Updates received:", updates);
-
         // check if patient exists
         const patient = await Patient.findById(id).select("-email -phone");
-        console.log("Patient found:", patient);
 
         if (!patient) {
             return res.status(404).json({ message: "Patient not found" });
         }
 
         for (const key in updates) {
-            console.log(`Updating ${key} with value:`, updates[key]);
             if (key in patient) {
                 patient[key] = updates[key];
             }
@@ -142,6 +125,20 @@ export const updatePatient = async (req, res) => {
         });
     } catch (error) {
         console.error("Error updating patient:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+}
+
+export const getMyPatient = async (req, res) => {
+    try {
+        const patient = await Patient.findOne({ user: req.user._id });
+        if (!patient) {
+            return res.status(404).json({ message: "No patient profile found for this user" });
+        }
+
+        res.status(200).json({ patient });
+    } catch (error) {
+        console.error("Error in getMyPatient:", error);
         res.status(500).json({ message: "Internal server error" });
     }
 }

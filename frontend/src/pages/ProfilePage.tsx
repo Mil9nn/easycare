@@ -1,5 +1,6 @@
 import CustomProfileCard from "@/components/CustomProfileCard";
-import { useFormStore } from "@/components/hooks/useFormStore";
+import { useFormStore } from "@/hooks/useFormStore";
+import { formatDateTime } from "@/lib/utils";
 import { FormFieldType } from "@/lib/validation";
 import {
   Calendar,
@@ -13,12 +14,12 @@ import {
 } from "lucide-react";
 
 const ProfilePage = () => {
-  const { patientData, updatePatientData } = useFormStore();
+  const { patient, updatePatient } = useFormStore();
 
   // ✅ Reusable inline save function
   const handleInlineSave = (field: string) => (val: string) => {
-    if (!patientData?._id) return;
-    updatePatientData(patientData._id, { [field]: val });
+    if (!patient?._id) return;
+    updatePatient(patient._id, { [field]: val });
   };
 
   return (
@@ -37,7 +38,7 @@ const ProfilePage = () => {
             {
               name: "fullName",
               label: "Name:",
-              value: patientData?.fullName,
+              value: patient?.fullName,
               icon: User,
               fieldType: FormFieldType.INPUT,
               onSave: handleInlineSave("fullName"),
@@ -45,7 +46,7 @@ const ProfilePage = () => {
             {
               name: "email",
               label: "Email:",
-              value: patientData?.email,
+              value: patient?.email,
               icon: Mail,
               fieldType: FormFieldType.INPUT,
               inputType: "email",
@@ -54,7 +55,7 @@ const ProfilePage = () => {
             {
               name: "birthDate",
               label: "Date of Birth:",
-              value: patientData?.birthDate,
+              value: formatDateTime(patient?.birthDate).dateOnly,
               icon: Calendar,
               fieldType: FormFieldType.DATE_PICKER,
               onSave: handleInlineSave("birthDate"),
@@ -62,7 +63,7 @@ const ProfilePage = () => {
             {
               name: "gender",
               label: "Gender",
-              value: patientData?.gender,
+              value: patient?.gender,
               icon: VenusAndMars,
               fieldType: FormFieldType.SKELETON,
               onSave: handleInlineSave("gender"),
@@ -70,7 +71,7 @@ const ProfilePage = () => {
             {
               name: "phone",
               label: "Phone:",
-              value: patientData?.phone,
+              value: patient?.phone,
               icon: Phone,
               fieldType: FormFieldType.INPUT,
               inputType: 'tel',
@@ -79,9 +80,9 @@ const ProfilePage = () => {
             {
               name: "address",
               label: "Address:",
-              value: patientData?.address,
+              value: patient?.address,
               icon: MapPin,
-              fieldType: FormFieldType.INPUT,
+              fieldType: FormFieldType.TEXTAREA,
               onSave: handleInlineSave("address"),
             },
           ]}
@@ -93,43 +94,43 @@ const ProfilePage = () => {
             {
               name: "allergies",
               label: "Allergies:",
-              value: patientData?.allergies,
+              value: patient?.allergies,
               icon: User,
               colorClass: "text-green-500",
-              fieldType: FormFieldType.INPUT,
+              fieldType: FormFieldType.TEXTAREA,
               onSave: handleInlineSave("allergies"),
             },
             {
               name: "pastMedicalHistory",
               label: "Past Medical History:",
-              value: patientData?.pastMedicalHistory,
+              value: patient?.pastMedicalHistory,
               icon: User,
               colorClass: "text-purple-500",
-              fieldType: FormFieldType.INPUT,
+              fieldType: FormFieldType.TEXTAREA,
               onSave: handleInlineSave("pastMedicalHistory"),
             },
             {
               name: "currentMedication",
               label: "Medications:",
-              value: patientData?.currentMedication,
+              value: patient?.currentMedication,
               icon: User,
               colorClass: "text-pink-500",
-              fieldType: FormFieldType.INPUT,
+              fieldType: FormFieldType.TEXTAREA,
               onSave: handleInlineSave("currentMedication"),
             },
             {
               name: "familyMedicalHistory",
               label: "Family History:",
-              value: patientData?.familyMedicalHistory,
+              value: patient?.familyMedicalHistory,
               icon: User,
               colorClass: "text-teal-500",
-              fieldType: FormFieldType.INPUT,
+              fieldType: FormFieldType.TEXTAREA,
               onSave: handleInlineSave("familyMedicalHistory"),
             },
             {
               name: "insuranceProvider",
               label: "Insurance Provider:",
-              value: patientData?.insuranceProvider,
+              value: patient?.insuranceProvider,
               icon: User,
               colorClass: "text-teal-500",
               fieldType: FormFieldType.INPUT,
@@ -138,7 +139,7 @@ const ProfilePage = () => {
             {
               name: "insurancePolicyNumber",
               label: "Insurance Policy Number:",
-              value: patientData?.insurancePolicyNumber,
+              value: patient?.insurancePolicyNumber,
               icon: User,
               colorClass: "text-teal-500",
               fieldType: FormFieldType.INPUT,
@@ -154,7 +155,7 @@ const ProfilePage = () => {
             {
               name: "emergencyContactName",
               label: "Name:",
-              value: patientData?.emergencyContactName,
+              value: patient?.emergencyContactName,
               icon: User,
               colorClass: "text-blue-500",
               fieldType: FormFieldType.INPUT,
@@ -163,7 +164,7 @@ const ProfilePage = () => {
             {
               name: "emergencyContactNumber",
               label: "Contact:",
-              value: patientData?.emergencyContactNumber,
+              value: patient?.emergencyContactNumber,
               icon: Phone,
               colorClass: "text-green-500",
               fieldType: FormFieldType.INPUT,

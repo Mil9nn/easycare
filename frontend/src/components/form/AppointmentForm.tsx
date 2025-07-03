@@ -9,8 +9,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { getAppointmentSchema } from "@/lib/validation";
+import { FormFieldType, getAppointmentSchema } from "@/lib/validation";
 import { useNavigate } from "react-router-dom";
+import { useAppointmentStore } from "../../hooks/useAppoiontmentStore";
+import type { Appointment } from "@/types/types";
 
 export function AppointmentForm({
   userId,
@@ -28,6 +30,8 @@ export function AppointmentForm({
 
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false);
+
+  const { createAppointment, updateAppointment } = useAppointmentStore();
 
   const AppointmentFormValidation = getAppointmentSchema(type);
 
@@ -73,8 +77,9 @@ export function AppointmentForm({
           status: status as Status,
           reason: values.reason!,
         };
-        const appointment = await createAppointment(appointmentData);
 
+        const appointment = await createAppointment(appointmentData, navigate);
+        
         if (appointment) {
           form.reset();
           navigate(`/appointment/${appointment.$id}`);
@@ -99,7 +104,7 @@ export function AppointmentForm({
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error("Error submitting appointment form:", error);
     } finally {
       setIsLoading(false);
     }
@@ -140,13 +145,11 @@ export function AppointmentForm({
                 name="primaryPhysician"
                 label="Doctor"
                 placeholder="Select a doctor"
-                iconSrc="/assets/icons/user.svg"
-                iconAlt="user icon"
               >
                 {Doctors.map((doctor, index) => (
                   <SelectItem key={index} value={doctor.name}>
                     <div className="flex items-center gap-2">
-                      <Image
+                      <img
                         src={doctor.image}
                         alt={doctor.name}
                         width={26}
@@ -202,9 +205,8 @@ export function AppointmentForm({
           className={`${
             type === "cancel" ? "bg-red-400" : "shad-primary-btn"
           } w-full`}
-        >
-          {buttonLabel}
-        </SubmitButton>
+          label={buttonLabel}
+        />
       </form>
     </Form>
   );

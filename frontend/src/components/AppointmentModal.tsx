@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { AppointmentForm } from "./form/AppointmentForm";
+import { getAppointmentSchema } from "@/lib/validation";
 
 export const AppointmentModal = ({
   type,
@@ -22,7 +23,7 @@ export const AppointmentModal = ({
   type: "schedule" | "cancel";
   patientId: string;
   userId: string;
-  appointment?: Appointment;
+  appointment?: typeof getAppointmentSchema;
   title?: string;
   description?: string;
 }) => {

@@ -11,9 +11,10 @@ interface AuthStore {
 
     user: z.infer<typeof UserFormValidation> | null;
 
-    checkAuth: (navigate: (path: string) => void) => Promise<void>;
+    checkAuth: () => Promise<void>;
     signup: (userData: z.infer<typeof UserFormValidation>, navigate: (path: string) => void) => Promise<void>;
     login: (userData: z.infer<typeof UserFormValidation>, navigate: (path: string) => void) => Promise<void>;
+    logout: (navigate: (path: string) => void) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -41,7 +42,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     try {
       const response = await axiosInstance.post("/auth/signup", userData);
       if (response.status === 201) {
-        toast.success("Signup successful!");
+        toast.success("Signup successful! Please log in.");
       }
       navigate("/login");
     } catch (error) {
@@ -59,8 +60,9 @@ export const useAuthStore = create<AuthStore>((set) => ({
         const response = await axiosInstance.post("/auth/login", userData);
         if (response.status === 200) {
             toast.success("Login successful!");
+            set({ user: response.data });
         }
-        navigate("/");
+        navigate("/medical-form");
     } catch (error) {
         console.error("Login error:", error);
         toast.error(error.response?.data?.message || "Login failed. Please try again.");

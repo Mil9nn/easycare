@@ -91,7 +91,7 @@ const RenderInput = <T extends FieldValues>({
         <div className="relative flex items-center">
           <Icon className="input-field-icon" />
           <Input
-            type="datetime-local"
+            type={inputType || "date"}
             value={field.value}
             onChange={(date) => field.onChange(date)}
             className="shadcn-input"

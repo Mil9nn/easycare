@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import MainLayout from "./layout/MainLayout";
 import { SignupPage } from "./components/SignupPage";
@@ -6,23 +6,25 @@ import { LoginPage } from "./components/LoginPage";
 import { Toaster } from "react-hot-toast";
 import { MedicalForm } from "./components/form/MedicalForm";
 import { useEffect } from "react";
-import { useAuthStore } from "./components/hooks/useAuthStore";
-import { Loader } from "lucide-react";
+import { useAuthStore } from "./hooks/useAuthStore";
 import ProfilePage from "./pages/ProfilePage";
-import { useFormStore } from "./components/hooks/useFormStore";
 import BookAppointment from "./pages/BookAppointment";
+import SuccessPage from "./pages/SuccessPage";
+import { useFormStore } from "./hooks/useFormStore";
 
 function App() {
-  const { checkAuth, isCheckingAuth } = useAuthStore();
-  const { getPatientData, isLoadingPatientData } = useFormStore();
+  const { checkAuth, isCheckingAuth, user } = useAuthStore();
+  const { getPatient } = useFormStore();
 
   useEffect(() => {
-    async function initializeApp() {
-      await checkAuth();
-      await getPatientData();
+    checkAuth();
+  }, [checkAuth]);
+
+  useEffect(() => {
+    if (user) {
+      getPatient();
     }
-    initializeApp();
-  }, [checkAuth, getPatientData]);
+  }, [user, getPatient]);
 
   if (isCheckingAuth) {
     return (
@@ -39,47 +41,44 @@ function App() {
     );
   }
 
-  if (isLoadingPatientData) {
-    return (
-      <div className="bg-primary flex flex-col items-center justify-center h-screen w-screen text-center px-4">
-        <Loader className="w-6 h-6 text-accent animate-spin mb-3" />
-        <h2 className="text-lg font-medium text-muted-foreground">
-          Fetching your medical profile...
-        </h2>
-        <p className="text-sm text-gray-500 max-w-md mt-2">
-          We’re securely retrieving your health records and preferences. This
-          helps speed up appointment bookings and ensures personalized care.
-        </p>
-      </div>
-    );
-  }
-
   return (
-    <div className="bg-primary text-textPrimary">
+    <>
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
           <Route
             path="/signup"
             element={
-              <>
-                <Home />
-                <SignupPage />
-              </>
+              user ? (
+                <Navigate to="/" replace />
+              ) : (
+                <>
+                  <Home />
+                  <SignupPage />
+                </>
+              )
             }
           />
           <Route
             path="/login"
             element={
-              <>
-                <Home />
-                <LoginPage />
-              </>
+              user ? (
+                <Navigate to="/" replace />
+              ) : (
+                <>
+                  <Home />
+                  <LoginPage />
+                </>
+              )
             }
           />
-          <Route path="/appointment" element={<BookAppointment />} />
           <Route path="/medical-form" element={<MedicalForm />} />
-          <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/profile"
+            element={user ? <ProfilePage /> : <Navigate to="/" replace />}
+          />
+          <Route path="/success/:appointmentId" element={<SuccessPage />} />
+          <Route path="/book-appointment" element={<BookAppointment />} />
         </Route>
       </Routes>
 
@@ -109,7 +108,7 @@ function App() {
           },
         }}
       />
-    </div>
+    </>
   );
 }
 

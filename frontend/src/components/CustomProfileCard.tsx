@@ -40,7 +40,6 @@ const EditField = ({
     <Form {...form}>
     <form
       onSubmit={form.handleSubmit((data) => {
-        console.log("Saving:", data.editableValue);
         field.onSave?.(data.editableValue);
         toggleEdit(index);
       })}

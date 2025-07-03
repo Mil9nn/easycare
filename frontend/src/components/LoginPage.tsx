@@ -1,5 +1,3 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,7 +8,7 @@ import CustomFormField from "./CustomFormField";
 
 import { KeyRound, User, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { useAuthStore } from "@/components/hooks/useAuthStore";
+import { useAuthStore } from "@/hooks/useAuthStore";
 import SubmitButton from "./SubmitButton";
 import { FormFieldType, LoginFormValidation } from "@/lib/validation";
 
@@ -28,7 +26,6 @@ export function LoginPage() {
   });
 
   function onSubmit(values: z.infer<typeof LoginFormValidation>) {
-    console.log(values);
     login(values, navigate);
   }
 

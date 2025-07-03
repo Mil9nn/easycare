@@ -1,5 +1,3 @@
-"use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -21,12 +19,15 @@ import {
 } from "./constants";
 import FileUploader from "../FileUploader";
 import { Calendar, Mail, User } from "lucide-react";
-import { useFormStore } from "@/components/hooks/useFormStore";
+import { useFormStore } from "@/hooks/useFormStore";
+import { useNavigate } from "react-router-dom";
 
 type PatientFormValues = z.infer<typeof PatientFormValidation>;
 
 export function MedicalForm({ user }: { user: User }) {
-  const { createPatient, isBooking } = useFormStore();
+  const navigate = useNavigate();
+
+  const { createPatient, isLoadingPatient  } = useFormStore();
 
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(PatientFormValidation),
@@ -60,7 +61,7 @@ export function MedicalForm({ user }: { user: User }) {
       formData.append("identificationDocument", file, file.name);
     }
 
-    createPatient(formData);
+    createPatient(formData, navigate);
   }
 
   return (
@@ -310,7 +311,7 @@ export function MedicalForm({ user }: { user: User }) {
             />
           </div>
         </section>
-        <SubmitButton label="Save medical profile" isLoading={isBooking} />
+        <SubmitButton label="Save medical profile" isLoading={isLoadingPatient} />
       </form>
     </Form>
   );

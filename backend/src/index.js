@@ -4,6 +4,7 @@ import cors from 'cors'
 
 import authRoutes from './routes/auth.route.js'
 import patientRoutes from './routes/patient.route.js'
+import appointmentRoutes from './routes/appointment.route.js';
 import { connectDB } from './lib/db.js';
 import cookieParser from 'cookie-parser';
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
 app.use('/api/patient', patientRoutes);
+app.use('/api/appointment', appointmentRoutes);
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
