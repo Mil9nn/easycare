@@ -41,3 +41,16 @@ export const getAppointmentById = async (req, res) => {
     res.status(500).json({ message: "Failed to fetch appointment" });
   }
 };
+
+export const getAllAppointments = async (req, res) => {
+  try {
+    const appointments = await Appointment.find().populate('patient');
+    if (!appointments || appointments.length === 0) {
+      return res.status(404).json({ message: "No appointments found" });
+    }
+    res.status(200).json(appointments);
+  } catch (error) {
+    console.error("Error fetching appointments:", error);
+    return res.status(500).json({ message: "Failed to fetch appointments" });
+  }
+}

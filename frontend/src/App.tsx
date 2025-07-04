@@ -11,14 +11,19 @@ import ProfilePage from "./pages/ProfilePage";
 import BookAppointment from "./pages/BookAppointment";
 import SuccessPage from "./pages/SuccessPage";
 import { useFormStore } from "./hooks/useFormStore";
+import AdminPage from "./pages/admin/AdminPage";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import { useAdminStore } from "./hooks/useAdminStore";
 
 function App() {
   const { checkAuth, isCheckingAuth, user } = useAuthStore();
   const { getPatient } = useFormStore();
+  const { checkAdmin, adminStatus } = useAdminStore();
 
   useEffect(() => {
     checkAuth();
-  }, [checkAuth]);
+    checkAdmin();
+  }, [checkAuth, checkAdmin]);
 
   useEffect(() => {
     if (user) {
@@ -79,7 +84,9 @@ function App() {
           />
           <Route path="/success/:appointmentId" element={<SuccessPage />} />
           <Route path="/book-appointment" element={<BookAppointment />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
+        <Route path="/admin/dashboard" element={adminStatus ? <AdminDashboard /> : <Navigate to="/admin" replace />} />
       </Routes>
 
       <Toaster

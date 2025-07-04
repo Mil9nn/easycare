@@ -31,9 +31,8 @@ export const useFormStore = create<FormStore>((set) => ({
     try {
       const response = await axiosInstance.post("/patient/", patient);
       if (response.status === 201) {
-        const patientData = response.data.patient;
         set({ patient: response.data.patient });
-        navigate(`/patient/${patientData._id}`);
+        navigate(`/book-appointment`);
         toast.success(
           "Patient data saved successfully! Please proceed to book an appointment."
         );
@@ -51,7 +50,7 @@ export const useFormStore = create<FormStore>((set) => ({
     }
   },
 
-  getPatient: async (patientId: string) => {
+  getPatient: async () => {
     set({ isLoadingPatient: true });
     try {
       const response = await axiosInstance.get(`/patient/me`);
@@ -61,10 +60,7 @@ export const useFormStore = create<FormStore>((set) => ({
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         console.error("Error fetching patient data:", error);
-        toast.error(
-          error.response?.data?.message ||
-            "An error occurred while fetching your medical profile."
-        );
+        throw error;
       }
     } finally {
       set({ isLoadingPatient: false });

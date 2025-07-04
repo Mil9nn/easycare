@@ -33,15 +33,15 @@ export const AppointmentModal = ({
     <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button
-            variant="ghost"
-            className={`cursor-pointer ${
-              type === "schedule" ? "text-green-400" : "text-red-400"
-            } capitalize`}
-          >
-            {type}
-          </Button>
+  variant="ghost"
+  className={`cursor-pointer ${
+    type === "schedule" ? "schedule-appointment-btn" : "cancel-appointment-btn"
+  } hover:shadow-sm transition-all`}
+>
+  {type}
+</Button>
         </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-dark-200 border-none shadow-lg">
+        <DialogContent className="sm:max-w-[425px] bg-white border-none shadow-lg">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>

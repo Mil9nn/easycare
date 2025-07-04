@@ -3,6 +3,7 @@ import { create } from "zustand";
 
 export const useAppointmentStore = create((set) => ({
   appointment: null,
+  appointments: [],
 
   createAppointment: async (appointmentData, navigate) => {
     try {
@@ -12,7 +13,6 @@ export const useAppointmentStore = create((set) => ({
       );
       if (response.status === 201) {
         const appointment = response.data;
-        console.log("Appointment created:", appointment);
         set({ appointment });
         navigate(`/success/${appointment?._id}`);
       }
@@ -49,4 +49,16 @@ export const useAppointmentStore = create((set) => ({
       throw error;
     }
   },
+
+  getAllAppointments: async () => {
+    try {
+      const response = await axiosInstance.get("/appointment");
+      if (response.status === 200) {
+        set ({ appointments: response.data });
+      }
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+      throw error;
+    }
+  }
 }));

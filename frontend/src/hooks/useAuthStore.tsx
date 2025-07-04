@@ -4,17 +4,24 @@ import { toast } from "react-hot-toast";
 
 import type { z } from "zod";
 import type { UserFormValidation } from "@/lib/validation";
+import { AxiosError } from "axios";
 
 interface AuthStore {
-    isAuthenticating: boolean;
-    isCheckingAuth: boolean;
+  isAuthenticating: boolean;
+  isCheckingAuth: boolean;
 
-    user: z.infer<typeof UserFormValidation> | null;
+  user: z.infer<typeof UserFormValidation> | null;
 
-    checkAuth: () => Promise<void>;
-    signup: (userData: z.infer<typeof UserFormValidation>, navigate: (path: string) => void) => Promise<void>;
-    login: (userData: z.infer<typeof UserFormValidation>, navigate: (path: string) => void) => Promise<void>;
-    logout: (navigate: (path: string) => void) => Promise<void>;
+  checkAuth: () => Promise<void>;
+  signup: (
+    userData: z.infer<typeof UserFormValidation>,
+    navigate: (path: string) => void
+  ) => Promise<void>;
+  login: (
+    userData: z.infer<typeof UserFormValidation>,
+    navigate: (path: string) => void
+  ) => Promise<void>;
+  logout: (navigate: (path: string) => void) => Promise<void>;
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
@@ -33,7 +40,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       console.error("Authentication check error:", error);
       throw error;
     } finally {
-      set({ isCheckingAuth: false});
+      set({ isCheckingAuth: false });
     }
   },
 
@@ -45,10 +52,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
         toast.success("Signup successful! Please log in.");
       }
       navigate("/login");
-    } catch (error) {
-      console.error("Signup error:", error);
-      toast.error(error.response?.data?.message || "Signup failed. Please try again.");
-      throw error;
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
+        console.error("Signup error:", error);
+        toast.error(
+          error.response?.data?.message || "Signup failed. Please try again."
+        );
+        throw error;
+      }
     } finally {
       set({ isAuthenticating: false });
     }
@@ -57,18 +68,22 @@ export const useAuthStore = create<AuthStore>((set) => ({
   login: async (userData, navigate) => {
     set({ isAuthenticating: true });
     try {
-        const response = await axiosInstance.post("/auth/login", userData);
-        if (response.status === 200) {
-            toast.success("Login successful!");
-            set({ user: response.data });
-        }
+      const response = await axiosInstance.post("/auth/login", userData);
+      if (response.status === 200) {
+        toast.success("Login successful!");
+        set({ user: response.data });
         navigate("/medical-form");
-    } catch (error) {
+      }
+    } catch (error: unknown) {
+      if (error instanceof AxiosError) {
         console.error("Login error:", error);
-        toast.error(error.response?.data?.message || "Login failed. Please try again.");
+        toast.error(
+          error.response?.data?.message || "Login failed. Please try again."
+        );
         throw error;
+      }
     } finally {
-        set({ isAuthenticating: false });
+      set({ isAuthenticating: false });
     }
   },
 
@@ -84,5 +99,5 @@ export const useAuthStore = create<AuthStore>((set) => ({
       console.error("Logout error:", error);
       throw error;
     }
-  }
+  },
 }));

@@ -6,7 +6,7 @@ const MainLayout = () => {
   return (
     <div>
       <Navbar />
-      <div className="pt-[70px]">
+      <div className="pt-22">
         <Outlet />
       </div>
     </div>

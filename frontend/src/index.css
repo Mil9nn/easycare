@@ -270,7 +270,7 @@
 /****************************************/
 
 .profile-page {
-  @apply w-full h-full max-w-3xl flex flex-col justify-center p-10 border-gray-300;
+  @apply w-full h-full max-w-3xl flex flex-col justify-center p-5 border-gray-300;
 }
 
 .profile-info-row {
@@ -282,4 +282,43 @@
 .personal {
   @apply w-full h-fit mx-auto p-5 space-y-4 border-b border-black/40;
 }
+
+
+/*************************************/
+/************ Alert Dialog otp ********/
+
+.shad-alert-dialog {
+  @apply  bg-teal-500 border-none shadow-lg;
+}
+
+.shad-otp {
+  @apply flex items-center justify-center xs:gap-3 w-full h-fit max-w-md mx-auto p-5 rounded-lg;
+}
+
+.shad-otp-slot {
+  @apply border-1 xs:rounded-md xs:w-12 xs:h-12 text-white text-lg;
+}
+
+/*****************************************/
+/************ Table ********/
+/****************************************/
+
+.table-header {
+  @apply bg-gray-100 text-gray-700 font-semibold text-sm uppercase tracking-wider;
+}
+
+.table-row {
+  @apply border-b border-gray-200 hover:bg-gray-50 transition-colors duration-200;
+}
+
+/*****************************************/
+
+.schedule-appointment-btn {
+  @apply text-emerald-600 hover:bg-emerald-50 active:scale-95 ease-in-out;
+}
+
+.cancel-appointment-btn {
+  @apply text-rose-600 hover:bg-rose-50 active:scale-95 ease-in-out;
+}
+
 

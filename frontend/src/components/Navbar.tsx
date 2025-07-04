@@ -12,7 +12,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     logout(navigate);
-    window.location.href="/";
+    navigate("/");
   };
 
   return (
@@ -45,6 +45,7 @@ const Navbar = () => {
             Logout
           </Button>
         )}
+        <Link to="/admin" className="text-teal-500 font-semibold tracking-wide text-sm">Admin</Link>
       </div>
     </div>
   );

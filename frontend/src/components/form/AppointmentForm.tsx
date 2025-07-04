@@ -199,11 +199,10 @@ export function AppointmentForm({
             placeholder="Urgent meeting came up"
           />
         )}
-
         <SubmitButton
           isLoading={isLoading}
           className={`${
-            type === "cancel" ? "bg-red-400" : "shad-primary-btn"
+            type === "cancel" ? "bg-red-400 text-white hover:bg-red-500 cursor-pointer" : "bg-teal-400 hover:bg-teal-500 cursor-pointer"
           } w-full`}
           label={buttonLabel}
         />
