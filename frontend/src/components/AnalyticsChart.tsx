@@ -1,3 +1,4 @@
+import { useAdminStore } from "@/hooks/useAdminStore";
 import {
   LineChart,
   Line,
@@ -23,11 +24,6 @@ const lineData = [
   { name: "Sat", appointments: 4 },
 ];
 
-const pieData = [
-  { name: "Confirmed", value: 300 },
-  { name: "Cancelled", value: 120 },
-  { name: "Pending", value: 100 },
-];
 const COLORS = ["#00C49F", "#FF8042", "#FFBB28"];
 
 const barData = [
@@ -39,6 +35,14 @@ const barData = [
 ];
 
 export function AnalyticsChart() {
+  const { dashboardData } = useAdminStore();
+
+  const pieData = [
+  { name: "Confirmed", value: dashboardData?.scheduled },
+  { name: "Cancelled", value: dashboardData?.cancelled },
+  { name: "Pending", value: dashboardData?.pending },
+];
+
   return (
     <div className="grid grid-cols-3 gap-5">
       <div className="bg-white rounded-xl shadow-md p-4">

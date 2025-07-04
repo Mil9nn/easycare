@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 async function getData(): Promise<Appointment[]> {
-  // Fetch data from your API here.
+  
   return [
     {
       id: "728ed52f",
@@ -29,7 +29,7 @@ const data = await getData();
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
-  const { logoutAdmin, adminStatus } = useAdminStore();
+  const { logoutAdmin, getAdminDashboardData, dashboardData, } = useAdminStore();
 
   const { getAllAppointments, appointments } = useAppointmentStore();
 
@@ -39,7 +39,10 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     getAllAppointments();
-  }, [getAllAppointments]);
+    getAdminDashboardData();
+  }, [getAllAppointments, getAdminDashboardData]);
+
+  console.log("Dashboard Data:", dashboardData);
 
   return (
     <div className="p-5">
@@ -62,7 +65,7 @@ const AdminDashboard = () => {
           <StatCard
             iconSrc="/assets/icons/appointments.svg"
             iconAlt=""
-            count={850}
+            count={dashboardData?.scheduled}
             description="Total number of scheduled appointments"
             trendPercentage={5}
             trend="down"
@@ -71,7 +74,7 @@ const AdminDashboard = () => {
           <StatCard
             iconSrc="/assets/icons/pending.svg"
             iconAlt=""
-            count={25}
+            count={dashboardData?.pending}
             description="Total number of pending appointments"
             trendPercentage={5}
             trend="down"
@@ -80,7 +83,7 @@ const AdminDashboard = () => {
           <StatCard
             iconSrc="/assets/icons/cancelled.svg"
             iconAlt=""
-            count={250}
+            count={dashboardData?.cancelled}
             description="Cancelled appointments"
             trendPercentage={70}
             trend="up"

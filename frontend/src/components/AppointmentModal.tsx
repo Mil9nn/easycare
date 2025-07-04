@@ -18,7 +18,7 @@ export const AppointmentModal = ({
   userId,
   appointment,
   title,
-  description
+  description,
 }: {
   type: "schedule" | "cancel";
   patientId: string;
@@ -31,32 +31,32 @@ export const AppointmentModal = ({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger asChild>
-          <Button
-  variant="ghost"
-  className={`cursor-pointer ${
-    type === "schedule" ? "schedule-appointment-btn" : "cancel-appointment-btn"
-  } hover:shadow-sm transition-all`}
->
-  {type}
-</Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px] bg-white border-none shadow-lg">
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>
-              {description}
-            </DialogDescription>
-          </DialogHeader>
+      <DialogTrigger asChild>
+        <Button
+          variant="ghost"
+          className={`cursor-pointer ${
+            type === "schedule"
+              ? "schedule-appointment-btn"
+              : "cancel-appointment-btn"
+          } hover:shadow-sm transition-all`}
+        >
+          {type}
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px] bg-white border-none shadow-lg">
+        <DialogHeader>
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
+        </DialogHeader>
 
-          <AppointmentForm
-            userId={userId}
-            patientId={patientId}
-            type={type}
-            appointment={appointment}
-            setOpen={setOpen}
-          />
-        </DialogContent>
+        <AppointmentForm
+          userId={userId}
+          patientId={patientId}
+          type={type}
+          appointment={appointment}
+          setOpen={setOpen}
+        />
+      </DialogContent>
     </Dialog>
   );
 };

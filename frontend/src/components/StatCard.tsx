@@ -37,7 +37,7 @@ const StatCard = ({
         )}
 
         <div className="mb-1">
-        <p className="text-2xl font-semibold text-gray-900">{count.toLocaleString()}</p>
+        <p className="text-2xl font-semibold text-gray-900">{count?.toLocaleString()}</p>
       </div>
       </div>
       

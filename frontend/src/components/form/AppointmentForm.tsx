@@ -87,7 +87,7 @@ export function AppointmentForm({
       } else {
         const appointmentToUpdate = {
           userId,
-          appointmentId: appointment?.$id as string,
+          appointmentId: appointment?._id as string,
           appointment: {
             primaryPhysician: values.primaryPhysician,
             schedule: new Date(values.schedule),
@@ -96,6 +96,7 @@ export function AppointmentForm({
           },
           type,
         }
+        console.log("Updating appointment with data:", appointmentToUpdate);
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
         if(updatedAppointment && setOpen) {

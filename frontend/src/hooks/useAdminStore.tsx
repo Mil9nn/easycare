@@ -1,8 +1,20 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
 
-export const useAdminStore = create((set) => ({
+interface AdminStore {
+  adminStatus: boolean;
+  dashboardData: any; // Adjust type as needed
+  weeklyAppointments: any;
+  checkAdmin: () => Promise<void>;
+  verifyAdminOtp: (otp: string, navigate: any) => Promise<void>;
+  logoutAdmin: (navigate: any) => Promise<void>;
+  getAdminDashboardData: () => Promise<void>;
+}
+
+export const useAdminStore = create<AdminStore>((set) => ({
   adminStatus: false,
+  dashboardData: null,
+  weeklyAppointments: null,
 
   checkAdmin: async () => {
     try {
@@ -36,4 +48,28 @@ export const useAdminStore = create((set) => ({
       throw error;
     }
   },
+
+  getAdminDashboardData: async () => {
+    try {
+      const response = await axiosInstance.get("/admin/appointment/stats");
+      if (response.status === 200) {
+        set({ dashboardData: response.data });
+      }
+    } catch (error) {
+      console.error("Error fetching admin dashboard data:", error);
+      throw error;
+    }
+  },
+
+  getWeeklyAppointments: async () => {
+    try {
+      const response = await axiosInstance.get("/admin/appointment/weekly");
+      if (response.status === 200) {
+        set({ weeklyAppointments: response.data });
+      }
+    } catch (error) {
+      console.error("Error fetching weekly appointments:", error);
+      throw error;
+    }
+  }
 }));

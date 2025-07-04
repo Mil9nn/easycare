@@ -37,10 +37,7 @@ export const useAppointmentStore = create((set) => ({
 
   updateAppointment: async (appointmentData) => {
     try {
-      const response = await axiosInstance.put(
-        `/appointment/${appointmentData.appointmentId}`,
-        appointmentData.appointment
-      );
+      const response = await axiosInstance.put('/admin/appointment/schedule', appointmentData);
       if (response.status === 200) {
         return response.data.appointment;
       }

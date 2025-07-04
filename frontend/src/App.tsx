@@ -84,7 +84,7 @@ function App() {
           />
           <Route path="/success/:appointmentId" element={<SuccessPage />} />
           <Route path="/book-appointment" element={<BookAppointment />} />
-          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin" element={adminStatus ? <Navigate to="/admin/dashboard" /> : <AdminPage />} />
         </Route>
         <Route path="/admin/dashboard" element={adminStatus ? <AdminDashboard /> : <Navigate to="/admin" replace />} />
       </Routes>
