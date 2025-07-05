@@ -1,4 +1,4 @@
-import { Pencil, User, X, type LucideIcon } from "lucide-react";
+import { Pencil, User, type LucideIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import CustomFormField from "./CustomFormField";
 import { useForm } from "react-hook-form";
@@ -38,38 +38,45 @@ const EditField = ({
 
   return (
     <Form {...form}>
-    <form
-      onSubmit={form.handleSubmit((data) => {
-        field.onSave?.(data.editableValue);
-        toggleEdit(index);
-      })}
-    >
-      <div className="edit-field-wrapper flex items-center gap-2">
-        <CustomFormField
-          control={form.control}
-          name="editableValue"
-          fieldType={field.fieldType ?? FormFieldType.INPUT}
-          inputType={field.inputType ?? "text"}
-          placeholder={`Enter ${field.label}`}
-          icon={field.icon}
-        />
-        <Button type="submit" size="sm" className="text-green-600 cursor-pointer">
-          Update
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          variant="ghost"
-          onClick={() => toggleEdit(index)}
-        >
-          <X className="text-red-500" />
-        </Button>
-      </div>
+      <form
+        onSubmit={form.handleSubmit((data) => {
+          field.onSave?.(data.editableValue);
+          toggleEdit(index);
+        })}
+      >
+        <div className="edit-field-wrapper flex items-center gap-2">
+          <CustomFormField
+            control={form.control}
+            name="editableValue"
+            fieldType={field.fieldType ?? FormFieldType.INPUT}
+            inputType={field.inputType ?? "text"}
+            placeholder={`Enter ${field.label}`}
+            icon={field.icon}
+          />
+          <div className="flex items-center gap-2">
+            <Button
+              type="submit"
+              size="sm"
+              variant="outline"
+              className="text-green-600 cursor-pointer border-black/30"
+            >
+              Update
+            </Button>
+            <Button
+              type="button"
+              size="sm"
+              variant="outline"
+              className="text-btn-danger border-black/30"
+              onClick={() => toggleEdit(index)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </div>
       </form>
     </Form>
   );
 };
-
 
 const CustomProfileCard = ({
   title,
@@ -99,7 +106,7 @@ const CustomProfileCard = ({
       <h3 className="heading-tertiary flex items-center gap-2 text-blue-600">
         <TitleIcon className="text-xl" /> {title}
       </h3>
-      <div className="grid grid-cols-2 gap-4 mt-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         {fields.map((field, index) => {
           const FieldIcon = field.icon ?? User;
           const color = field.colorClass ?? "text-pink-500";
@@ -116,19 +123,23 @@ const CustomProfileCard = ({
                 />
               ) : (
                 <>
-                  <FieldIcon className={`${color} size-5`} />
-                  <span>
-                    <strong>{field.label}</strong> {field.value || "—"}
-                  </span>
-                  {field.onSave && (
-                    field.inputType !== 'email' && field.inputType !== 'tel' && <Button
-                      onClick={() => startEditing(index, field.value!)}
-                      title={`Edit ${field.label}`}
-                      className="cursor-pointer hover:scale-110 active:scale-95 transition-transform"
-                    >
-                      <Pencil className="size-4 text-gray-500" />
-                    </Button>
-                  )}
+                  <div className="flex items-center gap-2 flex-1">
+                    <FieldIcon className={`${color} size-5`} />
+                    <span>
+                      <strong>{field.label}</strong> {field.value || "—"}
+                    </span>
+                  </div>
+                  {field.onSave &&
+                    field.inputType !== "email" &&
+                    field.inputType !== "tel" && (
+                      <Button
+                        onClick={() => startEditing(index, field.value!)}
+                        title={`Edit ${field.label}`}
+                        className="cursor-pointer hover:scale-110 active:scale-95 transition-transform"
+                      >
+                        <Pencil className="size-4 text-gray-500" />
+                      </Button>
+                    )}
                 </>
               )}
             </div>
