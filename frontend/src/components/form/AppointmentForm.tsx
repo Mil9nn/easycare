@@ -11,7 +11,7 @@ import { z } from "zod";
 
 import { FormFieldType, getAppointmentSchema } from "@/lib/validation";
 import { useNavigate } from "react-router-dom";
-import { useAppointmentStore } from "../../hooks/useAppoiontmentStore";
+import { useAppointmentStore } from "../../hooks/useAppointmentStore";
 import type { Appointment } from "@/types/types";
 
 export function AppointmentForm({
@@ -27,8 +27,7 @@ export function AppointmentForm({
   appointment?: Appointment;
   setOpen?: (open: boolean) => void;
 }) {
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const { createAppointment, updateAppointment } = useAppointmentStore();
@@ -38,7 +37,7 @@ export function AppointmentForm({
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician: appointment ? appointment.primaryPhysician : '',
+      primaryPhysician: appointment ? appointment.primaryPhysician : "",
       schedule: appointment ? new Date(appointment.schedule) : new Date(),
       reason: appointment ? appointment.reason : "",
       note: appointment ? appointment.note : "",
@@ -46,10 +45,10 @@ export function AppointmentForm({
     },
   });
 
+  let status;
+
   async function onSubmit(values: z.infer<typeof AppointmentFormValidation>) {
     setIsLoading(true);
-
-    let status;
 
     switch (type) {
       case "create":
@@ -79,10 +78,10 @@ export function AppointmentForm({
         };
 
         const appointment = await createAppointment(appointmentData, navigate);
-        
+
         if (appointment) {
           form.reset();
-          navigate(`/appointment/${appointment.$id}`);
+          navigate(`/appointment/${appointment._id}`);
         }
       } else {
         const appointmentToUpdate = {
@@ -95,12 +94,11 @@ export function AppointmentForm({
             cancellationReason: values.cancellationReason,
           },
           type,
-        }
-        console.log("Updating appointment with data:", appointmentToUpdate);
+        };
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
-        if(updatedAppointment && setOpen) {
-            setOpen(false);
+        if (updatedAppointment && setOpen) {
+          setOpen(false);
           form.reset();
         }
       }
@@ -124,19 +122,21 @@ export function AppointmentForm({
       buttonLabel = "Schedule Appointment";
       break;
     default:
-      status = "";
+      status = "pending";
       break;
   }
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
-        {type==='create' && <section>
-          <h2 className="text-2xl font-bold">Hey there👋</h2>
-          <p className="text-sm opacity-55 font-extralight">
-            Request a new appointment in 10 seconds
-          </p>
-        </section>}
+        {type === "create" && (
+          <section>
+            <h2 className="text-2xl font-bold">Hey there👋</h2>
+            <p className="text-sm opacity-55 font-extralight">
+              Request a new appointment in 10 seconds
+            </p>
+          </section>
+        )}
         {type !== "cancel" && (
           <>
             <section className="space-y-5">
@@ -203,7 +203,9 @@ export function AppointmentForm({
         <SubmitButton
           isLoading={isLoading}
           className={`${
-            type === "cancel" ? "bg-red-400 text-white hover:bg-red-500 cursor-pointer" : "bg-teal-400 hover:bg-teal-500 cursor-pointer"
+            type === "cancel"
+              ? "bg-red-400 text-white hover:bg-red-500 cursor-pointer"
+              : "bg-teal-400 hover:bg-teal-500 cursor-pointer"
           } w-full`}
           label={buttonLabel}
         />

@@ -6,10 +6,10 @@ import { FormFieldType } from "@/lib/validation";
 import { useState } from "react";
 import { Form } from "./ui/form";
 
-type ProfileField = {
+export type ProfileField = {
   name: string;
   label: string;
-  value: string;
+  value?: React.HTMLInputTypeAttribute;
   icon?: LucideIcon;
   colorClass?: string;
   fieldType?: FormFieldType;
@@ -122,7 +122,7 @@ const CustomProfileCard = ({
                   </span>
                   {field.onSave && (
                     field.inputType !== 'email' && field.inputType !== 'tel' && <Button
-                      onClick={() => startEditing(index, field.value)}
+                      onClick={() => startEditing(index, field.value!)}
                       title={`Edit ${field.label}`}
                       className="cursor-pointer hover:scale-110 active:scale-95 transition-transform"
                     >

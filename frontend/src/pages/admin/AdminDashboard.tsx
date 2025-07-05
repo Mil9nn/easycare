@@ -5,7 +5,7 @@ import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useAdminStore } from "@/hooks/useAdminStore";
-import { useAppointmentStore } from "@/hooks/useAppoiontmentStore";
+import { useAppointmentStore } from "@/hooks/useAppointmentStore";
 import { LogOutIcon } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";

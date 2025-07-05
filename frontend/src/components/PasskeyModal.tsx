@@ -41,6 +41,7 @@ const PassKeyModal = () => {
         setOpen(false);
     } catch (error) {
         setError("Invalid passkey. Please try again.");
+        console.error("Error verifying passkey:", error);
         setPassKey('');
     }
   };

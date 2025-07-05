@@ -24,7 +24,7 @@ import { useNavigate } from "react-router-dom";
 
 type PatientFormValues = z.infer<typeof PatientFormValidation>;
 
-export function MedicalForm({ user }: { user: User }) {
+export function MedicalForm() {
   const navigate = useNavigate();
 
   const { createPatient, isLoadingPatient  } = useFormStore();

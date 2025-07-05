@@ -1,6 +1,13 @@
+export type User = {
+  _id: string;
+  fullName: string;
+  email: string;
+}
+
 export interface Patient {
+  _id: string;
   userId: string;
-  name: string;
+  fullName: string;
   email: string;
   phone: string;
   birthDate: Date;
@@ -23,6 +30,7 @@ export interface Patient {
 }
 
 export interface Appointment {
+  _id?: string;
   patient: Patient;
   schedule: Date;
   status: Status;
@@ -30,5 +38,24 @@ export interface Appointment {
   reason: string;
   note: string;
   userId: string;
-  cancellationReason: string | null;
+  cancellationReason?: string | null;
 }
+
+export type PatientStats = {
+  _id: string;
+  count: number;
+}
+export type PatientStatsArray = PatientStats[];
+
+export type DashboardData = {
+  totalPatients: number;
+  scheduled: number;
+  cancelled: number;
+  pending: number;
+}
+
+export type WeeklyAppointmentsData = {
+  _id: string;
+  count: number;
+}
+export type WeeklyAppointments = WeeklyAppointmentsData[];

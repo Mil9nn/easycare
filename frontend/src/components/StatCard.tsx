@@ -1,7 +1,7 @@
 type StatCardProps = {
     iconSrc: string;
     iconAlt: string;
-    count: number;
+    count: number | undefined;
     description: string;
     trend?: 'up' | 'down' | 'neutral';
     trendPercentage?: number;

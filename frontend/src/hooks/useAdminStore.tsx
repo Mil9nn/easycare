@@ -1,16 +1,18 @@
 import { axiosInstance } from "@/lib/axios";
+import type { DashboardData, PatientStatsArray, WeeklyAppointments } from "@/types/types";
+import type { NavigateFunction } from "react-router-dom";
 import { create } from "zustand";
 
 interface AdminStore {
   adminStatus: boolean;
-  dashboardData: any; // Adjust type as needed
-  weeklyAppointments: any;
+  dashboardData: DashboardData | null;
+  weeklyAppointments: WeeklyAppointments | null;
   checkAdmin: () => Promise<void>;
-  verifyAdminOtp: (otp: string, navigate: any) => Promise<void>;
-  logoutAdmin: (navigate: any) => Promise<void>;
+  verifyAdminOtp: (otp: string, navigate: NavigateFunction) => Promise<void>;
+  logoutAdmin: (navigate: NavigateFunction) => Promise<void>;
   getAdminDashboardData: () => Promise<void>;
   getWeeklyAppointments: () => Promise<void>;
-  patientStats: any;
+  patientStats: PatientStatsArray | null;
   getPatientsByAgeGroup: () => Promise<void>;
 }
 
@@ -29,11 +31,10 @@ export const useAdminStore = create<AdminStore>((set) => ({
         throw error;
     }
   },
-
+  
   verifyAdminOtp: async (otp, navigate) => {
     try {
       const response = await axiosInstance.post("/admin/verify-otp", { otp });
-      console.log(response.data.success);
       set({ adminStatus: response.data.success });
       navigate("/admin/dashboard");
     } catch (error) {

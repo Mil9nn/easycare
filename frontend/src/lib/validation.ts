@@ -115,16 +115,18 @@ export function getAppointmentSchema(type: string) {
     case "cancel":
       return CancelAppointmentSchema;
     default:
-      return ScheduleAppointmentSchema;
+      return ScheduleAppointmentSchema; 
   }
 }
 
-export enum FormFieldType {
-  INPUT = "input",
-  SELECT = "select",
-  TEXTAREA = "textarea",
-  CHECKBOX = "checkbox",
-  DATE_PICKER = "datepicker",
-  PHONE_INPUT = "phoneinput",
-  SKELETON = "skeleton",
-}
+export const FormFieldType = {
+  INPUT: "input",
+  SELECT: "select",
+  TEXTAREA: "textarea",
+  CHECKBOX: "checkbox",
+  DATE_PICKER: "datepicker",
+  PHONE_INPUT: "phoneinput",
+  SKELETON: "skeleton",
+} as const;
+
+export type FormFieldType = (typeof FormFieldType)[keyof typeof FormFieldType];

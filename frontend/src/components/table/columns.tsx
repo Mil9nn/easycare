@@ -4,10 +4,11 @@ import StatusBadge from "../StatusBadge";
 import { formatDateTime } from "@/lib/utils";
 import { Doctors } from "../form/constants";
 import AppointmentModal from "../AppointmentModal";
+import type { Appointment } from "@/types/types";
 
 
 
-export const columns: ColumnDef<CreateAppointmentParams>[] = [
+export const columns: ColumnDef<Appointment>[] = [
   {
     header: "ID",
     cell: ({ row }) => <p className="text-sm">{row.index + 1}</p>,

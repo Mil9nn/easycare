@@ -21,7 +21,6 @@ export const verifyAdminOtp = async (req, res) => {
 }
 
 export const logoutAdmin = (req, res) => {
-  console.log("Admin logout request received");
   try {
     res.cookie("admin_jwt", "", {
       maxAge: 0,
@@ -185,7 +184,7 @@ export const getPatientsByAgeGroup = async (req, res) => {
     ])
     return res.status(200).json(patients);
   } catch (error) {
-    console.log("Error fetching patients by age group:", error);
+    console.error("Error fetching patients by age group:", error);
     return res.status(500).json({ message: "Internal server error" });
   }
 }

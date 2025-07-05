@@ -1,4 +1,6 @@
 import { useAdminStore } from "@/hooks/useAdminStore";
+import type { PatientStats } from "@/types/types";
+
 import {
   LineChart,
   Line,
@@ -30,12 +32,12 @@ export function AnalyticsChart() {
   ];
 
   const pieData = [
-    { name: "Confirmed", value: dashboardData?.scheduled },
-    { name: "Cancelled", value: dashboardData?.cancelled },
-    { name: "Pending", value: dashboardData?.pending },
+    { name: "Confirmed", value: dashboardData?.scheduled ?? 0 },
+    { name: "Cancelled", value: dashboardData?.cancelled ?? 0 },
+    { name: "Pending", value: dashboardData?.pending ?? 0 },
   ];
 
-  const barData = patientStats?.map((group) => ({
+  const barData = patientStats?.map((group: PatientStats) => ({
     name: group._id,
     patients: group.count,
   }));
@@ -83,7 +85,7 @@ export function AnalyticsChart() {
               paddingAngle={5}
               label
             >
-              {pieData.map((entry, index) => (
+              {pieData.map((_entry, index) => (
                 <Cell
                   key={`cell-${index}`}
                   fill={COLORS[index % COLORS.length]}

@@ -3,14 +3,15 @@ import { create } from "zustand";
 import { toast } from "react-hot-toast";
 
 import type { z } from "zod";
-import type { UserFormValidation } from "@/lib/validation";
+import type { LoginFormValidation, UserFormValidation } from "@/lib/validation";
 import { AxiosError } from "axios";
+import type { User } from "@/types/types";
 
 interface AuthStore {
   isAuthenticating: boolean;
   isCheckingAuth: boolean;
 
-  user: z.infer<typeof UserFormValidation> | null;
+  user: User | null;
 
   checkAuth: () => Promise<void>;
   signup: (
@@ -18,7 +19,7 @@ interface AuthStore {
     navigate: (path: string) => void
   ) => Promise<void>;
   login: (
-    userData: z.infer<typeof UserFormValidation>,
+    userData: z.infer<typeof LoginFormValidation>,
     navigate: (path: string) => void
   ) => Promise<void>;
   logout: (navigate: (path: string) => void) => Promise<void>;

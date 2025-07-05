@@ -1,6 +1,5 @@
 import { Doctors } from "@/components/form/constants";
-import { Button } from "@/components/ui/button";
-import { useAppointmentStore } from "@/hooks/useAppoiontmentStore";
+import { useAppointmentStore } from "@/hooks/useAppointmentStore";
 import { formatDateTime } from "@/lib/utils";
 import { useEffect } from "react";
 
@@ -57,7 +56,7 @@ const SuccessPage = () => {
             />
             <p className="text-sm font-semibold">
               {" "}
-              {formatDateTime(appointment?.schedule).dateTime}
+              {appointment?.schedule ? formatDateTime(appointment?.schedule).dateTime : ""}
             </p>
           </div>
         </section>

@@ -1,12 +1,13 @@
 import { axiosInstance } from "@/lib/axios";
+import type { Appointment } from "@/types/types";
 import { create } from "zustand";
 
 interface AppointmentStore {
-  appointment: any; // Adjust type as needed
-  appointments: any[]; // Adjust type as needed
-  createAppointment: (appointmentData: any, navigate: any) => Promise<void>;
+  appointment: Appointment | null;
+  appointments: Appointment[] | [];
+  createAppointment: (appointmentData: CreateAppointmentParams, navigate: (path: string) => void) => Promise<Appointment | undefined>;
   getAppointment: (appointmentId: string) => Promise<void>;
-  updateAppointment: (appointmentData: any) => Promise<any>;
+  updateAppointment: (appointmentData: UpdateAppointmentParams) => Promise<Appointment | undefined>;
   getAllAppointments: () => Promise<void>;
 }
 
@@ -16,14 +17,11 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
 
   createAppointment: async (appointmentData, navigate) => {
     try {
-      const response = await axiosInstance.post(
-        "/appointment",
-        appointmentData
-      );
+      const response = await axiosInstance.post("/appointment", appointmentData);
       if (response.status === 201) {
-        const appointment = response.data;
-        set({ appointment });
-        navigate(`/success/${appointment?._id}`);
+        set({ appointment: response.data });
+        navigate(`/success/${response.data?._id}`);
+        return response.data;
       }
     } catch (error) {
       console.error("Error creating appointment:", error);

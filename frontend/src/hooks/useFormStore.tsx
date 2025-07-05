@@ -5,19 +5,23 @@ import { create } from "zustand";
 import { PatientFormValidation } from "@/lib/validation";
 import type { NavigateFunction } from "react-router-dom";
 import { AxiosError } from "axios";
+import type { Patient } from "@/types/types";
+import { z } from "zod";
+
+export type PatientFormValues = z.infer<typeof PatientFormValidation>;
 
 interface FormStore {
-  patient?: typeof PatientFormValidation | null;
-  setPatient: (data: typeof PatientFormValidation | null) => void;
+  patient?: Patient | null;
+  setPatient: (data: Patient | null) => void;
   createPatient: (
-    patient: typeof PatientFormValidation,
+    patient: FormData,
     navigate: NavigateFunction
   ) => Promise<void>;
   getPatient: () => Promise<void>;
   isLoadingPatient: boolean;
   updatePatient: (
     id: string,
-    patient: typeof PatientFormValidation
+    patient: Partial<PatientFormValues>
   ) => Promise<void>;
 }
 
@@ -26,7 +30,7 @@ export const useFormStore = create<FormStore>((set) => ({
   setPatient: (data) => set({ patient: data }),
   isLoadingPatient: false,
 
-  createPatient: async (patient: typeof PatientFormValidation, navigate) => {
+  createPatient: async (patient: FormData, navigate) => {
     set({ isLoadingPatient: true });
     try {
       const response = await axiosInstance.post("/patient/", patient);
@@ -67,7 +71,7 @@ export const useFormStore = create<FormStore>((set) => ({
     }
   },
 
-  updatePatient: async (id: string, patient: typeof PatientFormValidation) => {
+  updatePatient: async (id: string, patient: Partial<PatientFormValues>) => {
     set({ isLoadingPatient: true });
     try {
       const response = await axiosInstance.put(

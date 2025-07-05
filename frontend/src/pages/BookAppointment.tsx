@@ -40,7 +40,7 @@ const BookAppointment = () => {
   return (
     <div className="signup-page">
       <AppointmentForm
-        userId={user?._id}
+        userId={user?._id || ""}
         patientId={patient?._id}
         type="create"
       />

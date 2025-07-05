@@ -55,7 +55,7 @@ const ProfilePage = () => {
             {
               name: "birthDate",
               label: "Date of Birth:",
-              value: formatDateTime(patient?.birthDate).dateOnly,
+              value: patient?.birthDate ? formatDateTime(patient?.birthDate).dateOnly : "",
               icon: Calendar,
               fieldType: FormFieldType.DATE_PICKER,
               onSave: handleInlineSave("birthDate"),
