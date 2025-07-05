@@ -14,10 +14,11 @@ import { useFormStore } from "./hooks/useFormStore";
 import AdminPage from "./pages/admin/AdminPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import { useAdminStore } from "./hooks/useAdminStore";
+import { Loader2 } from "lucide-react";
 
 function App() {
   const { checkAuth, isCheckingAuth, user } = useAuthStore();
-  const { getPatient } = useFormStore();
+  const { getPatient, isLoadingPatient } = useFormStore();
   const { checkAdmin, adminStatus } = useAdminStore();
 
   useEffect(() => {
@@ -31,17 +32,11 @@ function App() {
     }
   }, [user, getPatient]);
 
-  if (isCheckingAuth) {
+  if (isCheckingAuth || isLoadingPatient) {
     return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center bg-gradient-to-b from-muted via-primary to-muted text-center px-6">
-        <div className="w-10 h-10 border-4 border-t-transparent border-blue-500 rounded-full animate-spin mb-4" />
-        <h2 className="text-lg font-semibold text-muted-foreground">
-          Verifying your identity...
-        </h2>
-        <p className="text-sm text-gray-500 max-w-xs mt-2">
-          Please hold on while we confirm your credentials and secure your
-          session.
-        </p>
+      <div className="h-screen w-screen flex flex-col items-center justify-center">
+        <Loader2 className="animate-spin size-8 text-teal-500" />
+        <p className="text-sm text-gray-500 max-w-xs mt-2">Please hold on...</p>
       </div>
     );
   }
@@ -84,9 +79,19 @@ function App() {
           />
           <Route path="/success/:appointmentId" element={<SuccessPage />} />
           <Route path="/book-appointment" element={<BookAppointment />} />
-          <Route path="/admin" element={adminStatus ? <Navigate to="/admin/dashboard" /> : <AdminPage />} />
+          <Route
+            path="/admin"
+            element={
+              adminStatus ? <Navigate to="/admin/dashboard" /> : <AdminPage />
+            }
+          />
         </Route>
-        <Route path="/admin/dashboard" element={adminStatus ? <AdminDashboard /> : <Navigate to="/admin" replace />} />
+        <Route
+          path="/admin/dashboard"
+          element={
+            adminStatus ? <AdminDashboard /> : <Navigate to="/admin" replace />
+          }
+        />
       </Routes>
 
       <Toaster

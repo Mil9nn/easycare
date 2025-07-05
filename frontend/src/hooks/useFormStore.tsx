@@ -13,7 +13,7 @@ interface FormStore {
     patient: typeof PatientFormValidation,
     navigate: NavigateFunction
   ) => Promise<void>;
-  getPatient: (patientId: string) => Promise<void>;
+  getPatient: () => Promise<void>;
   isLoadingPatient: boolean;
   updatePatient: (
     id: string,

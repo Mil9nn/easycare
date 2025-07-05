@@ -1,7 +1,16 @@
 import { axiosInstance } from "@/lib/axios";
 import { create } from "zustand";
 
-export const useAppointmentStore = create((set) => ({
+interface AppointmentStore {
+  appointment: any; // Adjust type as needed
+  appointments: any[]; // Adjust type as needed
+  createAppointment: (appointmentData: any, navigate: any) => Promise<void>;
+  getAppointment: (appointmentId: string) => Promise<void>;
+  updateAppointment: (appointmentData: any) => Promise<any>;
+  getAllAppointments: () => Promise<void>;
+}
+
+export const useAppointmentStore = create<AppointmentStore>((set) => ({
   appointment: null,
   appointments: [],
 

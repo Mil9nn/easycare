@@ -45,7 +45,7 @@ export const getAppointmentById = async (req, res) => {
 
 export const getAllAppointments = async (req, res) => {
   try {
-    const appointments = await Appointment.find().populate('patient');
+    const appointments = await Appointment.find().populate('patient').sort({ createdAt: -1 });
     if (!appointments || appointments.length === 0) {
       return res.status(404).json({ message: "No appointments found" });
     }

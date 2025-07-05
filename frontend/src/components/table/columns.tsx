@@ -5,18 +5,9 @@ import { formatDateTime } from "@/lib/utils";
 import { Doctors } from "../form/constants";
 import AppointmentModal from "../AppointmentModal";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Appointment = {
-  id: string;
-  patient: string;
-  date: string;
-  status: "pending" | "scheduled" | "cancelled";
-  doctor: string;
-  actions: string;
-};
 
-export const columns: ColumnDef<Appointment>[] = [
+
+export const columns: ColumnDef<CreateAppointmentParams>[] = [
   {
     header: "ID",
     cell: ({ row }) => <p className="text-sm">{row.index + 1}</p>,

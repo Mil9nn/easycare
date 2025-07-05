@@ -47,7 +47,7 @@ export function SignupPage() {
           }}
           className="close-dialog"
         />
-        <SubmitButton label={"Signup"} isLoading={isAuthenticating} />
+        <SubmitButton label={"Signup"} isLoading={isAuthenticating} className="submit-btn" />
         <div className="flex items-center justify-center">
           <p className="text-sm text-gray-500 mt-2">
             Already have an account?{" "}

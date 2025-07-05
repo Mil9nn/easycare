@@ -1,78 +1,79 @@
 import { generateAdminTokenAndSetCookie } from "../lib/jwt.js";
 import { Appointment } from "../models/appointment.model.js";
 import moment from "moment";
+import { Patient } from "../models/patient.model.js";
 
 export const verifyAdminOtp = async (req, res) => {
-    try {
-        const { otp } = req.body;
-        const ADMIN_OTP = process.env.ADMIN_SECRET_OTP;
+  try {
+    const { otp } = req.body;
+    const ADMIN_OTP = process.env.ADMIN_SECRET_OTP;
 
-        if (otp === ADMIN_OTP) {
-            generateAdminTokenAndSetCookie(res);
-            return res.status(200).json({ message: "Admin OTP verified successfully", success: true });
-        } else {
-            return res.status(401).json({ message: "Invalid OTP" });
-        }
-    } catch (error) {
-        console.error("Error verifying admin OTP:", error);
-        return res.status(500).json({ message: "Internal server error" });
+    if (otp === ADMIN_OTP) {
+      generateAdminTokenAndSetCookie(res);
+      return res.status(200).json({ message: "Admin OTP verified successfully", success: true });
+    } else {
+      return res.status(401).json({ message: "Invalid OTP" });
     }
+  } catch (error) {
+    console.error("Error verifying admin OTP:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 export const logoutAdmin = (req, res) => {
-    console.log("Admin logout request received");
-    try {
-        res.cookie("admin_jwt", "", {
-            maxAge: 0,
-            httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
-            sameSite: 'Strict'
-        })
-        return res.status(200).json({ message: "Admin logged out successfully" });
-    } catch (error) {
-        console.error("Error logging out admin:", error);
-        return res.status(500).json({ message: "Internal server error" });
-    }
+  console.log("Admin logout request received");
+  try {
+    res.cookie("admin_jwt", "", {
+      maxAge: 0,
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'Strict'
+    })
+    return res.status(200).json({ message: "Admin logged out successfully" });
+  } catch (error) {
+    console.error("Error logging out admin:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 export const checkAdmin = (req, res) => {
-    try {
-        const adminToken = req.cookies.admin_jwt;
-        if (!adminToken) {
-            return res.status(401).json({ message: "Admin not authenticated" });
-        }
-        return res.status(200).json({ message: "Admin is authenticated", success: true });
-    } catch (error) {
-        console.error("Error checking admin authentication:", error);
-        return res.status(500).json({ message: "Internal server error" });
+  try {
+    const adminToken = req.cookies.admin_jwt;
+    if (!adminToken) {
+      return res.status(401).json({ message: "Admin not authenticated" });
     }
+    return res.status(200).json({ message: "Admin is authenticated", success: true });
+  } catch (error) {
+    console.error("Error checking admin authentication:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 export const scheduleAppointment = async (req, res) => {
-    try {
-        const { appointmentId, type, appointment } = req.body;
+  try {
+    const { appointmentId, type, appointment } = req.body;
 
-        const existingAppointment = await Appointment.findById(appointmentId);
-        if (!existingAppointment) {
-            return res.status(404).json({ message: "Appointment not found" });
-        }
-        if (type === 'schedule') {
-            existingAppointment.status = "scheduled";
-            existingAppointment.schedule = appointment.schedule;
-            existingAppointment.primaryPhysician = appointment.primaryPhysician;
-        } else if (type === "cancel") {
-            existingAppointment.status = "cancelled";
-            existingAppointment.cancellationReason = appointment.cancellationReason;
-        } else {
-            return res.status(400).json({ message: "Invalid appointment update type" });
-        }
-
-        await existingAppointment.save();
-        return res.status(200).json({ message: "Appointment scheduled successfully", appointment: existingAppointment });
-    } catch (error) {
-        console.error("Error scheduling appointment:", error);
-        return res.status(500).json({ message: "Internal server error" });
+    const existingAppointment = await Appointment.findById(appointmentId);
+    if (!existingAppointment) {
+      return res.status(404).json({ message: "Appointment not found" });
     }
+    if (type === 'schedule') {
+      existingAppointment.status = "scheduled";
+      existingAppointment.schedule = appointment.schedule;
+      existingAppointment.primaryPhysician = appointment.primaryPhysician;
+    } else if (type === "cancel") {
+      existingAppointment.status = "cancelled";
+      existingAppointment.cancellationReason = appointment.cancellationReason;
+    } else {
+      return res.status(400).json({ message: "Invalid appointment update type" });
+    }
+
+    await existingAppointment.save();
+    return res.status(200).json({ message: "Appointment scheduled successfully", appointment: existingAppointment });
+  } catch (error) {
+    console.error("Error scheduling appointment:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 }
 
 export const getAppointmentStats = async (req, res) => {
@@ -140,3 +141,51 @@ export const getWeeklyAppointments = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getPatientsByAgeGroup = async (req, res) => {
+  try {
+    const patients = await Patient.aggregate([
+      {
+        $addFields: {
+          age: {
+            $dateDiff: {
+              startDate: "$birthDate",
+              endDate: "$$NOW",
+              unit: "year"
+            }
+          }
+        }
+      },
+      {
+        $addFields: {
+          ageGroup: {
+            $switch: {
+              branches: [
+                { case: { $lt: ["$age", 18]}, then: "0-17"},
+                { case: { $and: [{ $gte: ["$age", 18] }, { $lte: ["$age", 35] }] }, then: "18-35" },
+                { case: { $and: [{ $gte: ["$age", 36] }, { $lte: ["$age", 55] }] }, then: "36-55" },
+                { case: { $gte: ["$age", 56] }, then: "56+" }
+              ],
+              default: "Unknown"
+            }
+          }
+        }
+      },
+      {
+        $group: {
+          _id: "$ageGroup",
+          count: { $sum: 1 },
+          patients: { $push: "$fullName" }
+        }
+      },
+      {
+        $sort: {_id: 1}
+      }
+
+    ])
+    return res.status(200).json(patients);
+  } catch (error) {
+    console.log("Error fetching patients by age group:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}

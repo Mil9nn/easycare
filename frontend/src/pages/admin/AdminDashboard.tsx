@@ -1,35 +1,26 @@
 import { AnalyticsChart } from "@/components/AnalyticsChart";
 import StatCard from "@/components/StatCard";
-import { columns, type Appointment } from "@/components/table/columns";
+import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { useAppointmentStore } from "@/hooks/useAppoiontmentStore";
+import { LogOutIcon } from "lucide-react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
-async function getData(): Promise<Appointment[]> {
-  
-  return [
-    {
-      id: "728ed52f",
-      patient: "John Doe",
-      date: "2023-10-01",
-      status: "scheduled",
-      doctor: "Dr. Smith",
-      actions: "View",
-    },
-    // ...
-  ];
-}
-
-const data = await getData();
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
 
-  const { logoutAdmin, getAdminDashboardData, dashboardData, } = useAdminStore();
+  const {
+    logoutAdmin,
+    getAdminDashboardData,
+    getWeeklyAppointments,
+    dashboardData,
+    patientStats,
+    getPatientsByAgeGroup,
+  } = useAdminStore();
 
   const { getAllAppointments, appointments } = useAppointmentStore();
 
@@ -40,25 +31,32 @@ const AdminDashboard = () => {
   useEffect(() => {
     getAllAppointments();
     getAdminDashboardData();
-  }, [getAllAppointments, getAdminDashboardData]);
-
-  console.log("Dashboard Data:", dashboardData);
+    getWeeklyAppointments();
+    getPatientsByAgeGroup();
+  }, [
+    getAllAppointments,
+    getAdminDashboardData,
+    getWeeklyAppointments,
+    getPatientsByAgeGroup,
+  ]);
 
   return (
-    <div className="p-5">
-      <div className="flex items-center justify-between ">
-        <p>Admin Dashboard</p>
+    <div>
+      <div className="flex items-center justify-between px-4 py-3 bg-white shadow-sm">
+        <p className="text-lg font-semibold text-gray-800">Admin Dashboard</p>
         <Button
           onClick={handleLogout}
-          className="text-rose-500 text-sm font-bold hover:shadow-lg cursor-pointer"
+          className="flex items-center gap-2 text-rose-500 text-sm font-bold hover:shadow-lg cursor-pointer"
+          aria-label="Logout"
         >
+          <LogOutIcon className="w-4 h-4" />
           Logout
         </Button>
       </div>
-      <p className="text-sm text-gray-600 mt-1">
-        Monitor and manage all patient appointments, physician schedules, and
-        system activity. Use the analytics below to stay on top of pending tasks
-        and overall system health.
+      <p className="text-sm text-gray-600 mt-1 px-5">
+        Monitor and manage all patient appointments and system activity. Use the
+        analytics below to stay on top of pending tasks and overall system
+        health.
       </p>
       <ScrollArea className="w-full">
         <div className="grid grid-cols-4 gap-4 p-5 min-w-[1024px] lg:min-w-0">
@@ -92,7 +90,7 @@ const AdminDashboard = () => {
           <StatCard
             iconSrc="/assets/icons/appointments.svg"
             iconAlt=""
-            count={1200}
+            count={patientStats?.length || 0}
             description="Patients"
             trendPercentage={5}
             trend="down"

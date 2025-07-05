@@ -54,7 +54,7 @@ const PassKeyModal = () => {
     <AlertDialog open={open} onOpenChange={setOpen}>
       <AlertDialogContent className="shad-alert-dialog">
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex items-center justify-between">
+          <AlertDialogTitle className="flex items-center text-btn-secondary justify-between">
             Admin access verification
             <X className="cursor-pointer" onClick={closeModal} />
           </AlertDialogTitle>
@@ -86,7 +86,7 @@ const PassKeyModal = () => {
         <AlertDialogFooter>
           <AlertDialogAction
             onClick={(e) => validatePassKey(e)}
-            className="cursor-pointer"
+            className="submit-btn"
           >
             Enter Admin Passkey
           </AlertDialogAction>

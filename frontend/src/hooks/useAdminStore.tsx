@@ -9,12 +9,16 @@ interface AdminStore {
   verifyAdminOtp: (otp: string, navigate: any) => Promise<void>;
   logoutAdmin: (navigate: any) => Promise<void>;
   getAdminDashboardData: () => Promise<void>;
+  getWeeklyAppointments: () => Promise<void>;
+  patientStats: any;
+  getPatientsByAgeGroup: () => Promise<void>;
 }
 
 export const useAdminStore = create<AdminStore>((set) => ({
   adminStatus: false,
   dashboardData: null,
   weeklyAppointments: null,
+  patientStats: null,
 
   checkAdmin: async () => {
     try {
@@ -42,7 +46,7 @@ export const useAdminStore = create<AdminStore>((set) => ({
     try {
       await axiosInstance.post("/admin/logout");
       set({ adminStatus: false });
-      navigate("/admin");
+      navigate("/");
     } catch (error) {
       console.error("Error logging out admin:", error);
       throw error;
@@ -71,5 +75,17 @@ export const useAdminStore = create<AdminStore>((set) => ({
       console.error("Error fetching weekly appointments:", error);
       throw error;
     }
-  }
+  },
+
+  getPatientsByAgeGroup: async () => {
+    try {
+      const response = await axiosInstance.get(`/admin/patientData`);
+      if (response.status === 200) {
+        set({ patientStats: response.data });
+      }
+    } catch (error) {
+      console.error("Error fetching patient data by age group:", error);
+      throw error;
+    }
+  },
 }));

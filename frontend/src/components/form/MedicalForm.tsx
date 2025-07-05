@@ -311,7 +311,7 @@ export function MedicalForm({ user }: { user: User }) {
             />
           </div>
         </section>
-        <SubmitButton label="Save medical profile" isLoading={isLoadingPatient} />
+        <SubmitButton label="Save medical profile" isLoading={isLoadingPatient} className="submit-btn" />
       </form>
     </Form>
   );

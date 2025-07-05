@@ -8,10 +8,11 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const { user, logout } = useAuthStore();
-  const { patient } = useFormStore();
+  const { patient, setPatient } = useFormStore();
 
   const handleLogout = () => {
     logout(navigate);
+    setPatient(null);
     navigate("/");
   };
 

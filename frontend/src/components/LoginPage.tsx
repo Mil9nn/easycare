@@ -50,7 +50,7 @@ export function LoginPage() {
           }}
           className="close-dialog"
         />
-        <SubmitButton label={"Login"} isLoading={isAuthenticating} />
+        <SubmitButton label={"Login"} isLoading={isAuthenticating} className="submit-btn" />
         {/* Forgot Password */}
         <div className="flex flex-col items-center">
           <p className="text-sm text-gray-500">

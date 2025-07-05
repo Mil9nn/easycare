@@ -15,39 +15,40 @@ import {
   Bar,
 } from "recharts";
 
-const lineData = [
-  { name: "Mon", appointments: 5 },
-  { name: "Tue", appointments: 8 },
-  { name: "Wed", appointments: 3 },
-  { name: "Thu", appointments: 6 },
-  { name: "Fri", appointments: 9 },
-  { name: "Sat", appointments: 4 },
-];
-
-const COLORS = ["#00C49F", "#FF8042", "#FFBB28"];
-
-const barData = [
-  { name: "0 - 18", patients: 120 },
-  { name: "19 - 35", patients: 300 },
-  { name: "36 - 50", patients: 220 },
-  { name: "51 - 66", patients: 180 },
-  { name: "67+", patients: 90 },
-];
+const COLORS = ["#00C49F", "#F44336", "#FFC107"];
 
 export function AnalyticsChart() {
-  const { dashboardData } = useAdminStore();
+  const { dashboardData, weeklyAppointments, patientStats } = useAdminStore();
+
+  const lineData = [
+    { name: "Mon", appointments: weeklyAppointments?.[1]?.count || 0 },
+    { name: "Tue", appointments: weeklyAppointments?.[2]?.count || 0 },
+    { name: "Wed", appointments: weeklyAppointments?.[3]?.count || 0 },
+    { name: "Thu", appointments: weeklyAppointments?.[4]?.count || 0 },
+    { name: "Fri", appointments: weeklyAppointments?.[5]?.count || 0 },
+    { name: "Sat", appointments: weeklyAppointments?.[6]?.count || 0 },
+  ];
 
   const pieData = [
-  { name: "Confirmed", value: dashboardData?.scheduled },
-  { name: "Cancelled", value: dashboardData?.cancelled },
-  { name: "Pending", value: dashboardData?.pending },
-];
+    { name: "Confirmed", value: dashboardData?.scheduled },
+    { name: "Cancelled", value: dashboardData?.cancelled },
+    { name: "Pending", value: dashboardData?.pending },
+  ];
+
+  const barData = patientStats?.map((group) => ({
+    name: group._id,
+    patients: group.count,
+  }));
 
   return (
     <div className="grid grid-cols-3 gap-5">
       <div className="bg-white rounded-xl shadow-md p-4">
         <h3 className="text-lg font-medium mb-2">Appointments this week</h3>
-        <ResponsiveContainer className="text-xs font-medium" width="100%" height={250}>
+        <ResponsiveContainer
+          className="text-xs font-medium"
+          width="100%"
+          height={250}
+        >
           <LineChart data={lineData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
@@ -65,7 +66,11 @@ export function AnalyticsChart() {
 
       <div className="bg-white rounded-xl shadow-md p-4">
         <h3 className="text-lg font-medium mb-2">Appointment status</h3>
-        <ResponsiveContainer className="text-xs font-medium" width="100%" height={250}>
+        <ResponsiveContainer
+          className="text-xs font-medium"
+          width="100%"
+          height={250}
+        >
           <PieChart>
             <Pie
               data={pieData}
@@ -97,13 +102,12 @@ export function AnalyticsChart() {
 
       <div className="bg-white rounded-xl shadow-md p-4">
         <h3 className="text-lg font-medium mb-2">Patients by age group</h3>
-        <ResponsiveContainer className="text-xs font-medium" width="100%" height={250}>
-          <BarChart
-            width={500}
-            height={300}
-            data={barData}
-            barSize={35}
-          >
+        <ResponsiveContainer
+          className="text-xs font-medium"
+          width="100%"
+          height={250}
+        >
+          <BarChart width={500} height={300} data={barData} barSize={35}>
             <XAxis
               dataKey="name"
               scale="point"
@@ -112,7 +116,11 @@ export function AnalyticsChart() {
             <YAxis />
             <Tooltip />
             <CartesianGrid strokeDasharray="3 3" />
-            <Bar dataKey="patients" fill="#8884d8" background={{ fill: "#eee" }} />
+            <Bar
+              dataKey="patients"
+              fill="#8884d8"
+              background={{ fill: "#eee" }}
+            />
           </BarChart>
         </ResponsiveContainer>
       </div>

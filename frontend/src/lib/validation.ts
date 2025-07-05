@@ -1,23 +1,26 @@
 import { z } from "zod";
 
-export const UserFormValidation = z.object({
-  fullName: z
-    .string()
-    .min(2, "Name must be at least 2 characters")
-    .max(50, "Name must be at most 50 characters"),
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string().min(6, "Confirm Password must be at least 6 characters"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ["confirmPassword"],
-});
+export const UserFormValidation = z
+  .object({
+    fullName: z
+      .string()
+      .min(2, "Name must be at least 2 characters")
+      .max(50, "Name must be at most 50 characters"),
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(6, "Password must be at least 6 characters"),
+    confirmPassword: z
+      .string()
+      .min(6, "Confirm Password must be at least 6 characters"),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
+  });
 
 export const LoginFormValidation = z.object({
   email: z.string().email(),
   password: z.string().min(6),
 });
-
 
 export const PatientFormValidation = z.object({
   fullName: z
@@ -64,21 +67,15 @@ export const PatientFormValidation = z.object({
   identificationType: z.string().optional(),
   identificationNumber: z.string().optional(),
   identificationDocument: z.custom<File[]>().optional(),
-  treatmentConsent: z
-    .boolean()
-    .refine((value) => value === true, {
-      message: "You must consent to treatment in order to proceed",
-    }),
-  disclosureConsent: z
-    .boolean()
-    .refine((value) => value === true, {
-      message: "You must consent to disclosure in order to proceed",
-    }),
-  privacyConsent: z
-    .boolean()
-    .refine((value) => value === true, {
-      message: "You must consent to privacy in order to proceed",
-    }),
+  treatmentConsent: z.boolean().refine((value) => value === true, {
+    message: "You must consent to treatment in order to proceed",
+  }),
+  disclosureConsent: z.boolean().refine((value) => value === true, {
+    message: "You must consent to disclosure in order to proceed",
+  }),
+  privacyConsent: z.boolean().refine((value) => value === true, {
+    message: "You must consent to privacy in order to proceed",
+  }),
 });
 
 export const CreateAppointmentSchema = z.object({
