@@ -81,7 +81,6 @@ export function AppointmentForm({
 
         if (appointment) {
           form.reset();
-          navigate(`/appointment/${appointment._id}`);
         }
       } else {
         const appointmentToUpdate = {

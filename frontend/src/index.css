@@ -155,11 +155,15 @@
 }
 
 .link {
-  @apply flex items-center gap-1 text-sm cursor-pointer;
+  @apply flex items-center gap-1 text-sm font-medium cursor-pointer;
 }
 
 .nav-link {
-  @apply flex items-center gap-1 text-sm cursor-pointer font-medium tracking-wide px-4 py-2 rounded-md transition-all duration-200;
+  @apply items-center gap-1 text-sm cursor-pointer font-medium tracking-wide px-4 py-2 rounded-md transition-all duration-200;
+}
+
+.sidebar-nav-link {
+  @apply text-primary-text hover:text-teal-500 flex items-center gap-1 text-sm font-medium tracking-wide transition-all duration-200;
 }
 
 .nav-link:hover {
@@ -195,7 +199,7 @@
 }
 
 .request-details {
-  @apply w-full h-fit flex items-center gap-5 p-5 bg-white shadow-md 
+  @apply w-full h-fit flex flex-col md:flex-row items-center justify-center gap-5 p-5 bg-white shadow-md 
 }
 
 .copyright {
@@ -317,5 +321,34 @@
 .cancel-appointment-btn {
   @apply text-rose-600 hover:bg-rose-50 active:scale-95 ease-in-out;
 }
+
+/*****************************************/
+/************ Chatbot ********/
+/****************************************/
+
+.question-template {
+  @apply text-sm text-gray-700 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 transition-colors;
+}
+
+.question-template-wrapper {
+  @apply px-4 py-2
+}
+
+.chat-container {
+  @apply  flex flex-col h-60 overflow-hidden flex-1 overflow-y-auto px-4 py-2 space-y-2
+}
+
+.message {
+  @apply p-2 rounded-lg text-sm max-w-[350px];
+}
+
+.user-message {
+  @apply bg-primary text-primary-text self-end;
+}
+
+.bot-message {
+  @apply bg-teal-500 text-white self-start;
+}
+
 
 

@@ -6,6 +6,7 @@ import authRoutes from './routes/auth.route.js'
 import patientRoutes from './routes/patient.route.js'
 import appointmentRoutes from './routes/appointment.route.js';
 import adminRoutes from './routes/admin.route.js'
+import chatBotRoutes from './routes/chatbot.route.js'
 
 import { connectDB } from './lib/db.js';
 import cookieParser from 'cookie-parser';
@@ -32,6 +33,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/patient', patientRoutes);
 app.use('/api/appointment', appointmentRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/chatbot', chatBotRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));

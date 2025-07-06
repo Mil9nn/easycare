@@ -48,7 +48,9 @@ const Navbar = () => {
               <NavLink
                 to="/medical-form"
                 className={({ isActive }) =>
-                  `nav-link ${isActive ? "text-teal-700" : "text-primary-text"}`
+                  `nav-link flex ${
+                    isActive ? "text-teal-600" : "text-primary-text"
+                  }`
                 }
               >
                 <UserPlus className="size-5" />
@@ -57,16 +59,23 @@ const Navbar = () => {
             </div>
           )}
           {user && patient && (
-            <Link to="/book-appointment" className="link nav-link">
-              <CalendarPlus />
+            <NavLink
+              to="/book-appointment"
+              className={({ isActive }) =>
+                `nav-link flex ${isActive ? "text-teal-600" : "text-primary-text"}`
+              }
+            >
+              <CalendarPlus className="size-5" />
               Book Appointment
-            </Link>
+            </NavLink>
           )}
           {user && patient && (
-            <Link to="/profile" className="hidden md:flex nav-link">
+            <NavLink to="/profile" className={({ isActive }) =>
+                  `nav-link hidden md:flex ${isActive ? "text-teal-600" : "text-primary-text"}`
+                }>
               <ClipboardList className="size-5" />
               Profile
-            </Link>
+            </NavLink>
           )}
           {user && (
             <Button
@@ -77,12 +86,14 @@ const Navbar = () => {
               Logout
             </Button>
           )}
-          {!user && <Link
-            to="/admin"
-            className="text-teal-500 font-semibold tracking-wide text-sm md:inline hidden"
-          >
-            Admin
-          </Link>}
+          {!user && (
+            <Link
+              to="/admin"
+              className="text-teal-500 font-semibold tracking-wide text-sm md:inline hidden"
+            >
+              Admin
+            </Link>
+          )}
           {!menuOpen && (
             <Menu
               onClick={() => {
@@ -107,23 +118,25 @@ const Navbar = () => {
         />
         <div className="flex flex-col gap-4">
           {user && patient && (
-            <Link to="/profile" className="link">
+            <Link to="/profile" className="sidebar-nav-link">
               <ClipboardList className="size-5" />
               Profile
             </Link>
           )}
           {user && (
-            <button onClick={handleLogout} className="link text-btn-danger">
+            <button onClick={handleLogout} className="link text-btn-danger hover:text-rose-600">
               <LogOut className="size-5" />
               Logout
             </button>
           )}
-          {!user && <Link
-            to="/admin"
-            className="text-teal-500 font-semibold tracking-wide text-sm"
-          >
-            Admin
-          </Link>}
+          {!user && (
+            <Link
+              to="/admin"
+              className="text-teal-500 font-semibold tracking-wide text-sm"
+            >
+              Admin
+            </Link>
+          )}
         </div>
       </div>
     </div>
