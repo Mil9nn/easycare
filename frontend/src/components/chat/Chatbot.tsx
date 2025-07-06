@@ -10,11 +10,11 @@ const Chatbot = () => {
 
   const { sendMessage, messages, isSending } = useChatStore();
 
-  const handleChange = (e) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setMessage(e.target.value);
   }
 
-  const handleSend = (e) => {
+  const handleSend = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     
     if (message.trim() === "") return;
@@ -47,22 +47,23 @@ const Chatbot = () => {
 
         <ChatContainer messages={messages} />
 
-        {/* <div className="question-template-wrapper">
+        {!message && <div className="question-template-wrapper">
           {[
             "I need help choosing a doctor for my condition.",
             "I have anxiety, which doctor can help me?",
             "What are the symptoms of diabetes?",
             "How do I book an appointment?",
           ].map((q, i) => (
-            <button key={i} className="question-template">
+            <button onClick={() => {setMessage(q)}} key={i} className="question-template">
               {q}
             </button>
           ))}
-        </div> */}
+        </div>}
 
         <div className="flex items-center gap-2 px-4 py-3 border-t bg-white">
           <input
             type="text"
+            value={message}
             onChange={handleChange}
             className="flex-1 px-4 py-2 rounded-full border border-gray-300 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400"
             placeholder="Type your message here..."

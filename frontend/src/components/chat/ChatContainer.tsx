@@ -1,8 +1,17 @@
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { useEffect, useRef } from "react";
 
-const ChatContainer = ({ messages }) => {
-  const lastMessageRef = useRef(null);
+type ChatMessage = {
+  text: string;
+  isUser: boolean;
+}
+
+type ChatContainerProps = {
+  messages: ChatMessage[];
+}
+
+const ChatContainer = ({ messages }: ChatContainerProps) => {
+  const lastMessageRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });

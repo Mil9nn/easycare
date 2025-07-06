@@ -327,11 +327,11 @@
 /****************************************/
 
 .question-template {
-  @apply text-sm text-gray-700 bg-gray-100 px-4 py-2 rounded-full hover:bg-gray-200 transition-colors;
+  @apply text-sm text-gray-700 bg-gray-100 px-4 py-2 rounded-full shadow-md hover:bg-gray-200 active:scale-90 ease-in-out transition-all cursor-pointer;
 }
 
 .question-template-wrapper {
-  @apply px-4 py-2
+  @apply px-4 py-2 flex flex-col gap-1 items-start;
 }
 
 .chat-container {
