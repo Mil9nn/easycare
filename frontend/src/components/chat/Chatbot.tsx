@@ -41,7 +41,7 @@ const Chatbot = () => {
             onClick={() => {
               setOpenBot(false);
             }}
-            className="absolute top-0 right-0 cursor-pointer p-1 bg-blue-500 rounded-full text-white hover:scale-110 active:scale-90 transition-transform ease-in-out"
+            className="absolute top-1 right-1 cursor-pointer p-1 bg-blue-500 rounded-full text-white hover:scale-110 active:scale-90 transition-transform ease-in-out"
           />
         </div>
 

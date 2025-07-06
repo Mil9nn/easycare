@@ -350,5 +350,9 @@
   @apply bg-teal-500 text-white self-start;
 }
 
+.chatbot-wrapper {
+  @apply fixed bottom-0 right-0;
+}
+
 
 
