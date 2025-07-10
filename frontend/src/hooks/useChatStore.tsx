@@ -19,7 +19,6 @@ export const useChatStore = create<ChatStore>((set) => ({
             set((state) => ({
                 messages: [...state.messages, { text: message, isUser: true }, { text: botMessage, isUser: false }]
             }));
-            console.log('Bot response:', botMessage);
         } catch (error) {
             console.error('Error sending message:', error);
             throw error;

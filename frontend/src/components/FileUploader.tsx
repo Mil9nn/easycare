@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useDropzone } from "react-dropzone";
 
 type FileUploaderProps = {
-  files: File[] | undefined;
+  files: File[] | string | undefined;
   onChange: (files: File[]) => void;
 };
 
@@ -20,8 +20,8 @@ const FileUploader = ({ files, onChange }: FileUploaderProps) => {
   return (
     <div {...getRootProps()} className="file-upload-wrapper cursor-pointer">
       <input {...getInputProps()} className="file-upload" />
-      {files && files.length > 0 ? (
-        <img src={convertFileToUrl(files[0])} className="w-fit h-fit overflow-hidden object-cover" alt="upload-image" />
+      {files && (Array.isArray(files) ? files.length > 0 : true) ? (
+        <img src={Array.isArray(files) ? convertFileToUrl(files[0]) : files} className="w-fit h-fit overflow-hidden object-cover" alt="upload-image" />
       ) : (
         <div className="flex flex-col justify-center items-center">
           <CloudUploadIcon className="text-green-500" />

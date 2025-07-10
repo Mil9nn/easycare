@@ -1,3 +1,18 @@
+import {
+  HeartPulse,
+  Droplet,
+  Stethoscope,
+  Brain,
+  ShieldCheck,
+  Activity,
+  Baby,
+  Headphones,
+  Smile,
+  HelpCircle,
+  Venus,
+} from "lucide-react";
+
+
 export const GenderOptions = ["male", "female", "other"];
 
 export const PatientFormDefaultValues = {
@@ -82,6 +97,88 @@ export const Doctors = [
     name: "Hardik Sharma",
   },
 ];
+
+export const Specializations = [
+  {
+    name: "Cardiology",
+    value: "cardiology",
+    icon: HeartPulse,
+    textColor: "text-red-600",
+    bgColor: "bg-red-100",
+  },
+  {
+    name: "Dermatology",
+    value: "dermatology",
+    icon: Droplet,
+    textColor: "text-pink-600",
+    bgColor: "bg-pink-100",
+  },
+  {
+    name: "General Practice",
+    value: "general_practice",
+    icon: Stethoscope,
+    textColor: "text-slate-700",
+    bgColor: "bg-slate-100",
+  },
+  {
+    name: "Gynecology",
+    value: "gynecology",
+    icon: Venus,
+    textColor: "text-rose-600",
+    bgColor: "bg-rose-100",
+  },
+  {
+    name: "Neurology",
+    value: "neurology",
+    icon: Brain,
+    textColor: "text-indigo-600",
+    bgColor: "bg-indigo-100",
+  },
+  {
+    name: "Oncology",
+    value: "oncology",
+    icon: ShieldCheck,
+    textColor: "text-orange-600",
+    bgColor: "bg-orange-100",
+  },
+  {
+    name: "Orthopedics",
+    value: "orthopedics",
+    icon: Activity,
+    textColor: "text-lime-600",
+    bgColor: "bg-lime-100",
+  },
+  {
+    name: "Pediatrics",
+    value: "pediatrics",
+    icon: Baby,
+    textColor: "text-cyan-600",
+    bgColor: "bg-cyan-100",
+  },
+  {
+    name: "Psychiatry",
+    value: "psychiatry",
+    icon: Headphones,
+    textColor: "text-purple-600",
+    bgColor: "bg-purple-100",
+  },
+  {
+    name: "Dentistry",
+    value: "dentistry",
+    icon: Smile,
+    textColor: "text-yellow-600",
+    bgColor: "bg-yellow-100",
+  },
+  {
+    name: "Other",
+    value: "other",
+    icon: HelpCircle,
+    textColor: "text-gray-500",
+    bgColor: "bg-gray-100",
+  },
+];
+
+export const availableDays = [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" ];
 
 export const StatusIcon = {
   scheduled: "/assets/icons/check.svg",

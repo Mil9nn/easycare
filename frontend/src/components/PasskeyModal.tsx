@@ -15,7 +15,7 @@ import {
   InputOTPSlot,
 } from "@/components/ui/input-otp";
 import { useNavigate } from "react-router-dom";
-import { X } from "lucide-react";
+import { Loader, X } from "lucide-react";
 import { useAdminStore } from "@/hooks/useAdminStore";
 
 const PassKeyModal = () => {
@@ -25,7 +25,7 @@ const PassKeyModal = () => {
   const [passkey, setPassKey] = useState("");
   const [error, setError] = useState("");
 
-  const { verifyAdminOtp } = useAdminStore();
+  const { verifyAdminOtp,isVerifying } = useAdminStore();
 
   const validatePassKey = async ( e: React.MouseEvent<HTMLButtonElement, MouseEvent> ) => {
     e.preventDefault();
@@ -89,7 +89,7 @@ const PassKeyModal = () => {
             onClick={(e) => validatePassKey(e)}
             className="submit-btn"
           >
-            Enter Admin Passkey
+            {isVerifying ? <div className="flex items-center gap-1"><Loader className="animate-spin size-5" /><span>verifying...</span></div> : <span>Enter Admin Passkey</span>}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

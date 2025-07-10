@@ -23,25 +23,11 @@ const BookAppointment = () => {
     );
   }
 
-  if (!patient) {
-    return (
-      <div className="bg-primary flex flex-col items-center justify-center h-screen w-screen text-center px-4">
-        <h2 className="text-lg font-medium text-muted-foreground">
-          Patient not found
-        </h2>
-        <p className="text-sm text-gray-500 max-w-md mt-2">
-          Unable to load patient data. Please check the URL or try again.
-        </p>
-      </div>
-    );
-  }
-
-
   return (
     <div className="signup-page">
       <AppointmentForm
         userId={user?._id || ""}
-        patientId={patient?._id}
+        patientId={patient?._id || ""}
         type="create"
       />
     </div>

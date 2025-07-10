@@ -16,7 +16,6 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
   appointments: [],
 
   createAppointment: async (appointmentData, navigate) => {
-    console.log("Creating appointment with data:", appointmentData);
     try {
       const response = await axiosInstance.post("/appointment", appointmentData);
       if (response.status === 201) {
@@ -31,7 +30,6 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
   },
 
   getAppointment: async (appointmentId) => {
-    console.log("Fetching appointment with ID:", appointmentId);
     try {
       const response = await axiosInstance.get(`/appointment/${appointmentId}`);
         if (response.status === 200) {

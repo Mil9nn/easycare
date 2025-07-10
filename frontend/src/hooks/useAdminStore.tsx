@@ -1,5 +1,11 @@
 import { axiosInstance } from "@/lib/axios";
-import type { DashboardData, PatientStatsArray, WeeklyAppointments } from "@/types/types";
+import type {
+  DashboardData,
+  PatientStatsArray,
+  WeeklyAppointments,
+} from "@/types/types";
+import { isAxiosError } from "axios";
+import toast from "react-hot-toast";
 import type { NavigateFunction } from "react-router-dom";
 import { create } from "zustand";
 
@@ -14,6 +20,21 @@ interface AdminStore {
   getWeeklyAppointments: () => Promise<void>;
   patientStats: PatientStatsArray | null;
   getPatientsByAgeGroup: () => Promise<void>;
+  addDoctor: (doctorData: FormData) => Promise<CreateDoctorParams | undefined>;
+  isAddingDoctor: boolean;
+  doctors: CreateDoctorParams[] | null;
+  getAllDoctors: () => Promise<CreateDoctorParams[] | undefined>;
+  isVerifying: boolean;
+  gettingDoctors: boolean;
+  getDoctorById: (doctorId: string) => Promise<CreateDoctorParams | undefined>;
+  doctor: CreateDoctorParams | null;
+  updateDoctor: (
+    doctorId: string,
+    doctorData: CreateDoctorParams
+  ) => Promise<CreateDoctorParams | undefined>;
+  deleteDoctor: (doctorId: string) => Promise<void>;
+  isLoading: boolean;
+  isUpdatingDoctor: boolean;
 }
 
 export const useAdminStore = create<AdminStore>((set) => ({
@@ -21,18 +42,26 @@ export const useAdminStore = create<AdminStore>((set) => ({
   dashboardData: null,
   weeklyAppointments: null,
   patientStats: null,
+  isAddingDoctor: false,
+  doctors: null,
+  isVerifying: false,
+  gettingDoctors: false,
+  doctor: null,
+  isLoading: false,
+  isUpdatingDoctor: false,
 
   checkAdmin: async () => {
     try {
-        const response = await axiosInstance.get("/admin/check");
-        set({ adminStatus: response.data.success });
+      const response = await axiosInstance.get("/admin/check");
+      set({ adminStatus: response.data.success });
     } catch (error) {
-        console.error("Error checking admin status:", error);
-        throw error;
+      console.error("Error checking admin status:", error);
+      throw error;
     }
   },
-  
+
   verifyAdminOtp: async (otp, navigate) => {
+    set({ isVerifying: true });
     try {
       const response = await axiosInstance.post("/admin/verify-otp", { otp });
       set({ adminStatus: response.data.success });
@@ -40,6 +69,8 @@ export const useAdminStore = create<AdminStore>((set) => ({
     } catch (error) {
       console.error("Error verifying admin OTP:", error);
       throw error;
+    } finally {
+      set({ isVerifying: false });
     }
   },
 
@@ -87,6 +118,94 @@ export const useAdminStore = create<AdminStore>((set) => ({
     } catch (error) {
       console.error("Error fetching patient data by age group:", error);
       throw error;
+    }
+  },
+
+  addDoctor: async (doctorData) => {
+    set({ isAddingDoctor: true });
+    try {
+      const response = await axiosInstance.post("/doctor/add", doctorData);
+      if (response.status === 201) {
+        toast.success("Doctor added successfully!");
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Error adding doctor:", error);
+      throw error;
+    } finally {
+      set({ isAddingDoctor: false });
+    }
+  },
+
+  getAllDoctors: async () => {
+    set({ gettingDoctors: true });
+    try {
+      const response = await axiosInstance.get("/doctor/all");
+      if (response.status === 200) {
+        set({ doctors: response.data });
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Error fetching all doctors:", error);
+      throw error;
+    } finally {
+      set({ gettingDoctors: false });
+    }
+  },
+
+  getDoctorById: async (doctorId) => {
+    set({ isLoading: true });
+    try {
+      const response = await axiosInstance.get(`/doctor/${doctorId}`);
+      if (response.status === 200) {
+        set({ doctor: response.data });
+        return response.data;
+      }
+    } catch (error) {
+      console.error("Error fetching doctor by ID:", error);
+      throw error;
+    } finally {
+      set({ isLoading: false });
+    }
+  },
+
+  updateDoctor: async (doctorId, doctorData) => {
+    set({ isUpdatingDoctor: true });
+    try {
+      const response = await axiosInstance.put(
+        `/doctor/${doctorId}`,
+        doctorData
+      );
+      if (response.status === 200) {
+        toast.success("Doctor updated successfully!");
+        return response.data;
+      }
+    } catch (error: unknown) {
+      if (isAxiosError(error)) {
+        console.error("Error updating doctor:", error);
+        toast.error(error.response?.data?.message || "Failed to update doctor");
+        throw error;
+      }
+    } finally {
+      set({ isUpdatingDoctor: false });
+    }
+  },
+
+  deleteDoctor: async (doctorId) => {
+    set({ isUpdatingDoctor: true });
+    try {
+      const response = await axiosInstance.delete(`/doctor/${doctorId}`);
+      if (response.status === 200) {
+        toast.success("Doctor deleted successfully!");
+      }
+    } catch (error) {
+      if (isAxiosError(error)) {
+        console.error("Error deleting doctor:", error);
+        toast.error(error.response?.data?.message || "Failed to delete doctor");
+        throw error;
+      }
+    } finally {
+      set({ isUpdatingDoctor: false });
     }
   },
 }));

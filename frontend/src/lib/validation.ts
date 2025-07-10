@@ -130,3 +130,32 @@ export const FormFieldType = {
 } as const;
 
 export type FormFieldType = (typeof FormFieldType)[keyof typeof FormFieldType];
+
+const timeAmPmSchema = z.string().refine(
+  (time) => /^(0[1-9]|1[0-2]):[0-5]\d (AM|PM)$/i.test(time),
+  {
+    message: "Invalid time format (hh:mm AM/PM)",
+  }
+);
+
+export const doctorSchema = z.object({
+  fullName: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must be at most 50 characters"),
+
+  specialization: z
+    .string()
+    .min(2, "Specialization must be at least 2 characters")
+    .max(50, "Specialization must be at most 50 characters"),
+
+  experience: z.coerce.number().min(0, "Experience must be a positive number").max(100),
+
+  availableDays: z
+    .array(z.string())
+    .min(1, "Select at least one day"),
+
+  availableFrom: timeAmPmSchema,
+  availableTo: timeAmPmSchema,
+  profileImage: z.custom<File[]>().optional(),
+});

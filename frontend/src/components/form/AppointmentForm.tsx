@@ -2,7 +2,6 @@ import { Form } from "@/components/ui/form";
 import CustomFormField from "../CustomFormField";
 import { SelectItem } from "@/components/ui/select";
 import SubmitButton from "@/components/SubmitButton";
-import { Doctors } from "./constants";
 import { useState } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -13,6 +12,9 @@ import { FormFieldType, getAppointmentSchema } from "@/lib/validation";
 import { useNavigate } from "react-router-dom";
 import { useAppointmentStore } from "../../hooks/useAppointmentStore";
 import type { Appointment } from "@/types/types";
+import { useAdminStore } from "@/hooks/useAdminStore";
+
+import { useLocation } from "react-router-dom";
 
 export function AppointmentForm({
   userId,
@@ -28,16 +30,22 @@ export function AppointmentForm({
   setOpen?: (open: boolean) => void;
 }) {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const preSelectedDoctor = location.state?.doctor?.name || "";
+
   const [isLoading, setIsLoading] = useState(false);
 
   const { createAppointment, updateAppointment } = useAppointmentStore();
 
   const AppointmentFormValidation = getAppointmentSchema(type);
 
+  const { doctors } = useAdminStore();
+
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
-      primaryPhysician: appointment ? appointment.primaryPhysician : "",
+      primaryPhysician: preSelectedDoctor || appointment?.primaryPhysician,
       schedule: appointment ? new Date(appointment.schedule) : new Date(),
       reason: appointment ? appointment.reason : "",
       note: appointment ? appointment.note : "",
@@ -146,17 +154,21 @@ export function AppointmentForm({
                 label="Doctor"
                 placeholder="Select a doctor"
               >
-                {Doctors.map((doctor, index) => (
-                  <SelectItem key={index} value={doctor.name}>
+                {doctors?.map((doctor, index) => (
+                  <SelectItem key={index} value={doctor.fullName}>
                     <div className="flex items-center gap-2">
                       <img
-                        src={doctor.image}
-                        alt={doctor.name}
+                        src={
+                          Array.isArray(doctor.profileImage)
+                            ? URL.createObjectURL(doctor.profileImage[0])
+                            : doctor.profileImage
+                        }
+                        alt={doctor.fullName}
                         width={26}
                         height={26}
-                        className="rounded-full"
+                        className="w-8 h-8 bg-indigo-300 rounded-full object-cover"
                       />
-                      <p>{doctor.name}</p>
+                      <p>{doctor.fullName}</p>
                     </div>
                   </SelectItem>
                 ))}
@@ -180,6 +192,7 @@ export function AppointmentForm({
               </div>
               <CustomFormField
                 fieldType={FormFieldType.DATE_PICKER}
+                inputType="datetime-local"
                 control={form.control}
                 name="schedule"
                 label="Expected appointment date"

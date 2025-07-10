@@ -18,7 +18,6 @@ const Chatbot = () => {
     e.preventDefault();
     
     if (message.trim() === "") return;
-    console.log("Sending message:", message);
     sendMessage(message);
   }
 

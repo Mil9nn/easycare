@@ -94,7 +94,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       if (response.status === 200) {
         toast.success("Logged out successfully!");
         set({ user: null });
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.error("Logout error:", error);

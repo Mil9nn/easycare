@@ -7,6 +7,8 @@ import {
   Mail,
   MapPin,
   Phone,
+  Pill,
+  Shield,
   Siren,
   User,
   UserCircle,
@@ -23,12 +25,15 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="profile-page">
-      <h2 className="heading-secondary">Your medical profile</h2>
-      <p className="text-primary-text">
-        This is the personal and medical information you provided. Keep it up to
-        date for faster and safer appointments.
-      </p>
+    <div className="profile-page space-y-6">
+      <header className="mb-6">
+        <h2 className="heading-secondary text-2xl font-semibold text-gray-900">
+          Your Medical Profile
+        </h2>
+        <p className="text-primary-text mt-2">
+          Keep your information up to date for faster, safer care.
+        </p>
+      </header>
 
       <div className="grid grid-cols-1 gap-4">
         <CustomProfileCard
@@ -55,7 +60,9 @@ const ProfilePage = () => {
             {
               name: "birthDate",
               label: "Date of Birth:",
-              value: patient?.birthDate ? formatDateTime(patient?.birthDate).dateOnly : "",
+              value: patient?.birthDate
+                ? formatDateTime(patient?.birthDate).dateOnly
+                : "",
               icon: Calendar,
               fieldType: FormFieldType.DATE_PICKER,
               onSave: handleInlineSave("birthDate"),
@@ -74,7 +81,7 @@ const ProfilePage = () => {
               value: patient?.phone,
               icon: Phone,
               fieldType: FormFieldType.INPUT,
-              inputType: 'tel',
+              inputType: "tel",
               onSave: handleInlineSave("phone"),
             },
             {
@@ -113,7 +120,7 @@ const ProfilePage = () => {
               name: "currentMedication",
               label: "Medications:",
               value: patient?.currentMedication,
-              icon: User,
+              icon: Pill,
               colorClass: "text-pink-500",
               fieldType: FormFieldType.TEXTAREA,
               onSave: handleInlineSave("currentMedication"),
@@ -122,7 +129,7 @@ const ProfilePage = () => {
               name: "familyMedicalHistory",
               label: "Family History:",
               value: patient?.familyMedicalHistory,
-              icon: User,
+              
               colorClass: "text-teal-500",
               fieldType: FormFieldType.TEXTAREA,
               onSave: handleInlineSave("familyMedicalHistory"),
@@ -131,7 +138,7 @@ const ProfilePage = () => {
               name: "insuranceProvider",
               label: "Insurance Provider:",
               value: patient?.insuranceProvider,
-              icon: User,
+              icon: Shield,
               colorClass: "text-teal-500",
               fieldType: FormFieldType.INPUT,
               onSave: handleInlineSave("insuranceProvider"),

@@ -15,11 +15,15 @@ import AdminPage from "./pages/admin/AdminPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import { useAdminStore } from "./hooks/useAdminStore";
 import { Loader2 } from "lucide-react";
+import { DoctorForm } from "./components/DoctorForm";
+import AdminLayout from "./layout/AdminLayout";
+import DoctorsList from "./components/DoctorsList";
+import ManageDoctors from "./pages/admin/ManageDoctors";
 
 function App() {
   const { checkAuth, isCheckingAuth, user } = useAuthStore();
-  const { getPatient, isLoadingPatient } = useFormStore();
-  const { checkAdmin, adminStatus } = useAdminStore();
+  const { getPatient, isLoadingPatient, patient } = useFormStore();
+  const { checkAdmin, adminStatus, getAllDoctors } = useAdminStore();
 
   useEffect(() => {
     checkAuth();
@@ -30,7 +34,8 @@ function App() {
     if (user) {
       getPatient();
     }
-  }, [user, getPatient]);
+    getAllDoctors();
+  }, [user, getPatient, getAllDoctors]);
 
   if (isCheckingAuth || isLoadingPatient) {
     return (
@@ -72,13 +77,13 @@ function App() {
               )
             }
           />
-          <Route path="/medical-form" element={<MedicalForm />} />
+          <Route path="/medical-form" element={user ? <MedicalForm /> : <Navigate to="/" replace />} />
           <Route
             path="/profile"
             element={user ? <ProfilePage /> : <Navigate to="/" replace />}
           />
           <Route path="/success/:appointmentId" element={<SuccessPage />} />
-          <Route path="/book-appointment" element={<BookAppointment />} />
+          <Route path="/book-appointment" element={patient ? <BookAppointment /> : <Navigate to="/" replace />} />
           <Route
             path="/admin"
             element={
@@ -86,12 +91,22 @@ function App() {
             }
           />
         </Route>
-        <Route
-          path="/admin/dashboard"
-          element={
-            adminStatus ? <AdminDashboard /> : <Navigate to="/admin" replace />
-          }
-        />
+        <Route element={<AdminLayout />}>
+          <Route
+            path="/admin/dashboard"
+            element={
+              adminStatus ? (
+                <AdminDashboard />
+              ) : (
+                <Navigate to="/admin" replace />
+              )
+            }
+          />
+          <Route path="/admin/add-doctor" element={<DoctorForm mode="add" />} />
+          <Route path="/admin/edit-doctor/:doctorId" element={<DoctorForm mode="edit" />} />
+          <Route path="/admin/list/doctor" element={<DoctorsList />} />
+          <Route path="/admin/list/doctor/:doctorId" element={<ManageDoctors />} />
+        </Route>
       </Routes>
 
       <Toaster

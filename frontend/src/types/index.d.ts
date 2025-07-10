@@ -55,3 +55,16 @@ declare type UpdateAppointmentParams = {
   appointment: Appointment;
   type: string;
 };
+
+// Add Doctor
+declare interface CreateDoctorParams  {
+  _id?: string;
+  fullName: string;
+  specialization: string;
+  experience: number;
+  availableDays: string[];
+  availableFrom: string;
+  availableTo: string;
+  profileImage?: File[] | undefined;
+  isActive?: boolean;
+}

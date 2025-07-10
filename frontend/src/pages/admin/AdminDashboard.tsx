@@ -2,19 +2,14 @@ import { AnalyticsChart } from "@/components/AnalyticsChart";
 import StatCard from "@/components/StatCard";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
-import { Button } from "@/components/ui/button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { useAppointmentStore } from "@/hooks/useAppointmentStore";
-import { LogOutIcon } from "lucide-react";
 import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
-  const navigate = useNavigate();
 
   const {
-    logoutAdmin,
     getAdminDashboardData,
     getWeeklyAppointments,
     dashboardData,
@@ -23,10 +18,6 @@ const AdminDashboard = () => {
   } = useAdminStore();
 
   const { getAllAppointments, appointments } = useAppointmentStore();
-
-  const handleLogout = async () => {
-    await logoutAdmin(navigate);
-  };
 
   useEffect(() => {
     getAllAppointments();
@@ -42,17 +33,6 @@ const AdminDashboard = () => {
 
   return (
     <div>
-      <div className="flex items-center justify-between px-4 py-3 bg-white shadow-sm">
-        <p className="text-lg font-semibold text-gray-800">Admin Dashboard</p>
-        <Button
-          onClick={handleLogout}
-          className="flex items-center gap-2 text-rose-500 text-sm font-bold hover:shadow-lg cursor-pointer"
-          aria-label="Logout"
-        >
-          <LogOutIcon className="w-4 h-4" />
-          Logout
-        </Button>
-      </div>
       <p className="text-sm text-gray-600 mt-1 px-5">
         Monitor and manage all patient appointments and system activity. Use the
         analytics below to stay on top of pending tasks and overall system

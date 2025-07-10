@@ -1,22 +1,23 @@
-import { Doctors } from "@/components/form/constants";
+import { useAdminStore } from "@/hooks/useAdminStore";
 import { useAppointmentStore } from "@/hooks/useAppointmentStore";
 import { formatDateTime } from "@/lib/utils";
 import { useEffect } from "react";
 
-import { useParams } from 'react-router-dom'
+import { useParams } from "react-router-dom";
 
 const SuccessPage = () => {
-    const { appointmentId } = useParams<{ appointmentId: string }>();
+  const { appointmentId } = useParams<{ appointmentId: string }>();
   const { getAppointment, appointment } = useAppointmentStore();
+  const { doctors } = useAdminStore();
 
   useEffect(() => {
-    if(appointmentId) {
-        getAppointment(appointmentId);
+    if (appointmentId) {
+      getAppointment(appointmentId);
     }
   }, [appointmentId, getAppointment]);
 
-  const doctor = Doctors.find(
-    (doc) => doc.name === appointment?.primaryPhysician
+  const doctor = doctors?.find(
+    (doc) => doc.fullName === appointment?.primaryPhysician
   );
 
   return (
@@ -40,12 +41,18 @@ const SuccessPage = () => {
           <p>Requested appointment details: </p>
           <div className="flex items-center gap-1">
             <img
-              src={doctor?.image || "/assets/icons/doctor.svg"}
-              alt={doctor?.name || "Doctor"}
+              src={
+                Array.isArray(doctor?.profileImage)
+                  ? URL.createObjectURL(doctor.profileImage[0])
+                  : doctor?.profileImage
+              }
+              alt={doctor?.fullName || "Doctor"}
               width={25}
               height={25}
             />
-            <p className="text-sm font-semibold whitespace-nowrap">Dr. {doctor?.name}</p>
+            <p className="text-sm font-semibold whitespace-nowrap">
+              {doctor?.fullName}
+            </p>
           </div>
           <div className="flex items-center gap-1">
             <img
@@ -56,7 +63,9 @@ const SuccessPage = () => {
             />
             <p className="text-sm font-semibold">
               {" "}
-              {appointment?.schedule ? formatDateTime(appointment?.schedule).dateTime : ""}
+              {appointment?.schedule
+                ? formatDateTime(appointment?.schedule).dateTime
+                : ""}
             </p>
           </div>
         </section>

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import React from "react";
+import React, { useState } from "react";
 import {
   FormControl,
   FormField,
@@ -8,15 +8,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import type { Control, ControllerRenderProps, FieldValues } from 'react-hook-form'
+import type {
+  Control,
+  ControllerRenderProps,
+  FieldValues,
+} from "react-hook-form";
 import { Checkbox } from "./ui/checkbox";
-import { Select, SelectContent, SelectTrigger, SelectValue } from './ui/select';
+import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 
 import { FormFieldType, PatientFormValidation } from "@/lib/validation";
 
 import type { Path } from "react-hook-form";
 import { FileText, type LucideIcon } from "lucide-react";
 import { Textarea } from "./ui/textarea";
+
+import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 
 type PatientFormValues = z.infer<typeof PatientFormValidation>;
 
@@ -30,7 +36,9 @@ interface CustomProps<T extends FieldValues = PatientFormValues> {
   dateFormat?: string;
   showTimeSelect?: boolean;
   children?: React.ReactNode;
-  renderSkeleton?: (field: ControllerRenderProps<T, Path<T>>) => React.ReactNode;
+  renderSkeleton?: (
+    field: ControllerRenderProps<T, Path<T>>
+  ) => React.ReactNode;
   fieldType?: FormFieldType;
   inputType?: React.HTMLInputTypeAttribute;
 }
@@ -42,7 +50,10 @@ const RenderInput = <T extends FieldValues>({
   field: ControllerRenderProps<T, Path<T>>;
   props: CustomProps<T>;
 }) => {
-  const { fieldType, inputType, icon: Icon=FileText, placeholder } = props;
+  const { fieldType, inputType, icon: Icon = FileText, placeholder } = props;
+
+  const [showPassword, setShowPassword] = useState(false);
+
   switch (fieldType) {
     case FormFieldType.INPUT:
       return (
@@ -50,12 +61,27 @@ const RenderInput = <T extends FieldValues>({
           <Icon className="input-field-icon" />
           <FormControl>
             <Input
-              type={inputType || "text"}
+              type={inputType === "password" ? (showPassword ? "text" : "password") : inputType || "text"}
               placeholder={placeholder}
               {...field}
               className="shadcn-input"
             />
           </FormControl>
+          {!showPassword ? (inputType === "password" && <EyeOutlined
+            onClick={() => {
+              setShowPassword(true);
+            }}
+            style={{ fontSize: 18, color: "#6b7280" }}
+            className="absolute right-2 top-3 cursor-pointer"
+          />) : (
+            inputType === "password" && <EyeInvisibleOutlined
+            onClick={() => {
+              setShowPassword(false);
+            }}
+            style={{ fontSize: 18, color: "#6b7280" }}
+            className="absolute right-2 top-3 cursor-pointer"
+          />
+          )}
         </div>
       );
     case FormFieldType.TEXTAREA:

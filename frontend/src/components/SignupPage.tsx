@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import CustomFormField from "./CustomFormField";
 
-import { Lock, LockOpen, Mail, User, X } from "lucide-react";
+import { Lock, LockOpen, Mail, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import SubmitButton from "./SubmitButton";
@@ -39,17 +39,11 @@ export function SignupPage() {
       >
         <CustomFormField control={form.control} fieldType={FormFieldType.INPUT} name="fullName" label="Full name" placeholder="John Doe" icon={User} />
         <CustomFormField control={form.control} fieldType={FormFieldType.INPUT} name="email" label="Email" placeholder="johndoe@example.com" icon={Mail} />
-        <CustomFormField control={form.control} fieldType={FormFieldType.INPUT} name="password" label="Password" placeholder="Create a strong password" icon={LockOpen} />
-        <CustomFormField control={form.control} fieldType={FormFieldType.INPUT} name="confirmPassword" label="Confirm Password" placeholder="Re-enter your password" icon={Lock} />
-        <X
-          onClick={() => {
-            navigate("/");
-          }}
-          className="close-dialog"
-        />
+        <CustomFormField control={form.control} fieldType={FormFieldType.INPUT} inputType="password" name="password" label="Password" placeholder="Create a strong password" icon={LockOpen} />
+        <CustomFormField control={form.control} fieldType={FormFieldType.INPUT} inputType="password" name="confirmPassword" label="Confirm Password" placeholder="Re-enter your password" icon={Lock} />
         <SubmitButton label={"Signup"} isLoading={isAuthenticating} className="submit-btn" />
-        <div className="flex items-center justify-center">
-          <p className="text-sm text-gray-500 mt-2">
+        <div className="flex flex-col items-start">
+          <p className="text-sm text-gray-500">
             Already have an account?{" "}
             <Button
               variant="link"

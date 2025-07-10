@@ -27,7 +27,7 @@
   --color-btn-danger-hover: #C0392B;
 
   --color-border-light: #D5D8DC;
-  --color-border-focus: #52C41A;
+  --color-border-focus: #6366F1;
   --color-border-error: #E74C3C;
 
   --color-success: #52C41A;
@@ -63,7 +63,6 @@
   font-weight: 600;
   font-style: normal;
   color: #2E4374;
-  letter-spacing: 0.5px;
   font-size: 1.5rem;
 }
 
@@ -73,7 +72,6 @@
   font-weight: 600;
   font-style: normal;
   color: #555555;
-  letter-spacing: 0.5px;
   font-size: 1.25rem;
 }
 
@@ -90,7 +88,7 @@
 }
 
 .navbar {
-  @apply w-full flex items-center justify-between lg:px-30 p-4 bg-primary border-b border-black/30 shadow-md fixed top-0 left-0 z-50;
+  @apply w-screen flex items-center justify-between lg:px-30 p-4 bg-primary border-b border-black/30 shadow-md fixed top-0 left-0 z-50;
 }
 
 .sidebar-nav {
@@ -99,11 +97,11 @@
 
 .signup-page {
   @apply fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-fit space-y-5
-  max-w-md mx-auto mt-10 bg-white/80 backdrop-blur-md xs:rounded-2xl shadow-lg p-8 border border-gray-200
+  max-w-sm mx-auto mt-10 bg-white/80 backdrop-blur-md xs:rounded-2xl shadow-lg p-8 border border-gray-200
 }
 
 .medical-form {
-  @apply w-full h-fit mx-auto p-10 space-y-5 bg-white/80 backdrop-blur-md shadow-lg border;
+  @apply w-full max-w-3xl h-fit mx-auto p-10 space-y-5 bg-white/80 backdrop-blur-md shadow-lg;
 }
 
 
@@ -159,15 +157,11 @@
 }
 
 .nav-link {
-  @apply items-center gap-1 text-sm cursor-pointer font-medium tracking-wide px-4 py-2 rounded-md transition-all duration-200;
+  @apply items-center gap-1 text-sm cursor-pointer font-medium tracking-wide px-4 py-2 transition-all duration-200;
 }
 
 .sidebar-nav-link {
   @apply text-primary-text hover:text-teal-500 flex items-center gap-1 text-sm font-medium tracking-wide transition-all duration-200;
-}
-
-.nav-link:hover {
-  @apply text-teal-500;
 }
 
 .medical-info {
@@ -214,7 +208,7 @@
 }
 
 .shadcn-input {
-  @apply w-full h-10 px-3 pl-7 border border-zinc-400/50 text-primary-text rounded-md ring-border-focus focus:ring-2 transition-colors duration-200;
+  @apply w-full h-10 px-3 pl-7 border border-zinc-400/50 text-primary-text rounded-md ring-border-focus focus:ring-2 transition-all duration-500;
 }
 
 .shadcn-textarea {
@@ -284,6 +278,11 @@
   @apply w-full h-fit mx-auto p-5 space-y-4 border-b border-black/40;
 }
 
+.profile-card {
+  @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm;
+  @apply hover:shadow-md transition-shadow duration-200; 
+}
+
 
 /*************************************/
 /************ Alert Dialog otp ********/
@@ -305,7 +304,7 @@
 /****************************************/
 
 .table-header {
-  @apply shadow-lg text-gray-700 font-semibold text-sm uppercase tracking-wide;
+  @apply shadow-lg text-gray-700 bg-teal-300 font-semibold text-sm uppercase tracking-wide;
 }
 
 .table-row {
@@ -315,11 +314,11 @@
 /*****************************************/
 
 .schedule-appointment-btn {
-  @apply text-emerald-600 hover:bg-emerald-50 active:scale-95 ease-in-out;
+  @apply text-emerald-600 hover:bg-emerald-50 shadow-sm active:scale-90 ease-in-out;
 }
 
 .cancel-appointment-btn {
-  @apply text-rose-600 hover:bg-rose-50 active:scale-95 ease-in-out;
+  @apply text-rose-600 hover:bg-rose-50 shadow-sm active:scale-90 ease-in-out;
 }
 
 /*****************************************/
@@ -354,5 +353,15 @@
   @apply fixed bottom-0 right-0;
 }
 
+/*****************************************/
+
+.add-doctor-form {
+  @apply w-full h-fit mx-auto p-5 space-y-4 bg-white/80 backdrop-blur-md shadow-lg border border-gray-200 rounded-lg;
+}
+
+
+.time-picker {
+  @apply w-35;
+}
 
 

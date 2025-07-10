@@ -1,4 +1,4 @@
-import { Pencil, User, type LucideIcon } from "lucide-react";
+import { ClipboardList, Pencil, User, type LucideIcon } from "lucide-react";
 import { Button } from "./ui/button";
 import CustomFormField from "./CustomFormField";
 import { useForm } from "react-hook-form";
@@ -102,13 +102,13 @@ const CustomProfileCard = ({
   };
 
   return (
-    <section className="personal">
+    <section className="profile-card">
       <h3 className="heading-tertiary flex items-center gap-2 text-blue-600">
         <TitleIcon className="text-xl" /> {title}
       </h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
         {fields.map((field, index) => {
-          const FieldIcon = field.icon ?? User;
+          const FieldIcon = field.icon ?? ClipboardList;
           const color = field.colorClass ?? "text-pink-500";
           return (
             <div

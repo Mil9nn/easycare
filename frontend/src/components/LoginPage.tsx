@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import CustomFormField from "./CustomFormField";
 
-import { KeyRound, User, X } from "lucide-react";
+import { KeyRound, Mail } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import SubmitButton from "./SubmitButton";
@@ -20,8 +20,8 @@ export function LoginPage() {
   const form = useForm<z.infer<typeof LoginFormValidation>>({
     resolver: zodResolver(LoginFormValidation),
     defaultValues: {
-      email: '',
-      password: ''
+      email: "",
+      password: "",
     },
   });
 
@@ -35,24 +35,35 @@ export function LoginPage() {
         onSubmit={form.handleSubmit(onSubmit)}
         className={`relative signup-page`}
       >
+        <div>
+          <h1 className="text-2xl font-bold mb-1">Login</h1>
+        <p className="text-sm text-gray-500">Please login to book appointment</p>
+        </div>
         <CustomFormField
           fieldType={FormFieldType.INPUT}
           name="email"
           label="Email"
           placeholder="johndoe@example.com"
           control={form.control}
-          icon={User}
+          icon={Mail}
         />
-        <CustomFormField control={form.control} fieldType={FormFieldType.INPUT} name="password" label="Password" placeholder="Enter your password" icon={KeyRound} />
-        <X
-          onClick={() => {
-            navigate("/");
-          }}
-          className="close-dialog"
+        <CustomFormField
+          control={form.control}
+          fieldType={FormFieldType.INPUT}
+          inputType="password"
+          name="password"
+          label="Password"
+          placeholder="Enter your password"
+          icon={KeyRound}
         />
-        <SubmitButton label={"Login"} isLoading={isAuthenticating} className="submit-btn" />
-        {/* Forgot Password */}
-        <div className="flex flex-col items-center">
+        
+        <SubmitButton
+          label={"Login"}
+          isLoading={isAuthenticating}
+          className="submit-btn"
+        />
+        
+        <div className="flex flex-col items-start">
           <p className="text-sm text-gray-500">
             Don&apos;t have an account?{" "}
             <Button
@@ -65,15 +76,6 @@ export function LoginPage() {
               Signup
             </Button>
           </p>
-          <Button
-            variant="link"
-            onClick={() => {
-              navigate("/login");
-            }}
-            className="auth-link"
-          >
-            Forgot Password?
-          </Button>
         </div>
       </form>
     </Form>
