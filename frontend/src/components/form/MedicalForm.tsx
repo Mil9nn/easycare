@@ -12,7 +12,6 @@ import SubmitButton from "../SubmitButton";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
-  Doctors,
   GenderOptions,
   IdentificationTypes,
   PatientFormDefaultValues,
@@ -21,18 +20,23 @@ import FileUploader from "../FileUploader";
 import { Calendar, Mail, User } from "lucide-react";
 import { useFormStore } from "@/hooks/useFormStore";
 import { useNavigate } from "react-router-dom";
+import { useAuthStore } from "@/hooks/useAuthStore";
 
 type PatientFormValues = z.infer<typeof PatientFormValidation>;
 
 export function MedicalForm() {
   const navigate = useNavigate();
 
-  const { createPatient, isLoadingPatient  } = useFormStore();
+  const createPatient = useFormStore((state) => state.createPatient);
+  const isLoadingPatient = useFormStore((state) => state.isLoadingPatient);
+  const user = useAuthStore((state) => state.user);
 
   const form = useForm<PatientFormValues>({
     resolver: zodResolver(PatientFormValidation),
     defaultValues: {
       ...PatientFormDefaultValues,
+      fullName: user?.fullName || "",
+      email: user?.email || "",
     },
   });
 
@@ -174,7 +178,7 @@ export function MedicalForm() {
         {/* Medical History Form Section */}
         <section className="space-y-5">
           <h2 className="heading-secondary">Medical Information</h2>
-          <CustomFormField
+          {/* <CustomFormField
             fieldType={FormFieldType.SELECT}
             control={form.control}
             name="primaryPhysician"
@@ -195,7 +199,7 @@ export function MedicalForm() {
                 </div>
               </SelectItem>
             ))}
-          </CustomFormField>
+          </CustomFormField> */}
           <div className="grid grid-cols-1 sm:grid-cols-2 items-center justify-between gap-4">
             <CustomFormField
               fieldType={FormFieldType.INPUT}

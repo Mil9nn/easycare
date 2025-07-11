@@ -7,8 +7,11 @@ import { useParams } from "react-router-dom";
 
 const SuccessPage = () => {
   const { appointmentId } = useParams<{ appointmentId: string }>();
-  const { getAppointment, appointment } = useAppointmentStore();
-  const { doctors } = useAdminStore();
+
+  const getAppointment = useAppointmentStore((state) => state.getAppointment);
+  const appointment = useAppointmentStore((state) => state.appointment);
+  
+  const doctors = useAdminStore((state) => state.doctors);
 
   useEffect(() => {
     if (appointmentId) {

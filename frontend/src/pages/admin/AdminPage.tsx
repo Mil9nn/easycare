@@ -1,6 +1,7 @@
 import PassKeyModal from "@/components/PasskeyModal"
 
 const AdminPage = () => {
+
   return (
     <div>
      <PassKeyModal />

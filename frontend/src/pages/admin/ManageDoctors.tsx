@@ -44,7 +44,7 @@ const ManageDoctors = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 bg-white rounded-lg shadow-sm">
+    <div className="p-4 sm:p-6 bg-white shadow-sm">
       {doctor && (
         <div className="flex flex-col sm:flex-row sm:items-start gap-4">
           <div className="bg-indigo-500 rounded w-full max-w-70">
@@ -66,7 +66,7 @@ const ManageDoctors = () => {
               <p className="text-md capitalize text-gray-600 pb-1">
                 MBBS - {doctor.specialization}
               </p>
-              <p className="text-xs text-gray-600 bg-primary border border-gray-300 px-2 rounded-full w-fit">
+              <p className="text-xs text-gray-600 bg-primary border border-gray-300 p-1 rounded-full w-fit">
                 {doctor.experience} years
               </p>
             </div>
@@ -81,9 +81,11 @@ const ManageDoctors = () => {
                 </span>
               ))}
             </p>
-            <p className="text-sm text-gray-600">
-              <span className="font-medium text-gray-700">Time:</span>{" "}
-              {doctor.availableFrom} – {doctor.availableTo}
+            <p className="flex items-center gap-2">
+              <span className="font-medium text-gray-700">Time:</span>
+              <span className="text-xs text-white font-medium bg-indigo-300 rounded px-2">
+                {doctor.availableFrom} – {doctor.availableTo}
+                </span>{" "}
             </p>
             <p className="max-w-[700px]  text-sm">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed

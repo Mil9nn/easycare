@@ -2,7 +2,7 @@ import { useAdminStore } from "@/hooks/useAdminStore";
 import { useNavigate } from "react-router-dom";
 
 const DoctorsList = () => {
-  const { doctors } = useAdminStore();
+  const doctors = useAdminStore((state) => state.doctors);
 
   const navigate = useNavigate();
 

@@ -39,7 +39,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
       }
     } catch (error) {
       console.error("Authentication check error:", error);
-      throw error;
+      set({ user: null });
     } finally {
       set({ isCheckingAuth: false });
     }

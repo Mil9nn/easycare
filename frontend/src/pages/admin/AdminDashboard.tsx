@@ -9,15 +9,14 @@ import { useEffect } from "react";
 
 const AdminDashboard = () => {
 
-  const {
-    getAdminDashboardData,
-    getWeeklyAppointments,
-    dashboardData,
-    patientStats,
-    getPatientsByAgeGroup,
-  } = useAdminStore();
+  const getAdminDashboardData = useAdminStore((state) => state.getAdminDashboardData);
+  const getWeeklyAppointments = useAdminStore((state) => state.getWeeklyAppointments);
+  const dashboardData = useAdminStore((state) => state.dashboardData);
+  const patientStats = useAdminStore((state) => state.patientStats);
+  const getPatientsByAgeGroup = useAdminStore((state) => state.getPatientsByAgeGroup);
 
-  const { getAllAppointments, appointments } = useAppointmentStore();
+  const getAllAppointments = useAppointmentStore((state) => state.getAllAppointments);
+  const appointments = useAppointmentStore((state) => state.appointments);
 
   useEffect(() => {
     getAllAppointments();

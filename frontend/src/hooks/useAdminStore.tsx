@@ -35,6 +35,7 @@ interface AdminStore {
   deleteDoctor: (doctorId: string) => Promise<void>;
   isLoading: boolean;
   isUpdatingDoctor: boolean;
+  isCheckingAdmin: boolean;
 }
 
 export const useAdminStore = create<AdminStore>((set) => ({
@@ -49,14 +50,18 @@ export const useAdminStore = create<AdminStore>((set) => ({
   doctor: null,
   isLoading: false,
   isUpdatingDoctor: false,
+  isCheckingAdmin: false,
 
   checkAdmin: async () => {
+    set({ isCheckingAdmin: true });
     try {
       const response = await axiosInstance.get("/admin/check");
       set({ adminStatus: response.data.success });
     } catch (error) {
       console.error("Error checking admin status:", error);
       throw error;
+    } finally {
+      set({ isCheckingAdmin: false });
     }
   },
 

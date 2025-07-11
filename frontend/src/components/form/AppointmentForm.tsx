@@ -15,6 +15,7 @@ import type { Appointment } from "@/types/types";
 import { useAdminStore } from "@/hooks/useAdminStore";
 
 import { useLocation } from "react-router-dom";
+import { Calendar } from "lucide-react";
 
 export function AppointmentForm({
   userId,
@@ -198,6 +199,7 @@ export function AppointmentForm({
                 label="Expected appointment date"
                 showTimeSelect
                 dateFormat="MM/dd/yyyy - hh:mm aa"
+                icon={Calendar}
               />
             </section>
           </>

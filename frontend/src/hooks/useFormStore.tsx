@@ -64,7 +64,7 @@ export const useFormStore = create<FormStore>((set) => ({
     } catch (error: unknown) {
       if (error instanceof AxiosError) {
         console.error("Error fetching patient data:", error);
-        throw error;
+        set({ patient: null });
       }
     } finally {
       set({ isLoadingPatient: false });

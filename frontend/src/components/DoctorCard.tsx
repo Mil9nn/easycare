@@ -20,8 +20,8 @@ const DoctorCard = ({
 }: DoctorCardProps) => {
   const navigate = useNavigate();
 
-  const { user } = useAuthStore();
-  const { patient } = useFormStore();
+  const user = useAuthStore((state) => state.user);
+  const patient = useFormStore((state) => state.patient);
 
   const handleClick = () => {
     if (!user) {

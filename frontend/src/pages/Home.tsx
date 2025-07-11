@@ -7,7 +7,8 @@ import { Loader } from "lucide-react";
 import { useState } from "react";
 
 const Home = () => {
-  const { doctors, gettingDoctors } = useAdminStore();
+  const doctors = useAdminStore((state) => state.doctors);
+  const gettingDoctors = useAdminStore((state) => state.gettingDoctors);
 
   const [selectedSpecialization, setSelectedSpecialization] = useState('');
 
@@ -22,16 +23,13 @@ const Home = () => {
       </div>
       <section className="max-w-6xl mx-auto mb-10">
         <h1 className="text-2xl text-center font-bold mb-1 tracking-wide">Find by Speciality</h1>
-        <p className="text-gray-600 max-w-lg mx-auto italic text-center mb-5">
+        <p className="text-gray-600 text-sm max-w-lg mx-auto italic text-center mb-5">
           Simply browse through our extensive list of trusted doctors, schedule
           your appointment hassle-free.
         </p>
         <div>
           <div className="flex items-center justify-between max-w-6xl mx-auto">
-            {/* <button className="bg-[#009689] text-white px-4 py-2 rounded-md hover:bg-[#007f74] transition-colors">
-                All Specialities
-              </button> */}
-            <ScrollArea className="w-full max-w-xl mx-auto rounded-md whitespace-nowrap">
+            <ScrollArea className="w-full max-w-2xl mx-auto rounded-md whitespace-nowrap">
               <div className="flex w-max space-x-4 p-4">
                 <SpecializationButton onClick={() => setSelectedSpecialization("dermatology")}
                   iconSrc="/assets/specializations/Dermatologist.svg"
@@ -60,14 +58,6 @@ const Home = () => {
               </div>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
-            {/* <div className="flex items-center gap-3">
-              <button className="bg-white text-gray-900 px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-100 transition-colors">
-                Search
-              </button>
-              <button className="bg-[#009689] text-white px-4 py-2 rounded-md hover:bg-[#007f74] transition-colors">
-                Filter
-              </button>
-            </div> */}
           </div>
         </div>
       </section>
@@ -82,6 +72,7 @@ const Home = () => {
         </div> : (<div className="grid lg:grid-cols-5 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-5 p-1 max-w-6xl mx-auto">
           {filteredDoctors?.map((doctor) => (
             <DoctorCard
+              key={doctor._id}
               name={doctor.fullName}
               specialization={doctor.specialization}
               imageSrc={doctor.profileImage}

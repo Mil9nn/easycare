@@ -16,8 +16,11 @@ import { useState } from "react";
 const Navbar = () => {
   const navigate = useNavigate();
 
-  const { user, logout } = useAuthStore();
-  const { patient, setPatient } = useFormStore();
+  const user = useAuthStore((state) => state.user);
+  const logout = useAuthStore((state) => state.logout);
+
+  const patient = useFormStore((state) => state.patient);
+  const setPatient = useFormStore((state) => state.setPatient);
 
   const handleLogout = () => {
     logout(navigate);

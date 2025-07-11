@@ -20,7 +20,8 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 
 export function DoctorForm({ mode }: { mode: "add" | "edit" }) {
-  const { addDoctor, isAddingDoctor } = useAdminStore();
+  const addDoctor = useAdminStore((state) => state.addDoctor);
+  const isAddingDoctor = useAdminStore((state) => state.isAddingDoctor);
 
   const { doctorId } = useParams();
 

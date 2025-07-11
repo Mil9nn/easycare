@@ -25,7 +25,8 @@ const PassKeyModal = () => {
   const [passkey, setPassKey] = useState("");
   const [error, setError] = useState("");
 
-  const { verifyAdminOtp,isVerifying } = useAdminStore();
+  const verifyAdminOtp = useAdminStore((state) => state.verifyAdminOtp);
+  const isVerifying = useAdminStore((state) => state.isVerifying);
 
   const validatePassKey = async ( e: React.MouseEvent<HTMLButtonElement, MouseEvent> ) => {
     e.preventDefault();

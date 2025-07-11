@@ -14,16 +14,23 @@ import { useFormStore } from "./hooks/useFormStore";
 import AdminPage from "./pages/admin/AdminPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import { useAdminStore } from "./hooks/useAdminStore";
-import { Loader2 } from "lucide-react";
 import { DoctorForm } from "./components/DoctorForm";
 import AdminLayout from "./layout/AdminLayout";
 import DoctorsList from "./components/DoctorsList";
 import ManageDoctors from "./pages/admin/ManageDoctors";
+import { PatientRoute, ProtectRoute } from "./components/ProtectedRoute";
+import { Loader2 } from "lucide-react";
 
 function App() {
-  const { checkAuth, isCheckingAuth, user } = useAuthStore();
-  const { getPatient, isLoadingPatient, patient } = useFormStore();
-  const { checkAdmin, adminStatus, getAllDoctors } = useAdminStore();
+  const checkAuth = useAuthStore((state) => state.checkAuth);
+  const user = useAuthStore((state) => state.user);
+
+  const getPatient = useFormStore((state) => state.getPatient);
+
+  const adminStatus = useAdminStore((state) => state.adminStatus);
+  const getAllDoctors = useAdminStore((state) => state.getAllDoctors);
+  const checkAdmin = useAdminStore((state) => state.checkAdmin);
+  const isCheckingAdmin = useAdminStore((state) => state.isCheckingAdmin);
 
   useEffect(() => {
     checkAuth();
@@ -37,13 +44,21 @@ function App() {
     getAllDoctors();
   }, [user, getPatient, getAllDoctors]);
 
-  if (isCheckingAuth || isLoadingPatient) {
+  if (isCheckingAdmin) {
     return (
-      <div className="h-screen w-screen flex flex-col items-center justify-center">
+      <div className="h-screen w-screen flex flex-col justify-center items-center">
         <Loader2 className="animate-spin size-8 text-teal-500" />
         <p className="text-sm text-gray-500 max-w-xs mt-2">Please hold on...</p>
       </div>
-    );
+    )
+  }
+
+  if (adminStatus === false) {
+    return (
+      <div className="h-screen w-screen flex items-center justify-center">
+        <Loader2 className="animate-spin size-8 text-teal-500" />
+      </div>
+    )
   }
 
   return (
@@ -77,13 +92,34 @@ function App() {
               )
             }
           />
-          <Route path="/medical-form" element={user ? <MedicalForm /> : <Navigate to="/" replace />} />
+
+          <Route
+            path="/medical-form"
+            element={
+              <ProtectRoute>
+                <MedicalForm />
+              </ProtectRoute>
+            }
+          />
+
           <Route
             path="/profile"
-            element={user ? <ProfilePage /> : <Navigate to="/" replace />}
+            element={
+              <ProtectRoute>
+                <ProfilePage />
+              </ProtectRoute>
+            }
           />
           <Route path="/success/:appointmentId" element={<SuccessPage />} />
-          <Route path="/book-appointment" element={patient ? <BookAppointment /> : <Navigate to="/" replace />} />
+
+          <Route
+            path="/book-appointment"
+            element={
+              <PatientRoute>
+                <BookAppointment />
+              </PatientRoute>
+            }
+          />
           <Route
             path="/admin"
             element={
@@ -102,10 +138,38 @@ function App() {
               )
             }
           />
-          <Route path="/admin/add-doctor" element={<DoctorForm mode="add" />} />
-          <Route path="/admin/edit-doctor/:doctorId" element={<DoctorForm mode="edit" />} />
-          <Route path="/admin/list/doctor" element={<DoctorsList />} />
-          <Route path="/admin/list/doctor/:doctorId" element={<ManageDoctors />} />
+          <Route
+            path="/admin/add-doctor"
+            element={
+              adminStatus ? (
+                <DoctorForm mode="add" />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/edit-doctor/:doctorId"
+            element={
+              adminStatus ? (
+                <DoctorForm mode="edit" />
+              ) : (
+                <Navigate to="/" replace />
+              )
+            }
+          />
+          <Route
+            path="/admin/list/doctor"
+            element={
+              adminStatus ? <DoctorsList /> : <Navigate to="/" replace />
+            }
+          />
+          <Route
+            path="/admin/list/doctor/:doctorId"
+            element={
+              adminStatus ? <ManageDoctors /> : <Navigate to="/" replace />
+            }
+          />
         </Route>
       </Routes>
 

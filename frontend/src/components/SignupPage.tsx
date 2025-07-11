@@ -15,7 +15,8 @@ import { FormFieldType, UserFormValidation } from "@/lib/validation";
 export function SignupPage() {
   const navigate = useNavigate();
 
-  const { signup, isAuthenticating } = useAuthStore();
+  const signup = useAuthStore((state) => state.signup);
+  const isAuthenticating = useAuthStore((state) => state.isAuthenticating);
 
   const form = useForm<z.infer<typeof UserFormValidation>>({
     resolver: zodResolver(UserFormValidation),

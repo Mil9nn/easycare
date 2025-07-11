@@ -20,7 +20,9 @@ import {
 const COLORS = ["#00C49F", "#F44336", "#FFC107"];
 
 export function AnalyticsChart() {
-  const { dashboardData, weeklyAppointments, patientStats } = useAdminStore();
+  const dashboardData = useAdminStore((state) => state.dashboardData);
+  const weeklyAppointments = useAdminStore((state) => state.weeklyAppointments);
+  const patientStats = useAdminStore((state) => state.patientStats);
 
   const lineData = [
     { name: "Mon", appointments: weeklyAppointments?.[1]?.count || 0 },

@@ -4,9 +4,10 @@ import { useFormStore } from "@/hooks/useFormStore";
 import { Loader } from "lucide-react";
 
 const BookAppointment = () => {
-  const { user } = useAuthStore();
-  const { patient, isLoadingPatient } = useFormStore();
 
+  const user = useAuthStore((state) => state.user);
+  const patient = useFormStore((state) => state.patient);
+  const isLoadingPatient = useFormStore((state) => state.isLoadingPatient);
 
   if (isLoadingPatient) {
     return (

@@ -15,7 +15,8 @@ import { FormFieldType, LoginFormValidation } from "@/lib/validation";
 export function LoginPage() {
   const navigate = useNavigate();
 
-  const { login, isAuthenticating } = useAuthStore();
+  const login = useAuthStore((state) => state.login);
+  const isAuthenticating = useAuthStore((state) => state.isAuthenticating);
 
   const form = useForm<z.infer<typeof LoginFormValidation>>({
     resolver: zodResolver(LoginFormValidation),

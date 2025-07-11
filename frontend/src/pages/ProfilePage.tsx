@@ -16,7 +16,8 @@ import {
 } from "lucide-react";
 
 const ProfilePage = () => {
-  const { patient, updatePatient } = useFormStore();
+  const patient = useFormStore((state) => state.patient);
+  const updatePatient = useFormStore((state) => state.updatePatient);
 
   // ✅ Reusable inline save function
   const handleInlineSave = (field: string) => (val: string) => {
