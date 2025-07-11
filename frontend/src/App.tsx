@@ -20,6 +20,8 @@ import DoctorsList from "./components/DoctorsList";
 import ManageDoctors from "./pages/admin/ManageDoctors";
 import { PatientRoute, ProtectRoute } from "./components/ProtectedRoute";
 import { Loader2 } from "lucide-react";
+import AppointmentPage from "./pages/AppointmentPage";
+import AllDoctors from "./components/AllDoctors";
 
 function App() {
   const checkAuth = useAuthStore((state) => state.checkAuth);
@@ -49,14 +51,6 @@ function App() {
       <div className="h-screen w-screen flex flex-col justify-center items-center">
         <Loader2 className="animate-spin size-8 text-teal-500" />
         <p className="text-sm text-gray-500 max-w-xs mt-2">Please hold on...</p>
-      </div>
-    )
-  }
-
-  if (adminStatus === false) {
-    return (
-      <div className="h-screen w-screen flex items-center justify-center">
-        <Loader2 className="animate-spin size-8 text-teal-500" />
       </div>
     )
   }
@@ -111,6 +105,10 @@ function App() {
             }
           />
           <Route path="/success/:appointmentId" element={<SuccessPage />} />
+
+          <Route path="/doctor/:doctorId" element={<AppointmentPage />} />
+
+          <Route path="/doctors/all" element={<AllDoctors />} />
 
           <Route
             path="/book-appointment"

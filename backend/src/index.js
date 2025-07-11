@@ -27,7 +27,7 @@ app.use(cors({
   credentials: true,
 }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.use('/api/auth', authRoutes);
@@ -37,23 +37,23 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/chatbot', chatBotRoutes);
 app.use("/api/doctor", doctorRoutes);
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-  // app.get('\\*', (req, res) => {
-  //   res.sendFile(path.resolve(__dirname, "../frontend/dist", "index.html"));
-  // })
-
-  // Named Wildcard to match all routes (Express wildcard syntax)
-  app.get('/*splat', (req, res) => {
-  res.sendFile(path.resolve(__dirname, "../frontend/dist", "index.html"));
-});
-
-}
-
 app.get('/', (req, res) => {
   res.send('server is running');
 })
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
+
+  // Named Wildcard to match all routes (Express wildcard syntax)
+  app.get('/*splat', (req, res) => {
+    
+    if (req.path.startsWith('/api/')) {
+      return res.status(404).json({ message: 'API route not found' });
+    }
+    res.sendFile(path.resolve(__dirname, "../frontend/dist", "index.html"));
+  });
+
+}
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

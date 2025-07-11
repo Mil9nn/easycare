@@ -161,7 +161,9 @@ export const useAdminStore = create<AdminStore>((set) => ({
   getDoctorById: async (doctorId) => {
     set({ isLoading: true });
     try {
-      const response = await axiosInstance.get(`/doctor/${doctorId}`);
+      const response = await axiosInstance.get(`/doctor/${doctorId}`, {
+        withCredentials: false,
+      });
       if (response.status === 200) {
         set({ doctor: response.data });
         return response.data;

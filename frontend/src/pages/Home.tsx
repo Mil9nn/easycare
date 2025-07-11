@@ -62,7 +62,7 @@ const Home = () => {
         </div>
       </section>
       <section className="max-w-6xl mx-auto">
-        <h1 className="text-2xl font-bold mb-1">Available Doctors</h1>
+        <h1 className="text-2xl font-bold mb-1">Doctors</h1>
         <p className="text-gray-600 mb-5">
           Find the best doctors available for your health needs.
         </p>
@@ -70,16 +70,23 @@ const Home = () => {
           <Loader className="animate-spin" />
           <p className="text-center text-sm text-gray-500">Loading doctors...</p>
         </div> : (<div className="grid lg:grid-cols-5 sm:grid-cols-3 xs:grid-cols-2 grid-cols-1 gap-5 p-1 max-w-6xl mx-auto">
-          {filteredDoctors?.map((doctor) => (
+          {filteredDoctors?.slice(0, 5).map((doctor) => (
             <DoctorCard
               key={doctor._id}
               name={doctor.fullName}
               specialization={doctor.specialization}
               imageSrc={doctor.profileImage}
               className="bg-teal-200"
+              doctorId={doctor._id}
+              isActive={doctor.isActive}
             />
+            
           ))}
         </div>)}
+        {/* and many more... */}
+        <p className="text-gray-500 text-center text-sm mt-4">
+          and many more...
+        </p>
       </section>
     </div>
   );

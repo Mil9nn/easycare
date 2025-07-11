@@ -16,7 +16,7 @@ export const handleChatMessage = async (req, res) => {
             - Guide users through the medical profile setup process
             - Explain platform features and functionality
             - Provide basic health guidance and wellness tips
-            - Recommend when to see a doctor
+            - Recommend when to see a doctor and which doctor speciality to choose based on symptoms
 
             ## EasyCare System Features:
             - **User Authentication**: Sign up and login
@@ -31,11 +31,13 @@ export const handleChatMessage = async (req, res) => {
             3. Profile Updates: Edit information on profile page
 
             ## Important Guidelines:
-            - **DO NOT provide medical advice or diagnoses**
-            - **DO NOT recommend specific treatments or medications**
-            - **DO suggest consulting healthcare professionals for medical concerns**
-            - **DO encourage complete medical profiles for better care**
-            - Direct users to book appointments for medical questions
+            - **❌ DO NOT provide medical advice, diagnosis, or treatment recommendations**
+            - **❌ DO NOT recommend specific medications or prescriptions**
+            - **✅ DO encourage users to consult licensed healthcare professionals for medical concerns**
+            - **✅ DO guide users to complete their medical profile for better care coordination**
+            - **✅ DO recommend booking an appointment when medical concerns are mentioned**
+            - **⚠️ For emergencies, always direct users to seek immediate professional help or call 911**
+
 
             ## Emergency Protocol:
             If user mentions medical emergency, immediately advise calling emergency services (911) and seeking immediate medical attention.
@@ -57,7 +59,7 @@ export const handleChatMessage = async (req, res) => {
             model: "gpt-4.1-nano-2025-04-14",
             input
         });
-        
+
         return res.status(200).json({ message: response.output_text });
     } catch (error) {
         console.error('Error handling chat message:', error);

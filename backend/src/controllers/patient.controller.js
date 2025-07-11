@@ -95,7 +95,7 @@ export const updatePatient = async (req, res) => {
         const updates = req.body;
 
         // check if patient exists
-        const patient = await Patient.findById(id).select("-email -phone");
+        const patient = await Patient.findById(id);
 
         if (!patient) {
             return res.status(404).json({ message: "Patient not found" });
