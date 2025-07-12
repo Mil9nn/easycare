@@ -86,9 +86,9 @@ export function DoctorForm({ mode }: { mode: "add" | "edit" }) {
 
   return (
     <div className="h-screen">
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 grid-cols-1 p-6">
+      <div className="max-w-3xl mx-auto rounded bg-white">
         {/* Form Container */}
-        <div className="shadow-lg bg-white rounded-l-2xl p-8 lg:p-10 h-full">
+        <div className="shadow-lg p-8 lg:p-10 h-full">
           <div className="mb-10">
             <h1 className="text-3xl font-bold text-primary-text mb-2">
               {mode === "add" ? (
@@ -284,17 +284,6 @@ export function DoctorForm({ mode }: { mode: "add" | "edit" }) {
               )}
             </form>
           </Form>
-        </div>
-
-        {/* Image Placeholder */}
-        <div className="hidden md:flex items-center justify-center overflow-hidden rounded-r-2xl">
-          <div className="text-center text-gray-400">
-            <img
-              src="/assets/doc-form-bg.png"
-              alt="Doctor Form Background"
-              className="w-full h-full object-cover"
-            />
-          </div>
         </div>
       </div>
     </div>

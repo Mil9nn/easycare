@@ -46,7 +46,7 @@ const AppointmentPage = () => {
   ))
 
   return (
-    <div className="p-4 sm:p-6 bg-white shadow-sm">
+    <div className="p-10 sm:p-6 bg-white shadow-sm">
       {doctor && (
         <div className="flex flex-col sm:flex-row sm:items-start gap-1">
           <div className="bg-indigo-500 rounded w-full max-w-70">
@@ -57,10 +57,10 @@ const AppointmentPage = () => {
                   : doctor.profileImage
               }
               alt={doctor.fullName}
-              className="w-28 h-28 max-w-[280px] max-h-[280px] sm:w-full sm:h-fit object-contain"
+              className="w-80 h-70 object-contain"
             />
           </div>
-          <div className="relative space-y-3 py-3 p-5">
+          <div className="flex flex-col space-y-3 py-3 p-5">
             <h3 className="text-xl font-semibold text-gray-800">
               {doctor.fullName}
             </h3>
@@ -87,7 +87,7 @@ const AppointmentPage = () => {
               <span className="font-medium text-gray-700">Time:</span>
               <span className="text-xs text-white font-medium bg-indigo-400 rounded p-1">
                 {doctor.availableFrom} – {doctor.availableTo}
-              </span>{" "}
+              </span>{" "} 
             </p>
             <p className="max-w-[700px]  text-sm">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
@@ -96,7 +96,7 @@ const AppointmentPage = () => {
               euismod magna vel magna tincidunt, ac malesuada lorem eleifend.
             </p>
 
-            <Button onClick={() => {handleClick(doctor)}} className="absolute -bottom-5 right-0 mt-2 rounded-full bg-indigo-500 text-white hover:bg-indigo-700 transition-colors cursor-pointer">
+            <Button onClick={() => {handleClick(doctor)}} className="self-start sm:self-end rounded-full bg-indigo-500 text-white hover:bg-indigo-700 transition-colors cursor-pointer">
               Book appointment
             </Button>
           </div>

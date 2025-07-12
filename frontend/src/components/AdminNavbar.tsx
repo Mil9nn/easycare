@@ -34,7 +34,7 @@ export default function AdminNavbar() {
 
           <Link
             to="/admin/add-doctor"
-            className="inline-flex items-center gap-1 text-sm font-medium text-indigo-500"
+            className="link"
           >
             <ClipboardPlus className="w-5 h-5" />
             <span>Add Doctor</span>

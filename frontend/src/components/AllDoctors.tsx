@@ -31,7 +31,7 @@ const AllDoctors = () => {
   };
 
   return (
-    <section className="max-w-6xl mx-auto">
+    <section className="max-w-6xl p-10 mx-auto">
       <h1 className="text-2xl font-bold mb-1">Available Doctors</h1>
       <p className="text-gray-600 mb-5">
         Find the best doctors available for your health needs.
@@ -57,10 +57,11 @@ const AllDoctors = () => {
         </select>
       </div>
       <div>
-        <p className="text-sm text-indigo-500 font-medium mb-2">
-          {specialization
+        <p className="text-sm font-medium mb-2">
+          <span className="text-indigo-500 mr-2">{specialization
             ? `Showing doctors specialized in ${specialization}`
-            : "Showing all doctors"}
+            : "Showing all doctors"}</span>
+            <span className="text-gray-500">(click on a doctor for more details)</span>
         </p>
       </div>
       {gettingDoctors ? (

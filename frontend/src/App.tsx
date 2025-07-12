@@ -25,6 +25,7 @@ import {
 import AppointmentPage from "./pages/AppointmentPage";
 import AllDoctors from "./components/AllDoctors";
 import AdminPage from "./pages/admin/AdminPage";
+import ScrollToTop from "./components/ScrolltoTop";
 
 function App() {
   const checkAuth = useAuthStore((state) => state.checkAuth);
@@ -49,6 +50,7 @@ function App() {
 
   return (
     <>
+    <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
@@ -115,6 +117,7 @@ function App() {
             element={<AdminPage />}
           />
         </Route>
+        
         <Route element={<AdminLayout />}>
           <Route
             path="/admin/dashboard"

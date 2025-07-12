@@ -1,5 +1,7 @@
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { useNavigate } from "react-router-dom";
+import { Specializations } from "./form/constants";
+import { useState } from "react";
 
 const DoctorsList = () => {
   const doctors = useAdminStore((state) => state.doctors);
@@ -9,6 +11,18 @@ const DoctorsList = () => {
   const handleClick = (doctor: CreateDoctorParams) => {
     navigate(`/admin/list/doctor/${doctor._id}`);
   };
+
+  const [selectedSpecialization, setSelectedSpecialization] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredDoctors = doctors?.filter((doc) => (
+    selectedSpecialization ? doc.specialization === selectedSpecialization : true
+  ));
+
+  const searchedDoctors = filteredDoctors?.filter((doc) => (
+    doc.fullName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    doc.specialization.toLowerCase().includes(searchQuery.toLowerCase())
+  ))
 
   return (
     <div className="space-y-6 px-5">
@@ -24,16 +38,20 @@ const DoctorsList = () => {
           <h2 className="text-xl font-semibold text-gray-700">
             All Practitioners
           </h2>
+          {/* Specialization filter and search input */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <select className="border rounded px-3 py-1 text-sm">
-              <option>Filter by Specialty</option>
-              <option>Cardiology</option>
-              <option>Neurology</option>
-              <option>Pediatrics</option>
+            <select onChange={(e) => setSelectedSpecialization(e.target.value)} value={selectedSpecialization} className="border rounded px-3 py-1 text-sm">
+            {Specializations.map((spec) => (
+              <option key={spec.value} value={spec.value}>{spec.name}</option>
+            ))}
             </select>
+
+            {/* Search input */}
             <input
               type="text"
-              placeholder="Search doctors..."
+              placeholder="Search doctors by name or specialization"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="border rounded px-3 py-1 text-sm w-64"
             />
           </div>
@@ -42,7 +60,7 @@ const DoctorsList = () => {
         <div className="">
           {/* Add more Doctor components as needed */}
           <div className="grid xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-3 sm:grid-cols-2 gap-5">
-            {doctors?.map((doctor) => (
+            {searchedDoctors?.map((doctor) => (
               <div
                 key={doctor._id}
                 onClick={() => {

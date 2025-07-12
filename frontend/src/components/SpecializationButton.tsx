@@ -10,7 +10,7 @@ const SpecializationButton = ({ iconSrc, specialization, onClick }: Props) => {
       <img
         src={iconSrc}
         alt={`${specialization} Icon`}
-        className="w-17 h-17 object-fit"
+        className="w-18 h-18 object-fit"
       />
       <span className="text-xs font-semibold text-gray-700">
         {specialization}

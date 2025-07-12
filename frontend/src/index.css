@@ -161,7 +161,7 @@
 }
 
 .sidebar-nav-link {
-  @apply text-primary-text hover:text-teal-500 flex items-center gap-1 text-sm font-medium tracking-wide transition-all duration-200;
+  @apply text-primary-text active:bg-black/10 py-1 hover:text-teal-500 flex items-center gap-1 text-sm font-medium tracking-wide transition-all duration-200;
 }
 
 .medical-info {
@@ -292,7 +292,7 @@
 }
 
 .shad-otp {
-  @apply flex items-center justify-center gap-3 w-full h-fit max-w-md mx-auto p-5 rounded-lg;
+  @apply flex items-center justify-center gap-3 w-full h-fit max-w-md mx-auto xs:p-5 rounded-lg;
 }
 
 .shad-otp-slot {
