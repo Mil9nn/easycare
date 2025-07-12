@@ -37,10 +37,6 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/chatbot', chatBotRoutes);
 app.use("/api/doctor", doctorRoutes);
 
-app.get('/', (req, res) => {
-  res.send('server is running');
-})
-
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
@@ -54,6 +50,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 
 }
+
+app.get('/', (req, res) => {
+  res.send('server is running');
+})
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

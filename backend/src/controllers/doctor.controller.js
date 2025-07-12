@@ -129,6 +129,24 @@ export const updateDoctor = async (req, res) => {
   }
 }
 
+export const toggleDoctorStatus = async (req, res) => {
+  try {
+    const { doctorId } = req.params;
+    const doctor = await Doctor.findById(doctorId);
+    if (!doctor) {
+      return res.status(404).json({ message: "Doctor not found" });
+    }
+    doctor.isActive = !doctor.isActive; // Toggle the status
+    await doctor.save();
+    res.status(200).json({
+      message: `Doctor status updated to ${doctor.isActive ? 'active' : 'inactive'}`,
+    })
+  } catch (error) {
+    console.error('Error toggling doctor status:', error);
+    res.status(500).json({ error: 'Failed to toggle doctor status' });
+  }
+}
+ 
 export const deleteDoctor = async (req, res) => {
   try {
     const { doctorId } = req.params;
