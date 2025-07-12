@@ -9,8 +9,14 @@ import toast from "react-hot-toast";
 import type { NavigateFunction } from "react-router-dom";
 import { create } from "zustand";
 
+type Admin = {
+  _id: string;
+  fullName: string;
+  email: string;
+};
+
 interface AdminStore {
-  adminStatus: boolean;
+  admin: Admin | null;
   dashboardData: DashboardData | null;
   weeklyAppointments: WeeklyAppointments | null;
   checkAdmin: () => Promise<void>;
@@ -40,7 +46,7 @@ interface AdminStore {
 }
 
 export const useAdminStore = create<AdminStore>((set) => ({
-  adminStatus: false,
+  admin: null,
   dashboardData: null,
   weeklyAppointments: null,
   patientStats: null,
@@ -57,10 +63,10 @@ export const useAdminStore = create<AdminStore>((set) => ({
     set({ isCheckingAdmin: true });
     try {
       const response = await axiosInstance.get("/admin/check");
-      set({ adminStatus: response.data.success });
+      set({ admin: response.data.success });
     } catch (error) {
       console.error("Error checking admin status:", error);
-      throw error;
+      set({ admin: null });
     } finally {
       set({ isCheckingAdmin: false });
     }
@@ -70,11 +76,11 @@ export const useAdminStore = create<AdminStore>((set) => ({
     set({ isVerifying: true });
     try {
       const response = await axiosInstance.post("/admin/verify-otp", { otp });
-      set({ adminStatus: response.data.success });
+      set({ admin: response.data.success });
       navigate("/admin/dashboard");
     } catch (error) {
       console.error("Error verifying admin OTP:", error);
-      throw error;
+      set({ admin: null });
     } finally {
       set({ isVerifying: false });
     }
@@ -83,7 +89,7 @@ export const useAdminStore = create<AdminStore>((set) => ({
   logoutAdmin: async (navigate) => {
     try {
       await axiosInstance.post("/admin/logout");
-      set({ adminStatus: false });
+      set({ admin: null });
       navigate("/");
     } catch (error) {
       console.error("Error logging out admin:", error);
@@ -201,12 +207,12 @@ export const useAdminStore = create<AdminStore>((set) => ({
 
   updateDoctorStatus: async (doctor) => {
     set({ isUpdatingDoctor: true });
-     try {
+    try {
       await axiosInstance.put(`/doctor/status/${doctor?._id}`, {
-      isActive: doctor?.isActive,
-    });
+        isActive: doctor?.isActive,
+      });
 
-    toast.success("Doctor status updated successfully");
+      toast.success("Doctor status updated successfully");
     } catch (error) {
       console.error("Error toggling doctor status:", error);
     } finally {

@@ -1,3 +1,4 @@
+import { useAdminStore } from "@/hooks/useAdminStore";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import { useFormStore } from "@/hooks/useFormStore";
 import { Loader2 } from "lucide-react";
@@ -51,3 +52,29 @@ export const PatientRoute = ({ children }: { children: React.ReactNode }) => {
 
   return patient ? <>{children}</> : <Navigate to="/" replace />;
 };
+
+export const AdminRoute = ({ children }: { children: React.ReactNode }) => {
+  const isCheckingAdmin = useAdminStore((state) => state.isCheckingAdmin);
+  const admin = useAdminStore((state) => state.admin);
+
+  if (isCheckingAdmin) {
+    return (
+      <div className="h-[85vh] w-screen flex flex-col justify-center items-center">
+        <Loader2 className="animate-spin size-8 text-teal-500" />
+        <p className="text-sm text-gray-500 max-w-xs mt-2">Please hold on...</p>
+      </div>
+    );
+  }
+
+  if (admin === null) {
+    return (
+      <div className="h-[85vh] w-screen flex flex-col justify-center items-center">
+        <Loader2 className="animate-spin size-8 text-teal-500" />
+        <p className="text-sm text-gray-500 max-w-xs mt-2">Checking for admin...</p>
+      </div>
+    );
+  }
+  
+  console.log("Admin status:", admin);
+  return admin ? <>{children}</> : <Navigate to="/admin" replace />;
+}

@@ -11,17 +11,20 @@ import ProfilePage from "./pages/ProfilePage";
 import BookAppointment from "./pages/BookAppointment";
 import SuccessPage from "./pages/SuccessPage";
 import { useFormStore } from "./hooks/useFormStore";
-import AdminPage from "./pages/admin/AdminPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import { useAdminStore } from "./hooks/useAdminStore";
 import { DoctorForm } from "./components/DoctorForm";
 import AdminLayout from "./layout/AdminLayout";
 import DoctorsList from "./components/DoctorsList";
 import ManageDoctors from "./pages/admin/ManageDoctors";
-import { PatientRoute, ProtectRoute } from "./components/ProtectedRoute";
-import { Loader2 } from "lucide-react";
+import {
+  AdminRoute,
+  PatientRoute,
+  ProtectRoute,
+} from "./components/ProtectedRoute";
 import AppointmentPage from "./pages/AppointmentPage";
 import AllDoctors from "./components/AllDoctors";
+import AdminPage from "./pages/admin/AdminPage";
 
 function App() {
   const checkAuth = useAuthStore((state) => state.checkAuth);
@@ -29,10 +32,8 @@ function App() {
 
   const getPatient = useFormStore((state) => state.getPatient);
 
-  const adminStatus = useAdminStore((state) => state.adminStatus);
   const getAllDoctors = useAdminStore((state) => state.getAllDoctors);
   const checkAdmin = useAdminStore((state) => state.checkAdmin);
-  const isCheckingAdmin = useAdminStore((state) => state.isCheckingAdmin);
 
   useEffect(() => {
     checkAuth();
@@ -45,19 +46,6 @@ function App() {
     }
     getAllDoctors();
   }, [user, getPatient, getAllDoctors]);
-
-  if (isCheckingAdmin) {
-    return (
-      <div className="h-screen w-screen flex flex-col justify-center items-center">
-        <Loader2 className="animate-spin size-8 text-teal-500" />
-        <p className="text-sm text-gray-500 max-w-xs mt-2">Please hold on...</p>
-      </div>
-    )
-  }
-
-  if (adminStatus === false) {
-    return <Navigate to="/admin" replace />;
-  }
 
   return (
     <>
@@ -124,52 +112,48 @@ function App() {
           />
           <Route
             path="/admin"
-            element={
-              adminStatus ? <Navigate to="/admin/dashboard" /> : <AdminPage />
-            }
+            element={<AdminPage />}
           />
         </Route>
         <Route element={<AdminLayout />}>
           <Route
             path="/admin/dashboard"
             element={
-              adminStatus ? (
+              <AdminRoute>
                 <AdminDashboard />
-              ) : (
-                <Navigate to="/admin" replace />
-              )
+              </AdminRoute>
             }
           />
           <Route
             path="/admin/add-doctor"
             element={
-              adminStatus ? (
+              <AdminRoute>
                 <DoctorForm mode="add" />
-              ) : (
-                <Navigate to="/" replace />
-              )
+              </AdminRoute>
             }
           />
           <Route
             path="/admin/edit-doctor/:doctorId"
             element={
-              adminStatus ? (
+              <AdminRoute>
                 <DoctorForm mode="edit" />
-              ) : (
-                <Navigate to="/" replace />
-              )
+              </AdminRoute>
             }
           />
           <Route
             path="/admin/list/doctor"
             element={
-              adminStatus ? <DoctorsList /> : <Navigate to="/" replace />
+              <AdminRoute>
+                <DoctorsList />
+              </AdminRoute>
             }
           />
           <Route
             path="/admin/list/doctor/:doctorId"
             element={
-              adminStatus ? <ManageDoctors /> : <Navigate to="/" replace />
+              <AdminRoute>
+                <ManageDoctors />
+              </AdminRoute>
             }
           />
         </Route>
