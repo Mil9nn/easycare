@@ -42,10 +42,6 @@ if (process.env.NODE_ENV === 'production') {
 
   // Named Wildcard to match all routes (Express wildcard syntax)
   app.get('/*splat', (req, res) => {
-    
-    if (req.path.startsWith('/api/')) {
-      return res.status(404).json({ message: 'API route not found' });
-    }
     res.sendFile(path.resolve(__dirname, "../frontend/dist", "index.html"));
   });
 
