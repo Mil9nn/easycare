@@ -1,3 +1,5 @@
+import { Dialog } from "@/components/Dialog";
+import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { Loader, SquarePen, Trash } from "lucide-react";
 import { useEffect } from "react";
@@ -8,6 +10,7 @@ const ManageDoctors = () => {
   const getDoctorById = useAdminStore((state) => state.getDoctorById);
   const doctor = useAdminStore((state) => state.doctor);
   const deleteDoctor = useAdminStore((state) => state.deleteDoctor);
+  const updateDoctorStatus = useAdminStore((state) => state.updateDoctorStatus);
 
   const { doctorId } = useParams();
 
@@ -37,10 +40,12 @@ const ManageDoctors = () => {
       console.error("Doctor ID is not defined");
       return;
     }
-    if (!window.confirm("Are you sure you want to delete this doctor?")) {
-      return;
-    }
     await deleteDoctor(doctorId!);
+  };
+
+  const handleToggle = async () => {
+    await updateDoctorStatus(doctor!);
+    await getDoctorById(doctorId!);
   };
 
   return (
@@ -55,7 +60,7 @@ const ManageDoctors = () => {
                   : doctor.profileImage
               }
               alt={doctor.fullName}
-              className="w-28 h-28 max-w-[280px] max-h-[280px] sm:w-full sm:h-fit object-contain"
+              className="w-80 h-70 object-contain"
             />
           </div>
           <div className="relative space-y-2 py-3">
@@ -66,8 +71,8 @@ const ManageDoctors = () => {
               <p className="text-md capitalize text-gray-600 pb-1">
                 MBBS - {doctor.specialization}
               </p>
-              <p className="text-xs text-gray-600 bg-primary border border-gray-300 p-1 rounded-full w-fit">
-                {doctor.experience} years
+              <p className="text-xs text-gray-600 font-medium bg-primary border border-gray-300 p-1 px-2 rounded-full w-fit">
+                <span className="text-xs">{doctor.experience}</span> years
               </p>
             </div>
             <p className="text-sm text-gray-600">
@@ -83,9 +88,9 @@ const ManageDoctors = () => {
             </p>
             <p className="flex items-center gap-2">
               <span className="font-medium text-gray-700">Time:</span>
-              <span className="text-xs text-white font-medium bg-indigo-300 rounded px-2">
+              <span className="text-xs text-white font-medium bg-indigo-400 rounded px-2">
                 {doctor.availableFrom} – {doctor.availableTo}
-                </span>{" "}
+              </span>{" "}
             </p>
             <p className="max-w-[700px]  text-sm">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
@@ -93,19 +98,31 @@ const ManageDoctors = () => {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
               euismod magna vel magna tincidunt, ac malesuada lorem eleifend.
             </p>
-            <div className="absolute right-1 -bottom-4 flex items-center">
-              <span className="flex gap-3">
-                <SquarePen
-                  onClick={handleUpdate}
-                  className="size-10 text-emerald-500 bg-gray-200 p-2 rounded-full cursor-pointer hover:scale-110 active:scale-90 duration-400 transtion-transform ease-in-out"
-                />
-                <Trash
-                  onClick={handleDelete}
-                  className="size-10 text-red-500 bg-gray-200 p-2 rounded-full cursor-pointer hover:scale-110 active:scale-90 duration-400 transtion-transform ease-in-out"
-                />
-              </span>
+            <div>
+              <span className="text-sm font-medium text-gray-700 mr-2">Status:</span>
+              <ToggleSwitch isActive={doctor.isActive!} onToggle={handleToggle} />
             </div>
-            <div></div>
+            <div className="absolute right-1 bottom-2 flex items-center justify-between">
+              <div className="flex gap-3">
+                <Dialog
+                label={"Edit"}
+                title="You'll be redirected to the edit page."
+                description="update the doctor's information there."
+                icon={SquarePen}
+                className="text-emerald-500 bg-gray-200 flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-110 active:scale-90 duration-400 transtion-transform ease-in-out"
+                onClick={handleUpdate}
+              />
+              <Dialog
+                label={"Delete"}
+                title="Are you absolutely sure?"
+                description="This will permanently delete the doctor and remove all associated data 
+                from our servers."
+                icon={Trash}
+                className="text-rose-500 bg-gray-200 flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-110 active:scale-90 duration-400 transtion-transform ease-in-out"
+                onClick={handleDelete}
+              />
+              </div>
+            </div>
           </div>
         </div>
       )}

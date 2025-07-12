@@ -4,10 +4,7 @@ import {
   Stethoscope,
   Brain,
   ShieldCheck,
-  Activity,
   Baby,
-  Headphones,
-  Smile,
   HelpCircle,
   Venus,
 } from "lucide-react";
@@ -100,8 +97,8 @@ export const Doctors = [
 
 export const Specializations = [
   {
-    name: "Cardiology",
-    value: "cardiology",
+    name: "Gastroenterology",
+    value: "gastroenterology",
     icon: HeartPulse,
     textColor: "text-red-600",
     bgColor: "bg-red-100",
@@ -114,8 +111,8 @@ export const Specializations = [
     bgColor: "bg-pink-100",
   },
   {
-    name: "General Practice",
-    value: "general_practice",
+    name: "General Physician",
+    value: "general_physician",
     icon: Stethoscope,
     textColor: "text-slate-700",
     bgColor: "bg-slate-100",
@@ -135,20 +132,6 @@ export const Specializations = [
     bgColor: "bg-indigo-100",
   },
   {
-    name: "Oncology",
-    value: "oncology",
-    icon: ShieldCheck,
-    textColor: "text-orange-600",
-    bgColor: "bg-orange-100",
-  },
-  {
-    name: "Orthopedics",
-    value: "orthopedics",
-    icon: Activity,
-    textColor: "text-lime-600",
-    bgColor: "bg-lime-100",
-  },
-  {
     name: "Pediatrics",
     value: "pediatrics",
     icon: Baby,
@@ -156,25 +139,18 @@ export const Specializations = [
     bgColor: "bg-cyan-100",
   },
   {
-    name: "Psychiatry",
-    value: "psychiatry",
-    icon: Headphones,
-    textColor: "text-purple-600",
-    bgColor: "bg-purple-100",
-  },
-  {
-    name: "Dentistry",
-    value: "dentistry",
-    icon: Smile,
-    textColor: "text-yellow-600",
-    bgColor: "bg-yellow-100",
-  },
-  {
     name: "Other",
     value: "other",
     icon: HelpCircle,
     textColor: "text-gray-500",
     bgColor: "bg-gray-100",
+  },
+  {
+    name: "All",
+    value: "all",
+    icon: ShieldCheck,
+    textColor: "text-orange-600",
+    bgColor: "bg-orange-100",
   },
 ];
 

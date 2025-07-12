@@ -68,3 +68,12 @@ declare interface CreateDoctorParams  {
   profileImage?: File[] | undefined;
   isActive?: boolean;
 }
+
+declare type Specialization = 
+  | 'dermatology' 
+  | 'gastroenterology' 
+  | 'general_physician' 
+  | 'gynecology' 
+  | 'neurology' 
+  | 'pediatrics' 
+  | 'all';

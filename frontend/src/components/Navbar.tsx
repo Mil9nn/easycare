@@ -40,7 +40,7 @@ const Navbar = () => {
           </div>
         </Link>
         <div className="flex items-center gap-4">
-          <Link className="nav-link" to="/doctors/all">All doctors</Link>
+          <Link className="nav-link" to="/doctors">All doctors</Link>
           {!user && (
             <Link className="link btn-primary" to="/login">
               <LogIn className="size-5" />

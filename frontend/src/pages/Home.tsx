@@ -5,8 +5,10 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { Loader } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const doctors = useAdminStore((state) => state.doctors);
   const gettingDoctors = useAdminStore((state) => state.gettingDoctors);
 
@@ -15,6 +17,11 @@ const Home = () => {
   const filteredDoctors = selectedSpecialization ? doctors?.filter((doctor) => (
     doctor.specialization.toLowerCase() === selectedSpecialization.toLowerCase()
   )) : doctors;
+
+  const handleSpecializationClick = (specialization: Specialization) => {
+    setSelectedSpecialization(specialization);
+    navigate(`/doctors?specialization=${specialization}`);
+  }
 
   return (
     <div className="p-10">
@@ -31,27 +38,27 @@ const Home = () => {
           <div className="flex items-center justify-between max-w-6xl mx-auto">
             <ScrollArea className="w-full max-w-2xl mx-auto rounded-md whitespace-nowrap">
               <div className="flex w-max space-x-4 p-4">
-                <SpecializationButton onClick={() => setSelectedSpecialization("dermatology")}
+                <SpecializationButton onClick={() => handleSpecializationClick("dermatology")}
                   iconSrc="/assets/specializations/Dermatologist.svg"
                   specialization="Dermatologist"
                 />
-                <SpecializationButton onClick={() => setSelectedSpecialization("gastroenterology")}
+                <SpecializationButton onClick={() => handleSpecializationClick("gastroenterology")}
                   iconSrc="/assets/specializations/Gastroenterologist.svg"
                   specialization="Gastroenterologist"
                 />
-                <SpecializationButton onClick={() => setSelectedSpecialization("general_physician")}
+                <SpecializationButton onClick={() => handleSpecializationClick("general_physician")}
                   iconSrc="/assets/specializations/General_physician.svg"
                   specialization="General_physician"
                 />
-                <SpecializationButton onClick={() => setSelectedSpecialization("gynecology")}
+                <SpecializationButton onClick={() => handleSpecializationClick("gynecology")}
                   iconSrc="/assets/specializations/Gynecologist.svg"
                   specialization="Gynecologist"
                 />
-                <SpecializationButton onClick={() => setSelectedSpecialization("neurology")}
+                <SpecializationButton onClick={() => handleSpecializationClick("neurology")}
                   iconSrc="/assets/specializations/Neurologist.svg"
                   specialization="Neurologist"
                 />
-                <SpecializationButton onClick={() => setSelectedSpecialization("pediatrics")}
+                <SpecializationButton onClick={() => handleSpecializationClick("pediatrics")}
                   iconSrc="/assets/specializations/Pediatricians.svg"
                   specialization="Pediatrician"
                 />
@@ -80,7 +87,6 @@ const Home = () => {
               doctorId={doctor._id}
               isActive={doctor.isActive}
             />
-            
           ))}
         </div>)}
         {/* and many more... */}

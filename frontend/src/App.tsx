@@ -55,6 +55,10 @@ function App() {
     )
   }
 
+  if (adminStatus === false) {
+    return <Navigate to="/admin" replace />;
+  }
+
   return (
     <>
       <Routes>
@@ -108,7 +112,7 @@ function App() {
 
           <Route path="/doctor/:doctorId" element={<AppointmentPage />} />
 
-          <Route path="/doctors/all" element={<AllDoctors />} />
+          <Route path="/doctors" element={<AllDoctors />} />
 
           <Route
             path="/book-appointment"

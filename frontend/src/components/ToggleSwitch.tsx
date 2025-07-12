@@ -1,11 +1,16 @@
+import { useAdminStore } from "@/hooks/useAdminStore";
+
 type ToggleSwitchProps = {
   isActive: boolean;
   onToggle: () => void;
 };
 
 export const ToggleSwitch = ({ isActive, onToggle }: ToggleSwitchProps) => {
+  const isUpdatingDoctor = useAdminStore((state) => state.isUpdatingDoctor);
+  
   return (
     <button
+      disabled={isUpdatingDoctor}
       onClick={onToggle}
       className={`relative inline-flex h-5 w-9 items-center rounded-full transition-colors duration-300 cursor-pointer ${
         isActive ? "bg-green-500" : "bg-gray-300"

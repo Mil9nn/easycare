@@ -36,6 +36,7 @@ interface AdminStore {
   isLoading: boolean;
   isUpdatingDoctor: boolean;
   isCheckingAdmin: boolean;
+  updateDoctorStatus: (doctor: CreateDoctorParams) => Promise<void>;
 }
 
 export const useAdminStore = create<AdminStore>((set) => ({
@@ -193,6 +194,21 @@ export const useAdminStore = create<AdminStore>((set) => ({
         toast.error(error.response?.data?.message || "Failed to update doctor");
         throw error;
       }
+    } finally {
+      set({ isUpdatingDoctor: false });
+    }
+  },
+
+  updateDoctorStatus: async (doctor) => {
+    set({ isUpdatingDoctor: true });
+     try {
+      await axiosInstance.put(`/doctor/status/${doctor?._id}`, {
+      isActive: doctor?.isActive,
+    });
+
+    toast.success("Doctor status updated successfully");
+    } catch (error) {
+      console.error("Error toggling doctor status:", error);
     } finally {
       set({ isUpdatingDoctor: false });
     }

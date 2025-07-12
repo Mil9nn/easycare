@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import { Dot } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 type DoctorCardProps = {
@@ -43,47 +44,22 @@ const DoctorCard = ({
         />
       </div>
 
-      <div className="p-6 pb-6 duration-[0.3s] bg-white">
+      <div className="p-6 pb-7 duration-[0.3s] bg-white">
         <div className="flex flex-col ">
           <span className="text-md font-semibold">{name}</span>
           <span className="text-gray-600 text-xs">{specialization}</span>
         </div>
       </div>
-      {isActive ? (
-        <span className="absolute bottom-0 left-0 inline-flex items-center gap-1 w-fit bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded">
-          <svg
-            className="w-4 h-4 text-green-600"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-            />
-          </svg>
+      {isActive && 
+        <span className="absolute bottom-0 left-0 inline-flex items-center w-fit bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded">
+          <Dot className="size-5 text-green-500" />
           Available
-        </span>
-      ) : (
-        <span className="absolute bottom-0 left-0 inline-flex items-center gap-1 w-fit bg-gray-100 text-gray-700 text-xs font-medium px-2 py-0.5 rounded">
-          <svg
-            className="w-4 h-4 text-gray-600"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth={2}
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
+        </span>}
+       
+        {!isActive && <span className="absolute bottom-0 left-0 inline-flex items-center gap-1 w-fit bg-gray-100 text-gray-700 text-xs font-medium px-2 py-0.5 rounded">
+          <Dot className="size-5 text-gray-500" />
           Not Available
-        </span>
-      )}
+        </span>}
     </div>
   );
 };
