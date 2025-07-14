@@ -47,7 +47,7 @@ const DoctorCard = ({
       <div className="p-6 pb-7 duration-[0.3s] bg-white">
         <div className="flex flex-col ">
           <span className="text-md font-semibold">{name}</span>
-          <span className="text-gray-600 text-xs">{specialization}</span>
+          <span className="text-gray-600 capitalize text-xs">{specialization}</span>
         </div>
       </div>
       {isActive && 

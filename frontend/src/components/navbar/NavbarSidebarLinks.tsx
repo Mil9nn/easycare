@@ -1,28 +1,37 @@
 import { Link, NavLink } from "react-router-dom";
-import {
-  CalendarPlus,
-  ClipboardList,
-  LogOut,
-  Stethoscope,
-} from "lucide-react";
+import { CalendarPlus, ClipboardList, LogOut, Stethoscope } from "lucide-react";
 import type { NavbarProps } from "./Navbar";
 
-const NavbarSidebarLinks = ({ isLoggedIn, isPatient, handleLogout }: NavbarProps) => {
+const NavbarSidebarLinks = ({
+  isLoggedIn,
+  isPatient,
+  handleLogout,
+  setMenuOpen,
+}: NavbarProps) => {
   return (
     <div className="flex flex-col gap-2">
       {isLoggedIn && isPatient && (
-        <Link to="/profile" className="sidebar-nav-link">
+        <NavLink
+          to="/profile"
+          onClick={() => setMenuOpen?.(false)}
+          className={({ isActive }) =>
+            `sidebar-nav-link flex ${
+              isActive ? "text-indigo-500" : "text-primary-text"
+            }`
+          }
+        >
           <ClipboardList className="size-5" />
           Profile
-        </Link>
+        </NavLink>
       )}
 
       {isLoggedIn && isPatient && (
         <NavLink
           to="/book-appointment"
+          onClick={() => setMenuOpen?.(false)}
           className={({ isActive }) =>
             `sidebar-nav-link flex ${
-              isActive ? "text-teal-600" : "text-primary-text"
+              isActive ? "text-indigo-500" : "text-primary-text"
             }`
           }
         >
@@ -31,10 +40,18 @@ const NavbarSidebarLinks = ({ isLoggedIn, isPatient, handleLogout }: NavbarProps
         </NavLink>
       )}
 
-      <Link className="sidebar-nav-link" to="/doctors">
+      <NavLink
+        className={({ isActive }) =>
+          `sidebar-nav-link flex ${
+            isActive ? "text-indigo-500" : "text-primary-text"
+          }`
+        }
+        to="/doctors"
+        onClick={() => setMenuOpen?.(false)}
+      >
         <Stethoscope className="size-5" />
         All doctors
-      </Link>
+      </NavLink>
 
       {isLoggedIn ? (
         <button
@@ -47,7 +64,7 @@ const NavbarSidebarLinks = ({ isLoggedIn, isPatient, handleLogout }: NavbarProps
       ) : (
         <Link
           to="/admin"
-          className="text-teal-500 font-semibold tracking-wide text-sm"
+          className="pl-3 text-teal-500 font-semibold tracking-wide text-sm"
         >
           Admin
         </Link>

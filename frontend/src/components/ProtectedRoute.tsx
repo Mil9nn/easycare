@@ -44,7 +44,7 @@ export const PatientRoute = ({ children }: { children: React.ReactNode }) => {
 
   if (patient === null)
     return (
-      <div className="w-full h-[85vh] flex items-center justify-center">
+      <div className="w-full h-[85vh] flex flex-col items-center justify-center">
         <Loader2 className="animate-spin size-8 text-teal-500" />
         <p className="text-sm text-gray-500 max-w-xs mt-2">Please hold on...</p>
       </div>
@@ -75,6 +75,5 @@ export const AdminRoute = ({ children }: { children: React.ReactNode }) => {
     );
   }
   
-  console.log("Admin status:", admin);
   return admin ? <>{children}</> : <Navigate to="/admin" replace />;
 }

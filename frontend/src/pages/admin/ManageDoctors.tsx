@@ -49,9 +49,9 @@ const ManageDoctors = () => {
   };
 
   return (
-    <div className="p-4 sm:p-6 bg-white shadow-sm">
+    <div className="p-7 bg-white shadow-sm">
       {doctor && (
-        <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+        <div className="flex flex-col sm:flex-row items-stretch gap-4">
           <div className="bg-indigo-500 rounded w-full max-w-70">
             <img
               src={
@@ -63,7 +63,7 @@ const ManageDoctors = () => {
               className="w-80 h-70 object-contain"
             />
           </div>
-          <div className="relative space-y-2 py-3">
+          <div className="flex-1 space-y-2 py-3">
             <h3 className="text-xl font-semibold text-gray-800">
               {doctor.fullName}
             </h3>
@@ -98,29 +98,36 @@ const ManageDoctors = () => {
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
               euismod magna vel magna tincidunt, ac malesuada lorem eleifend.
             </p>
-            <div>
-              <span className="text-sm font-medium text-gray-700 mr-2">Status:</span>
-              <ToggleSwitch isActive={doctor.isActive!} onToggle={handleToggle} />
+            <div className="flex items-center justify-between">
+              <div>
+              <span className="text-sm font-medium text-gray-700 mr-2">
+                Status:
+              </span>
+              <ToggleSwitch
+                isActive={doctor.isActive!}
+                onToggle={handleToggle}
+              />
             </div>
-            <div className="absolute right-1 bottom-2 flex items-center justify-between">
               <div className="flex gap-3">
                 <Dialog
-                label={"Edit"}
-                title="You'll be redirected to the edit page."
-                description="update the doctor's information there."
-                icon={SquarePen}
-                className="text-emerald-500 bg-gray-200 flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-110 active:scale-90 duration-400 transtion-transform ease-in-out"
-                onClick={handleUpdate}
-              />
-              <Dialog
-                label={"Delete"}
-                title="Are you absolutely sure?"
-                description="This will permanently delete the doctor and remove all associated data 
+                  label={"Edit"}
+                  title="You'll be redirected to the edit page."
+                  description="Update the doctor's information there."
+                  icon={SquarePen}
+                  mode="edit"
+                  className="text-emerald-500 flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-105 active:scale-95 duration-400 transtion-transform ease-in-out"
+                  onClick={handleUpdate}
+                />
+                <Dialog
+                  label={"Delete"}
+                  title="Are you absolutely sure?"
+                  description="This will permanently delete the doctor and remove all associated data 
                 from our servers."
-                icon={Trash}
-                className="text-rose-500 bg-gray-200 flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-110 active:scale-90 duration-400 transtion-transform ease-in-out"
-                onClick={handleDelete}
-              />
+                  icon={Trash}
+                  mode="delete"
+                  className="text-rose-500 flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-105 active:scale-95 duration-400 transtion-transform ease-in-out"
+                  onClick={handleDelete}
+                />
               </div>
             </div>
           </div>

@@ -1,5 +1,5 @@
-import { ClipboardPlus, LogOutIcon, Menu, X } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { ClipboardPlus, LayoutDashboard, List, LogOutIcon, Menu, X } from "lucide-react";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { useState } from "react";
@@ -24,21 +24,43 @@ export default function AdminNavbar() {
             </div>
           </Link>
 
-          <Link to="/admin/dashboard" className="text-xs font-semibold tracking-wide text-teal-500">Admin</Link>
+          <Link to="/admin/dashboard" className="text-xs font-semibold tracking-wide text-teal-500">Admin panel</Link>
         </div>
 
-        <div className="hidden sm:flex items-center gap-6">
-          <Link to="/admin/list/doctor" className="link">
-            Doctors List
-          </Link>
+        <div className="hidden md:flex items-center gap-6">
+          <NavLink
+            to="/admin/dashboard"
+            className={({ isActive }) =>
+          `sidebar-nav-link flex ${
+            isActive ? "text-indigo-500" : "text-primary-text"
+          }`
+        }
+            onClick={() => setMenuOpen(false)}
+          >
+            <LayoutDashboard className="size-5" />
+            Dashboard
+          </NavLink>
+          
+          <NavLink to="/admin/list/doctor" className={({ isActive }) =>
+          `link ${
+            isActive ? "text-indigo-500" : "text-primary-text"
+          }`
+        }>
+            <List className="w-5 h-5" />
+            Manage doctors
+          </NavLink>
 
-          <Link
+          <NavLink
             to="/admin/add-doctor"
-            className="link"
+            className={({ isActive }) =>
+          `link flex ${
+            isActive ? "text-indigo-500" : "text-primary-text"
+          }`
+        }
           >
             <ClipboardPlus className="w-5 h-5" />
             <span>Add Doctor</span>
-          </Link>
+          </NavLink>
 
           <Button
             onClick={handleLogout}
@@ -52,7 +74,7 @@ export default function AdminNavbar() {
         </div>
 
         {/* Mobile Menu Button */}
-        <div className="sm:hidden">
+        <div className="md:hidden">
           <Menu
             className="w-6 h-6 cursor-pointer"
             onClick={() => setMenuOpen(true)}
@@ -74,30 +96,44 @@ export default function AdminNavbar() {
         </div>
 
         <div className="flex flex-col gap-4">
-          <Link
+          <NavLink
             to="/admin/dashboard"
-            className="sidebar-nav-link"
+            className={({ isActive }) =>
+          `sidebar-nav-link flex ${
+            isActive ? "text-indigo-500" : "text-primary-text"
+          }`
+        }
             onClick={() => setMenuOpen(false)}
           >
+            <LayoutDashboard className="size-5" />
             Dashboard
-          </Link>
+          </NavLink>
 
-          <Link
+          <NavLink
             to="/admin/list/doctor"
-            className="sidebar-nav-link"
+            className={({ isActive }) =>
+          `sidebar-nav-link flex ${
+            isActive ? "text-indigo-500" : "text-primary-text"
+          }`
+        }
             onClick={() => setMenuOpen(false)}
           >
+            <List className="size-5" />
             Doctors List
-          </Link>
+          </NavLink>
 
-          <Link
+          <NavLink
             to="/admin/add-doctor"
-            className="sidebar-nav-link inline-flex items-center gap-1 text-indigo-500"
+           className={({ isActive }) =>
+          `sidebar-nav-link flex ${
+            isActive ? "text-indigo-500" : "text-primary-text"
+          }`
+        }
             onClick={() => setMenuOpen(false)}
           >
             <ClipboardPlus className="w-5 h-5" />
             <span>Add Doctor</span>
-          </Link>
+          </NavLink>
 
           <button
             onClick={() => {

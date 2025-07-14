@@ -10,6 +10,7 @@ export type NavbarProps = {
   isLoggedIn: boolean;
   isPatient: boolean;
   handleLogout: () => void;
+  setMenuOpen?: (open: boolean) => void;
 }
 
 const Navbar = () => {
@@ -65,6 +66,7 @@ const Navbar = () => {
           isLoggedIn={isLoggedIn}
           isPatient={isPatient}
           handleLogout={handleLogout}
+          setMenuOpen={setMenuOpen}
         />
       </div>
     </div>

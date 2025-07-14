@@ -5,7 +5,7 @@ const AdminLayout = () => {
   return (
     <div>
       <AdminNavbar />
-      <div className="mt-25">
+      <div className="mt-21">
         <Outlet />
       </div>
     </div>
