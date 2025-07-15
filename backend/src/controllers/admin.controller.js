@@ -72,7 +72,9 @@ export const scheduleAppointment = async (req, res) => {
 
     await existingAppointment.save();
 
-    io.emit("appointment-updated", existingAppointment);
+    const populatedAppointment = await Appointment.findById(existingAppointment._id).populate("patient");
+
+    io.emit("appointment-updated", populatedAppointment);
     await emitAppointmentStats();
     await emitWeeklyAppointments();
     await emitPatientsByAgeGroup();

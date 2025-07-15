@@ -33,6 +33,10 @@ const AdminDashboard = () => {
     getPatientsByAgeGroup,
   ]);
 
+  const percentageScheduled = dashboardData?.scheduled ? Number(((dashboardData.scheduled / (dashboardData.scheduled + dashboardData.pending + dashboardData.cancelled)) * 100).toFixed(1)) : 0;
+  const percentagePending = dashboardData?.pending ? Number(((dashboardData.pending / (dashboardData.scheduled + dashboardData.pending + dashboardData.cancelled)) * 100).toFixed(1)) : 0;
+  const percentageCancelled = dashboardData?.cancelled ? Number(((dashboardData.cancelled / (dashboardData.scheduled + dashboardData.pending + dashboardData.cancelled) * 100)).toFixed(1)) : 0;
+
   return (
     <div>
       <p className="text-sm text-gray-600 mt-1 px-5">
@@ -47,8 +51,8 @@ const AdminDashboard = () => {
             iconAlt=""
             count={dashboardData?.scheduled}
             description="Total number of scheduled appointments"
-            trendPercentage={5}
-            trend="down"
+            trendPercentage={percentageScheduled}
+            type="scheduled"
             cardBg="bg-gradient-to-r from-yellow-100 to white"
           />
           <StatCard
@@ -56,8 +60,8 @@ const AdminDashboard = () => {
             iconAlt=""
             count={dashboardData?.pending}
             description="Total number of pending appointments"
-            trendPercentage={5}
-            trend="down"
+            trendPercentage={percentagePending}
+            type="pending"
             cardBg="bg-gradient-to-r from-blue-100 to white"
           />
           <StatCard
@@ -65,8 +69,8 @@ const AdminDashboard = () => {
             iconAlt=""
             count={dashboardData?.cancelled}
             description="Cancelled appointments"
-            trendPercentage={70}
-            trend="up"
+            trendPercentage={percentageCancelled}
+            type="cancelled"
             cardBg="bg-gradient-to-r from-red-100 to white"
           />
           <StatCard
@@ -74,8 +78,6 @@ const AdminDashboard = () => {
             iconAlt=""
             count={patientStats?.length || 0}
             description="Patients"
-            trendPercentage={5}
-            trend="down"
             cardBg="bg-gradient-to-r from-green-100 to white"
           />
         </div>

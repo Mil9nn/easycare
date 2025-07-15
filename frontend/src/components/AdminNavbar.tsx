@@ -119,7 +119,7 @@ export default function AdminNavbar() {
             onClick={() => setMenuOpen(false)}
           >
             <List className="size-5" />
-            Doctors List
+            Manage doctors
           </NavLink>
 
           <NavLink

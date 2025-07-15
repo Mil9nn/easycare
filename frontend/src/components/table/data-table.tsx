@@ -55,7 +55,7 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="table-body">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -92,6 +92,7 @@ export function DataTable<TData, TValue>({
           size="sm"
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
+          className="cursor-pointer hover:border-green-500"
         >
           <ArrowLeft className="text-green-500" />
         </Button>
@@ -100,6 +101,7 @@ export function DataTable<TData, TValue>({
           size="sm"
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
+          className="cursor-pointer hover:border-green-500"
         >
          <ArrowRight className="text-green-500" />
         </Button>
