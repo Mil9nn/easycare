@@ -26,8 +26,37 @@ import AppointmentPage from "./pages/AppointmentPage";
 import AllDoctors from "./components/AllDoctors";
 import AdminPage from "./pages/admin/AdminPage";
 import ScrollToTop from "./components/ScrolltoTop";
+import { socket } from "./lib/socket";
+import { setupAppointmentSocketListeners } from "./lib/setupAppointmentSocketListener";
+
+const SocketManager = () => {
+
+  useEffect(() => {
+    if (!socket.connected) {
+      socket.connect();
+    }
+
+    socket.on("connect", () => {
+      console.log("✅ Connected to socket:", socket.id);
+    });
+
+    socket.on("disconnect", (reason) => {
+      console.log("❌ Socket disconnected:", reason);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  return null;
+};
 
 function App() {
+  useEffect(() => {
+    setupAppointmentSocketListeners();
+  }, []);
+
   const checkAuth = useAuthStore((state) => state.checkAuth);
   const user = useAuthStore((state) => state.user);
 
@@ -50,6 +79,7 @@ function App() {
 
   return (
     <>
+    <SocketManager />
     <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>

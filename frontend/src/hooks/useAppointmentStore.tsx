@@ -64,5 +64,5 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
       console.error("Error fetching appointments:", error);
       throw error;
     }
-  }
+  },
 }));

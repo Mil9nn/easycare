@@ -39,16 +39,16 @@ const StatusBadge: React.FC<StatusBadgeProps> = ({
 
   return (
     <div
-      className={`inline-flex items-center px-3 py-1.5 rounded-full border ${currentStatus.bgColor} ${currentStatus.borderColor} ${className}`}
+      className={`inline-flex items-center gap-1 px-3 py-1.5 rounded-full border ${currentStatus.bgColor} ${currentStatus.borderColor} ${className}`}
     >
       <img
         src={currentStatus.iconSrc}
         alt={"${status} icon"}
         width={16}
         height={16}
-        className="inline-block mr-2"
+        className="inline-block"
       />
-      <span className={`text-sm ${currentStatus.textColor}`}>
+      <span className={`text-xs ${currentStatus.textColor}`}>
         {currentStatus.text}
       </span>
     </div>

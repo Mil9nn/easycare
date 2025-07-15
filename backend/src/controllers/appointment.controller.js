@@ -1,11 +1,22 @@
 import { Appointment } from "../models/appointment.model.js";
+import { io } from '../lib/socket.js';
+import { emitAppointmentStats, emitPatientsByAgeGroup, emitWeeklyAppointments } from "../helpers/emitStats.js";
 
 
 export const createAppointment = async (req, res) => {
   try {
     const appointment = new Appointment(req.body);
     const saved = await appointment.save();
-    res.status(201).json(saved);
+
+    // Populate patient after saving
+    const populatedAppointment = (await saved.populate('patient'));
+    console.log("🔴 Emitting new appointment:", populatedAppointment);
+    io.emit("new-appointment", populatedAppointment);
+    res.status(201).json(populatedAppointment);
+
+    await emitAppointmentStats();
+    await emitWeeklyAppointments();
+    await emitPatientsByAgeGroup();
   } catch (error) {
     console.error("Error creating appointment:", error);
     res.status(500).json({ message: "Failed to create appointment" });
@@ -21,8 +32,8 @@ export const updateAppointment = async (req, res) => {
         ...appointment,
         status:
           type === "cancel" ? "cancelled" :
-          type === "schedule" ? "scheduled" :
-          undefined
+            type === "schedule" ? "scheduled" :
+              undefined
       },
       { new: true }
     );

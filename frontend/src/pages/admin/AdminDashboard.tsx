@@ -1,6 +1,6 @@
 import { AnalyticsChart } from "@/components/AnalyticsChart";
 import StatCard from "@/components/StatCard";
-import { columns } from "@/components/table/columns";
+import { getColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useAdminStore } from "@/hooks/useAdminStore";
@@ -14,9 +14,12 @@ const AdminDashboard = () => {
   const dashboardData = useAdminStore((state) => state.dashboardData);
   const patientStats = useAdminStore((state) => state.patientStats);
   const getPatientsByAgeGroup = useAdminStore((state) => state.getPatientsByAgeGroup);
+  const doctors = useAdminStore((state) => state.doctors);
 
   const getAllAppointments = useAppointmentStore((state) => state.getAllAppointments);
   const appointments = useAppointmentStore((state) => state.appointments);
+
+  const columns = getColumns(doctors!)
 
   useEffect(() => {
     getAllAppointments();

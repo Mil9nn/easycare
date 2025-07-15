@@ -2,6 +2,8 @@ import { generateAdminTokenAndSetCookie } from "../lib/jwt.js";
 import { Appointment } from "../models/appointment.model.js";
 import moment from "moment";
 import { Patient } from "../models/patient.model.js";
+import { io } from "../lib/socket.js";
+import { emitAppointmentStats, emitPatientsByAgeGroup, emitWeeklyAppointments } from "../helpers/emitStats.js";
 
 export const verifyAdminOtp = async (req, res) => {
   try {
@@ -67,7 +69,14 @@ export const scheduleAppointment = async (req, res) => {
       return res.status(400).json({ message: "Invalid appointment update type" });
     }
 
+
     await existingAppointment.save();
+
+    io.emit("appointment-updated", existingAppointment);
+    await emitAppointmentStats();
+    await emitWeeklyAppointments();
+    await emitPatientsByAgeGroup();
+
     return res.status(200).json({ message: "Appointment scheduled successfully", appointment: existingAppointment });
   } catch (error) {
     console.error("Error scheduling appointment:", error);
@@ -96,7 +105,6 @@ export const getAppointmentStats = async (req, res) => {
     stats.forEach(stat => {
       result[stat._id] = stat.count;
     });
-
     res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching appointment stats:", error);
@@ -133,7 +141,6 @@ export const getWeeklyAppointments = async (req, res) => {
       const found = appointments.find(a => a._id === day);
       fullWeek.push({ date: day, count: found ? found.count : 0 });
     }
-
     res.status(200).json(fullWeek);
   } catch (error) {
     console.error("Error fetching weekly appointments:", error);

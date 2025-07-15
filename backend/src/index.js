@@ -13,13 +13,12 @@ import { connectDB } from './lib/db.js';
 import cookieParser from 'cookie-parser';
 
 import path from 'path';
+import { app, server } from './lib/socket.js'
 
 dotenv.config();
 
 const __dirname = path.resolve();
 
-
-const app = express()
 const port = process.env.PORT
 
 app.use(cors({
@@ -54,7 +53,7 @@ app.get('/', (req, res) => {
   res.send('server is running');
 })
 
-app.listen(port, () => {
+server.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
   connectDB();
 })

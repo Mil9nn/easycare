@@ -71,7 +71,9 @@ export function MedicalForm() {
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={form.handleSubmit(onSubmit, (errors) => {
+          console.log("❌ Validation errors:", errors);
+        })}
         className="medical-form"
       >
         <section>
