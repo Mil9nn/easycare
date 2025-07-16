@@ -12,9 +12,6 @@ export const transporter = nodemailer.createTransport({
 
 // function to send an email
 export const sendAppointmentEmail = async (appointmentData) => {
-    console.log("Appointment Data:", appointmentData);
-    console.log("user:", process.env.EMAIL_USER);
-    console.log("pass:", process.env.EMAIL_PASS);
 
     const { fullName, email, primaryPhysician, schedule, reason, note } = appointmentData;
 
@@ -63,7 +60,6 @@ export const sendAppointmentEmail = async (appointmentData) => {
 
     try {
         const info = await transporter.sendMail(mailOptions);
-        console.log('📩 Email sent to admin:', info.messageId);
     } catch (error) {
         console.error('❌ Error sending email to admin:', error);
     }
@@ -72,34 +68,31 @@ export const sendAppointmentEmail = async (appointmentData) => {
 
 // function to send appointment confirmation email to patient
 export const sendPatientEmail = async (appointmentData) => {
-    console.log("Sending email to patient:", appointmentData);
-  const { fullName, email, primaryPhysician, schedule, reason, note, status } = appointmentData;
+    const { fullName, email, primaryPhysician, schedule, status } = appointmentData;
 
-  const subject =
-    status === 'scheduled'
-      ? 'Your Appointment has been scheduled'
-      : 'Your Appointment has been cancelled';
+    const subject =
+        status === 'scheduled'
+            ? 'Your Appointment has been scheduled'
+            : 'Your Appointment has been cancelled';
 
-  const message =
-    status === 'scheduled'
-      ? `
+    const message =
+        status === 'scheduled'
+            ? `
       <p>Dear ${fullName},</p>
-      <p>Your appointment with Dr. ${primaryPhysician} has been successfully scheduled for ${formatDateTime(schedule).dateTime}.</p>
-      <p><strong>Reason:</strong> ${reason}</p>
-      <p><strong>Note:</strong> ${note}</p>
+      <p>Your appointment with <strong>${primaryPhysician}</strong> has been successfully scheduled for <strong style="color: indigo">${formatDateTime(schedule).dateTime}</strong>.</p>
       <p>Thank you for choosing Easy Care. We look forward to seeing you!</p>
     `
-      : `
+            : `
       <p>Dear ${fullName},</p>
-      <p>We regret to inform you that your appointment with Dr. ${primaryPhysician} has been <strong>cancelled</strong>.</p>
+      <p>We regret to inform you that your appointment with <strong>${primaryPhysician}</strong> has been <strong style="color: red" >cancelled</strong>.</p>
       <p>If you have any questions or need to reschedule, please contact us.</p>
     `;
 
-  const mailOptions = {
-    from: `"Easy Care App" <${process.env.EMAIL_USER}>`,
-    to: email,
-    subject: subject,
-    html: `
+    const mailOptions = {
+        from: `"Easy Care App" <${process.env.EMAIL_USER}>`,
+        to: email,
+        subject: subject,
+        html: `
       <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; border-radius: 8px;">
         <img src="cid:logo-icon" alt="Easy Care Logo" width="80" style="display: block; margin-bottom: 16px;" />
         ${message}
@@ -107,20 +100,19 @@ export const sendPatientEmail = async (appointmentData) => {
         <p style="font-size: 12px; color: gray;">This is an automated message. Please do not reply.</p>
       </div>
     `,
-    attachments: [
-      {
-        filename: 'logo-icon.png',
-        path: path.resolve('../frontend/public/assets/icons/logo-icon.png'),
-        cid: 'logo-icon',
-        contentDisposition: 'inline',
-      },
-    ],
-  };
+        attachments: [
+            {
+                filename: 'logo-icon.png',
+                path: path.resolve('../frontend/public/assets/icons/logo-icon.png'),
+                cid: 'logo-icon',
+                contentDisposition: 'inline',
+            },
+        ],
+    };
 
-  try {
-    const info = await transporter.sendMail(mailOptions);
-    console.log(`📩 Email sent to patient (${patient.email}): ${info.messageId}`);
-  } catch (error) {
-    console.error('❌ Error sending patient email:', error);
-  }
+    try {
+        const info = await transporter.sendMail(mailOptions);
+    } catch (error) {
+        console.error('❌ Error sending patient email:', error);
+    }
 };

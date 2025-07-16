@@ -4,10 +4,8 @@ import type { Appointment } from "@/types/types";
 import { useAdminStore } from "@/hooks/useAdminStore";
 
 export const setupAppointmentSocketListeners = () => {
-  console.log("Setting up appointment socket listeners");
 
   socket.on("new-appointment", (appointment: Appointment) => {
-    console.log("✅ Received new-appointment in listener", appointment);
     const current = useAppointmentStore.getState().appointments;
 
     // Prevent duplicate by checking ID
