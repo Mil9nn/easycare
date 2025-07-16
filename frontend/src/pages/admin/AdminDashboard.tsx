@@ -37,6 +37,8 @@ const AdminDashboard = () => {
   const percentagePending = dashboardData?.pending ? Number(((dashboardData.pending / (dashboardData.scheduled + dashboardData.pending + dashboardData.cancelled)) * 100).toFixed(1)) : 0;
   const percentageCancelled = dashboardData?.cancelled ? Number(((dashboardData.cancelled / (dashboardData.scheduled + dashboardData.pending + dashboardData.cancelled) * 100)).toFixed(1)) : 0;
 
+  const totalPatients = patientStats?.reduce((acc, group) => acc + group.count, 0);
+
   return (
     <div>
       <p className="text-sm text-gray-600 mt-1 px-5">
@@ -76,7 +78,7 @@ const AdminDashboard = () => {
           <StatCard
             iconSrc="/assets/icons/appointments.svg"
             iconAlt=""
-            count={patientStats?.length || 0}
+            count={totalPatients || 0}
             description="Patients"
             cardBg="bg-gradient-to-r from-green-100 to white"
           />

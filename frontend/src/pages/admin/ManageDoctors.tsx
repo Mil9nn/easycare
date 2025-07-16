@@ -115,7 +115,7 @@ const ManageDoctors = () => {
                   description="Update the doctor's information there."
                   icon={SquarePen}
                   mode="edit"
-                  className="text-emerald-500 flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-105 active:scale-95 duration-400 transtion-transform ease-in-out"
+                  className="text-emerald-500 bg-emerald-100 shadow-md flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-105 active:scale-95 duration-400 transtion-transform ease-in-out"
                   onClick={handleUpdate}
                 />
                 <Dialog
@@ -125,7 +125,7 @@ const ManageDoctors = () => {
                 from our servers."
                   icon={Trash}
                   mode="delete"
-                  className="text-rose-500 flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-105 active:scale-95 duration-400 transtion-transform ease-in-out"
+                  className="text-rose-500 bg-rose-100 shadow-md flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-105 active:scale-95 duration-400 transtion-transform ease-in-out"
                   onClick={handleDelete}
                 />
               </div>

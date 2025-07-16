@@ -1,7 +1,7 @@
 import { Appointment } from "../models/appointment.model.js";
 import { io } from '../lib/socket.js';
 import { emitAppointmentStats, emitPatientsByAgeGroup, emitWeeklyAppointments } from "../helpers/emitStats.js";
-
+import { sendAppointmentEmail } from "../lib/nodemailer.js";
 
 export const createAppointment = async (req, res) => {
   try {
@@ -10,8 +10,10 @@ export const createAppointment = async (req, res) => {
 
     // Populate patient after saving
     const populatedAppointment = (await saved.populate('patient'));
-    console.log("🔴 Emitting new appointment:", populatedAppointment);
     io.emit("new-appointment", populatedAppointment);
+
+    await sendAppointmentEmail(populatedAppointment);
+
     res.status(201).json(populatedAppointment);
 
     await emitAppointmentStats();

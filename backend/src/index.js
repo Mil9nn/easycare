@@ -36,7 +36,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/chatbot', chatBotRoutes);
 app.use("/api/doctor", doctorRoutes);
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV !== 'development') {
   app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
   // Named Wildcard to match all routes (Express wildcard syntax)

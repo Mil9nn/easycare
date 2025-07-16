@@ -1,13 +1,20 @@
 import { axiosInstance } from "@/lib/axios";
 import type { Appointment } from "@/types/types";
+import { isAxiosError } from "axios";
+import toast from "react-hot-toast";
 import { create } from "zustand";
 
 interface AppointmentStore {
   appointment: Appointment | null;
   appointments: Appointment[] | [];
-  createAppointment: (appointmentData: CreateAppointmentParams, navigate: (path: string) => void) => Promise<Appointment | undefined>;
+  createAppointment: (
+    appointmentData: CreateAppointmentParams,
+    navigate: (path: string) => void
+  ) => Promise<Appointment | undefined>;
   getAppointment: (appointmentId: string) => Promise<void>;
-  updateAppointment: (appointmentData: UpdateAppointmentParams) => Promise<Appointment | undefined>;
+  updateAppointment: (
+    appointmentData: UpdateAppointmentParams
+  ) => Promise<Appointment | undefined>;
   getAllAppointments: () => Promise<void>;
 }
 
@@ -17,25 +24,33 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
 
   createAppointment: async (appointmentData, navigate) => {
     try {
-      const response = await axiosInstance.post("/appointment", appointmentData);
+      const response = await axiosInstance.post(
+        "/appointment",
+        appointmentData
+      );
       if (response.status === 201) {
         set({ appointment: response.data });
         navigate(`/success/${response.data?._id}`);
         return response.data;
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error creating appointment:", error);
-      throw error;
+      if (isAxiosError(error)) {
+        toast.error(
+          error.response?.data?.message || "Failed to create appointment"
+        );
+        throw error;
+      }
     }
   },
 
   getAppointment: async (appointmentId) => {
     try {
       const response = await axiosInstance.get(`/appointment/${appointmentId}`);
-        if (response.status === 200) {
+      if (response.status === 200) {
         const appointment = response.data;
         set({ appointment });
-        }
+      }
     } catch (error) {
       console.error("Error fetching appointment:", error);
       throw error;
@@ -44,7 +59,10 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
 
   updateAppointment: async (appointmentData) => {
     try {
-      const response = await axiosInstance.put('/admin/appointment/schedule', appointmentData);
+      const response = await axiosInstance.put(
+        "/admin/appointment/schedule",
+        appointmentData
+      );
       if (response.status === 200) {
         return response.data.appointment;
       }
@@ -58,7 +76,7 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
     try {
       const response = await axiosInstance.get("/appointment");
       if (response.status === 200) {
-        set ({ appointments: response.data });
+        set({ appointments: response.data });
       }
     } catch (error) {
       console.error("Error fetching appointments:", error);

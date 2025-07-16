@@ -16,7 +16,7 @@ export const getColumns = (doctors: CreateDoctorParams[]): ColumnDef<Appointment
     accessorKey: "patient",
     header: "Patient",
     cell: ({ row }) => (
-      <p className="text-sm">{row.original.patient.fullName}</p>
+      <p className="text-sm">{row.original.patient?.fullName}</p>
     ),
   },
   {
@@ -24,7 +24,7 @@ export const getColumns = (doctors: CreateDoctorParams[]): ColumnDef<Appointment
     header: "Date",
     cell: ({ row }) => (
       <p className="text-sm">
-        {formatDateTime(row.original.schedule).dateTime}
+        {formatDateTime(row.original.schedule)?.dateTime}
       </p>
     ),
   },
@@ -55,8 +55,8 @@ export const getColumns = (doctors: CreateDoctorParams[]): ColumnDef<Appointment
     cell: ({ row: { original: data } }) => {
       return (
         <div className="flex items-center gap-3 justify-center">
-            <AppointmentModal type="schedule" title="Schedule appointment" description="Please fill in the following details to continue" appointment={data} userId={data.userId} patientId={data.patient._id} />
-            <AppointmentModal type="cancel" title="Cancel appointment" description="Are you sure you want to cancel this appointment" appointment={data} userId={data.userId} patientId={data.patient._id} />
+            <AppointmentModal type="schedule" title="Schedule appointment" description="Please fill in the following details to continue" appointment={data} userId={data.userId} patientId={data.patient?._id} />
+            <AppointmentModal type="cancel" title="Cancel appointment" description="Are you sure you want to cancel this appointment" appointment={data} userId={data.userId} patientId={data.patient?._id} />
         </div>
       );
     },
