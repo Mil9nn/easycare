@@ -4,6 +4,7 @@ import moment from "moment";
 import { Patient } from "../models/patient.model.js";
 import { io } from "../lib/socket.js";
 import { emitAppointmentStats, emitPatientsByAgeGroup, emitWeeklyAppointments } from "../helpers/emitStats.js";
+import { sendPatientEmail } from "../lib/nodemailer.js";
 
 export const verifyAdminOtp = async (req, res) => {
   try {
@@ -78,6 +79,17 @@ export const scheduleAppointment = async (req, res) => {
     await emitAppointmentStats();
     await emitWeeklyAppointments();
     await emitPatientsByAgeGroup();
+
+    // Send email to patient
+    await sendPatientEmail({
+      fullName: populatedAppointment.patient.fullName,
+      email: populatedAppointment.patient.email,
+      primaryPhysician: populatedAppointment.primaryPhysician,
+      schedule: populatedAppointment.schedule,
+      reason: populatedAppointment.reason,
+      note: populatedAppointment.note,
+      status: populatedAppointment.status,
+    });
 
     return res.status(200).json({ message: "Appointment scheduled successfully", appointment: existingAppointment });
   } catch (error) {

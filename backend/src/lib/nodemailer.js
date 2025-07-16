@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import { formatDateTime } from '../helpers/utils.js';
+import path from 'path';
 
 export const transporter = nodemailer.createTransport({
     service: 'gmail',
@@ -15,24 +16,24 @@ export const sendAppointmentEmail = async (appointmentData) => {
     console.log("user:", process.env.EMAIL_USER);
     console.log("pass:", process.env.EMAIL_PASS);
 
+    const { fullName, email, primaryPhysician, schedule, reason, note } = appointmentData;
+
     const mailOptions = {
         from: `"Easy Care App" <${process.env.EMAIL_USER}>`,
         to: process.env.ADMIN_EMAIL,
         subject: 'New Appointment Request',
         html: `
             <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; border-radius: 8px;">
-                <h2 style="color: #111827;">
-                <img src="cid:logo" alt="Easycare logo" />
-                📅
-                New Appointment Request</h2>
+                <img src="cid:logo-icon" alt="Easy Care Logo" width="80" style="display: block; margin-bottom: 16px;" />
                 
-                <p><strong>Patient:</strong> ${appointmentData.patient.fullName}</p>
-                <p><strong>Email:</strong> ${appointmentData.patient.email}</p>
-                <p><strong>Doctor:</strong> ${appointmentData.primaryPhysician}</p>
-                <p><strong>Date:</strong> ${formatDateTime(appointmentData.schedule).dateTime}</p>
-                <p><strong>Note:</strong> ${appointmentData.note || 'No additional notes provided'}</p>
-                <p><strong>Reason:</strong> ${appointmentData.reason}</p>
-
+                <h2 style="color: #111827;">📅 New Appointment Request</h2>
+                
+                <p><strong>Patient:</strong> ${fullName}</p>
+                <p><strong>Email:</strong> ${email}</p>
+                <p><strong>Doctor:</strong> ${primaryPhysician}</p>
+                <p><strong>Date:</strong> ${formatDateTime(schedule).dateTime}</p>
+                <p><strong>Reason:</strong> ${reason}</p>
+                <p><strong>Note:</strong> ${note || 'No additional notes provided'}</p>
 
                 <hr style="margin: 20px 0;" />
 
@@ -49,20 +50,77 @@ export const sendAppointmentEmail = async (appointmentData) => {
                     This is an automated message from Easy Care. Please do not reply.
                 </p>
             </div>
-            `,
+        `,
         attachments: [
             {
-                filename: 'logo-icon.svg',
-                path: './assets/icons/logo-icon.svg',
-                cid: 'logo'
+                filename: 'logo-icon.png',
+                path: path.resolve('../frontend/public/assets/icons/logo-icon.png'),
+                cid: 'logo-icon',
+                contentDisposition: 'inline'
             }
         ]
     };
 
     try {
         const info = await transporter.sendMail(mailOptions);
-        console.log('Email sent:', info.messageId);
+        console.log('📩 Email sent to admin:', info.messageId);
     } catch (error) {
-        console.error('❌ Error sending email:', error);
+        console.error('❌ Error sending email to admin:', error);
     }
-}
+};
+
+
+// function to send appointment confirmation email to patient
+export const sendPatientEmail = async (appointmentData) => {
+    console.log("Sending email to patient:", appointmentData);
+  const { fullName, email, primaryPhysician, schedule, reason, note, status } = appointmentData;
+
+  const subject =
+    status === 'scheduled'
+      ? 'Your Appointment has been scheduled'
+      : 'Your Appointment has been cancelled';
+
+  const message =
+    status === 'scheduled'
+      ? `
+      <p>Dear ${fullName},</p>
+      <p>Your appointment with Dr. ${primaryPhysician} has been successfully scheduled for ${formatDateTime(schedule).dateTime}.</p>
+      <p><strong>Reason:</strong> ${reason}</p>
+      <p><strong>Note:</strong> ${note}</p>
+      <p>Thank you for choosing Easy Care. We look forward to seeing you!</p>
+    `
+      : `
+      <p>Dear ${fullName},</p>
+      <p>We regret to inform you that your appointment with Dr. ${primaryPhysician} has been <strong>cancelled</strong>.</p>
+      <p>If you have any questions or need to reschedule, please contact us.</p>
+    `;
+
+  const mailOptions = {
+    from: `"Easy Care App" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: subject,
+    html: `
+      <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; border-radius: 8px;">
+        <img src="cid:logo-icon" alt="Easy Care Logo" width="80" style="display: block; margin-bottom: 16px;" />
+        ${message}
+        <hr style="margin: 20px 0;" />
+        <p style="font-size: 12px; color: gray;">This is an automated message. Please do not reply.</p>
+      </div>
+    `,
+    attachments: [
+      {
+        filename: 'logo-icon.png',
+        path: path.resolve('../frontend/public/assets/icons/logo-icon.png'),
+        cid: 'logo-icon',
+        contentDisposition: 'inline',
+      },
+    ],
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log(`📩 Email sent to patient (${patient.email}): ${info.messageId}`);
+  } catch (error) {
+    console.error('❌ Error sending patient email:', error);
+  }
+};

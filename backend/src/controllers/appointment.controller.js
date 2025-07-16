@@ -12,7 +12,14 @@ export const createAppointment = async (req, res) => {
     const populatedAppointment = (await saved.populate('patient'));
     io.emit("new-appointment", populatedAppointment);
 
-    await sendAppointmentEmail(populatedAppointment);
+    await sendAppointmentEmail({
+      fullName: populatedAppointment.patient.fullName,
+      email: populatedAppointment.patient.email,
+      primaryPhysician: populatedAppointment.primaryPhysician,
+      schedule: populatedAppointment.schedule,
+      reason: populatedAppointment.reason,
+      note: populatedAppointment.note,
+    })
 
     res.status(201).json(populatedAppointment);
 
