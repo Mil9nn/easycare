@@ -97,7 +97,7 @@
 
 .signup-page {
   @apply fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-fit space-y-5
-  max-w-sm mx-auto mt-10 bg-white/80 backdrop-blur-md xs:rounded-2xl shadow-lg p-8 border border-gray-200
+  max-w-sm mx-auto mt-10 bg-white backdrop-blur-md xs:rounded-2xl shadow-lg p-8 border border-gray-200
 }
 
 .medical-form {
@@ -370,6 +370,6 @@
 
 /* sidebar patient details */
 .patient-details {
-  @apply w-full h-full mx-auto p-5 space-y-4 max-w-sm overflow-y-auto bg-white backdrop-blur-md shadow-lg border border-gray-200 rounded-lg;
+  @apply w-full h-full mx-auto p-5 space-y-4 max-w-sm overflow-y-auto bg-white backdrop-blur-md shadow-lg border border-gray-200;
 }
 

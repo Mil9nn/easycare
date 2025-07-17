@@ -32,7 +32,7 @@ export const getColumns = (doctors: CreateDoctorParams[]): ColumnDef<Appointment
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => {
-      return <StatusBadge status={row.original.status} className="" />;
+      return <StatusBadge status={row.original.status} className="shadow-md w-[100px]" />;
     },
   },
   {

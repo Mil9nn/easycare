@@ -42,7 +42,7 @@ const Patient = () => {
     return (
       <div className="flex items-center justify-center h-full">
         <Loader className="animate-spin text-gray-500" size={24} />
-        <span className="ml-2 text-gray-500">Loading patient details...</span>
+        <span className="ml-2 text-gray-500">please hold on...</span>
       </div>
     )
   }
@@ -61,10 +61,9 @@ const Patient = () => {
           />
         </div>
         <header className="space-y-2">
-          <h1 className="text-xl font-bold text-gray-800">Patient Details</h1>
+          <h1 className="text-xl font-bold text-primary-text tracking-wide">Patient Details</h1>
           <p className="text-sm text-gray-500">
-            View patient details, including personal information, medical
-            history, and appointment history.
+            Patient details, including personal information and medical history
           </p>
         </header>
 
