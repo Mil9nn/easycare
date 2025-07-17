@@ -11,6 +11,7 @@ export type NavbarProps = {
   isPatient: boolean;
   handleLogout: () => void;
   setMenuOpen?: (open: boolean) => void;
+  patientId?: string;
 }
 
 const Navbar = () => {
@@ -19,6 +20,8 @@ const Navbar = () => {
   const logout = useAuthStore((state) => state.logout);
   const patient = useFormStore((state) => state.patient);
   const setPatient = useFormStore((state) => state.setPatient);
+
+  const patientId = useFormStore((state) => state.patient?._id);
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -45,6 +48,7 @@ const Navbar = () => {
             isLoggedIn={isLoggedIn}
             isPatient={isPatient}
             handleLogout={handleLogout}
+            patientId={patientId}
           />
 
           {!menuOpen && (
@@ -67,6 +71,7 @@ const Navbar = () => {
           isPatient={isPatient}
           handleLogout={handleLogout}
           setMenuOpen={setMenuOpen}
+          patientId={patientId}
         />
       </div>
     </div>

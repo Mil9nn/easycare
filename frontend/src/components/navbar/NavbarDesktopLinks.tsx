@@ -16,6 +16,7 @@ const NavbarDesktopLinks = ({
   isLoggedIn,
   isPatient,
   handleLogout,
+  patientId,
 }: NavbarProps) => {
   const location = useLocation();
   const containerRef = useRef<HTMLDivElement>(null);
@@ -49,6 +50,13 @@ const NavbarDesktopLinks = ({
         name: "Book appointment",
         path: "/book-appointment",
         icon: CalendarPlus,
+        show: isLoggedIn && isPatient,
+        className: "hidden md:flex",
+      },
+      {
+        name: "Appointment history",
+        path: `/appointments/${patientId}`,
+        icon: ClipboardList,
         show: isLoggedIn && isPatient,
         className: "hidden md:flex",
       },

@@ -43,6 +43,9 @@ interface AdminStore {
   isUpdatingDoctor: boolean;
   isCheckingAdmin: boolean;
   updateDoctorStatus: (doctor: CreateDoctorParams) => Promise<void>;
+
+  menuOpen: boolean;
+  setMenuOpen: (menuOpen: boolean) => void;
 }
 
 export const useAdminStore = create<AdminStore>((set) => ({
@@ -58,6 +61,9 @@ export const useAdminStore = create<AdminStore>((set) => ({
   isLoading: false,
   isUpdatingDoctor: false,
   isCheckingAdmin: false,
+
+  menuOpen: false,
+  setMenuOpen: (menuOpen: boolean) => set({ menuOpen }),
 
   checkAdmin: async () => {
     set({ isCheckingAdmin: true });

@@ -72,7 +72,9 @@ export function MedicalForm() {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit, (errors) => {
-          console.log("❌ Validation errors:", errors);
+          if (process.env.NODE_ENV === "development") {
+            console.error("Form submission errors:", errors);
+          }
         })}
         className="medical-form"
       >

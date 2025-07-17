@@ -28,6 +28,8 @@ import AdminPage from "./pages/admin/AdminPage";
 import ScrollToTop from "./components/ScrolltoTop";
 import { socket } from "./lib/socket";
 import { setupAppointmentSocketListeners } from "./lib/setupAppointmentSocketListener";
+import AppointmentHistory from "./components/AppointmentHistory";
+import Patient from "./components/Patient";
 
 const SocketManager = () => {
 
@@ -37,11 +39,15 @@ const SocketManager = () => {
     }
 
     socket.on("connect", () => {
-      console.log("✅ Connected to socket:", socket.id);
+      if (process.env.NODE_ENV === "development") {
+        console.log("✅ Socket connected:", socket.id);
+      }
     });
 
     socket.on("disconnect", (reason) => {
-      console.log("❌ Socket disconnected:", reason);
+      if (process.env.NODE_ENV === "development") {
+        console.log("❌ Socket disconnected:", reason);
+      }
     });
 
     return () => {
@@ -142,6 +148,7 @@ function App() {
               </PatientRoute>
             }
           />
+          <Route path="/appointments/:patientId" element={<AppointmentHistory />} />
           <Route
             path="/admin"
             element={<AdminPage />}
@@ -156,7 +163,9 @@ function App() {
                 <AdminDashboard />
               </AdminRoute>
             }
-          />
+          >
+            <Route path="patient/:patientId" element={<Patient />} />
+          </Route>
           <Route
             path="/admin/add-doctor"
             element={

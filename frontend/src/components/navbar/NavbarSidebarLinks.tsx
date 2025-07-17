@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import { CalendarPlus, ClipboardList, LogOut, Stethoscope } from "lucide-react";
+import { CalendarPlus, ClipboardIcon, ClipboardList, LogOut, Stethoscope } from "lucide-react";
 import type { NavbarProps } from "./Navbar";
 
 const NavbarSidebarLinks = ({
@@ -7,7 +7,9 @@ const NavbarSidebarLinks = ({
   isPatient,
   handleLogout,
   setMenuOpen,
+  patientId,
 }: NavbarProps) => {
+
   return (
     <div className="flex flex-col gap-2">
       {isLoggedIn && isPatient && (
@@ -37,6 +39,21 @@ const NavbarSidebarLinks = ({
         >
           <CalendarPlus className="size-5" />
           Book appointment
+        </NavLink>
+      )}
+
+      {isLoggedIn && isPatient && (
+        <NavLink
+          to={`/appointments/${patientId}`}
+          onClick={() => setMenuOpen?.(false)}
+          className={({ isActive }) =>
+            `sidebar-nav-link flex ${
+              isActive ? "text-indigo-500" : "text-primary-text"
+            }`
+          }
+        >
+          <ClipboardIcon className="size-5" />
+          Appointment history
         </NavLink>
       )}
 

@@ -4,6 +4,7 @@ import {
   getPaginationRowModel,
   getCoreRowModel,
   useReactTable,
+  type Row,
 } from "@tanstack/react-table";
 
 import {
@@ -16,13 +17,16 @@ import {
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+import { useAdminStore } from "@/hooks/useAdminStore";
+import type { Appointment } from "@/types/types";
 
-interface DataTableProps<TData, TValue> {
+interface DataTableProps<TData extends Appointment, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
 }
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData extends Appointment, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
@@ -32,6 +36,14 @@ export function DataTable<TData, TValue>({
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
   });
+
+  const navigate = useNavigate();
+  const setMenuOpen = useAdminStore((state) => state.setMenuOpen);
+
+  const handleClick = (row: Row<Appointment>) => {
+    navigate(`patient/${row.original._id}`);
+    setMenuOpen(true);
+  }
 
   return (
     <div>
@@ -59,6 +71,7 @@ export function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  onClick={() => { handleClick(row) }}
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   className="table-row"

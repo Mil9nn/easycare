@@ -308,7 +308,7 @@
 }
 
 .table-row {
-  @apply border-b border-gray-300 hover:bg-gray-50 transition-colors duration-200;
+  @apply border-b border-gray-300 hover:bg-gray-200 cursor-pointer transition-colors duration-200;
 }
 
 /*****************************************/
@@ -364,4 +364,12 @@
   @apply w-35;
 }
 
+.appointment-item {
+  @apply grid grid-cols-[50px_repeat(5,_1fr)] max-w-5xl mx-auto items-center justify-between p-3 rounded shadow-sm hover:shadow-md transition-shadow duration-200;
+}
+
+/* sidebar patient details */
+.patient-details {
+  @apply w-full h-full mx-auto p-5 space-y-4 max-w-sm overflow-y-auto bg-white backdrop-blur-md shadow-lg border border-gray-200 rounded-lg;
+}
 

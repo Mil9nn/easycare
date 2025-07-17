@@ -7,6 +7,7 @@ import { create } from "zustand";
 interface AppointmentStore {
   appointment: Appointment | null;
   appointments: Appointment[] | [];
+  patientAppointments: Appointment[] | [];
   createAppointment: (
     appointmentData: CreateAppointmentParams,
     navigate: (path: string) => void
@@ -16,11 +17,17 @@ interface AppointmentStore {
     appointmentData: UpdateAppointmentParams
   ) => Promise<Appointment | undefined>;
   getAllAppointments: () => Promise<void>;
+  getAllAppointmentsByPatient: (
+    patientId: string
+  ) => Promise<void>;
+  isLoading: boolean;
 }
 
 export const useAppointmentStore = create<AppointmentStore>((set) => ({
   appointment: null,
   appointments: [],
+  patientAppointments: [],
+  isLoading: false,
 
   createAppointment: async (appointmentData, navigate) => {
     try {
@@ -45,6 +52,7 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
   },
 
   getAppointment: async (appointmentId) => {
+    set({ isLoading: true });
     try {
       const response = await axiosInstance.get(`/appointment/${appointmentId}`);
       if (response.status === 200) {
@@ -54,6 +62,8 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
     } catch (error) {
       console.error("Error fetching appointment:", error);
       throw error;
+    } finally {
+      set({ isLoading: false });
     }
   },
 
@@ -83,4 +93,15 @@ export const useAppointmentStore = create<AppointmentStore>((set) => ({
       throw error;
     }
   },
+
+  getAllAppointmentsByPatient: async (patientId) => {
+    try {
+      const response = await axiosInstance.get(`/appointment/patient/${patientId}`);
+      if (response.status === 200) {
+        set({ patientAppointments: response.data });
+      }
+    } catch (error) {
+      console.error("Error fetching patient appointments:", error);
+    }
+  }
 }));

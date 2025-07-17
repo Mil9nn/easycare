@@ -6,6 +6,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { useAppointmentStore } from "@/hooks/useAppointmentStore";
 import { useEffect } from "react";
+import { Outlet } from "react-router-dom";
 
 const AdminDashboard = () => {
 
@@ -40,7 +41,10 @@ const AdminDashboard = () => {
   const totalPatients = patientStats?.reduce((acc, group) => acc + group.count, 0);
 
   return (
-    <div>
+    <div className="relative">
+      <div>
+        <Outlet />
+      </div>
       <p className="text-sm text-gray-600 mt-1 px-5">
         Monitor and manage all patient appointments and system activity. Use the
         analytics below to stay on top of pending tasks and overall system

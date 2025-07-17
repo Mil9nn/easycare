@@ -11,7 +11,30 @@ const patients = [
     fullName: "Alice Johnson",
     email: "alice.johnson@example.com",
     phone: "+1234567890",
-    birthDate: new Date("2010-01-01")
+    birthDate: new Date("2010-01-01"),
+    gender: "Female",
+    address: "123 Main St, Springfield, IL 62701",
+    occupation: "Student",
+    emergencyContactName: "Sarah Johnson",
+    emergencyContactNumber: "+1234567950",
+    primaryPhysician: "Dr. Michael Brown",
+    insuranceProvider: "Blue Cross Blue Shield",
+    insurancePolicyNumber: "BC123456789",
+    allergies: "Peanuts, Shellfish",
+    currentMedication: "Children's Tylenol as needed",
+    familyMedicalHistory: "Grandmother had diabetes",
+    pastMedicalHistory: "Appendectomy at age 8",
+    identificationType: "Birth Certificate",
+    identificationNumber: "BC2010001",
+    identificationDocument: {
+      fileName: "alice_birth_certificate.pdf",
+      fileUrl: "https://storage.example.com/documents/alice_birth_certificate.pdf",
+    },
+    consents: {
+      treatmentConsent: true,
+      disclosureConsent: true,
+      privacyConsent: true,
+    },
   },
   {
     _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f1b"),
@@ -19,7 +42,30 @@ const patients = [
     fullName: "Michael Smith",
     email: "michael.smith@example.com",
     phone: "+1234567891",
-    birthDate: new Date("1988-05-10")
+    birthDate: new Date("1988-05-10"),
+    gender: "Male",
+    address: "456 Oak Ave, Chicago, IL 60601",
+    occupation: "Software Engineer",
+    emergencyContactName: "Jennifer Smith",
+    emergencyContactNumber: "+1234567951",
+    primaryPhysician: "Dr. Lisa Davis",
+    insuranceProvider: "Aetna",
+    insurancePolicyNumber: "AE987654321",
+    allergies: "None known",
+    currentMedication: "Multivitamin daily",
+    familyMedicalHistory: "Father had heart disease",
+    pastMedicalHistory: "Broken arm at age 12",
+    identificationType: "Driver's License",
+    identificationNumber: "DL88051012",
+    identificationDocument: {
+      fileName: "michael_drivers_license.pdf",
+      fileUrl: "https://storage.example.com/documents/michael_drivers_license.pdf",
+    },
+    consents: {
+      treatmentConsent: true,
+      disclosureConsent: false,
+      privacyConsent: true,
+    },
   },
   {
     _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f1c"),
@@ -27,7 +73,30 @@ const patients = [
     fullName: "Emily Davis",
     email: "emily.davis@example.com",
     phone: "+1234567892",
-    birthDate: new Date("2005-03-15")
+    birthDate: new Date("2005-03-15"),
+    gender: "Female",
+    address: "789 Pine Rd, Dallas, TX 75201",
+    occupation: "High School Student",
+    emergencyContactName: "Robert Davis",
+    emergencyContactNumber: "+1234567952",
+    primaryPhysician: "Dr. Amanda Wilson",
+    insuranceProvider: "Cigna",
+    insurancePolicyNumber: "CI456789123",
+    allergies: "Penicillin",
+    currentMedication: "Albuterol inhaler",
+    familyMedicalHistory: "Mother has asthma",
+    pastMedicalHistory: "Asthma diagnosis at age 6",
+    identificationType: "School ID",
+    identificationNumber: "SCH2005315",
+    identificationDocument: {
+      fileName: "emily_school_id.pdf",
+      fileUrl: "https://storage.example.com/documents/emily_school_id.pdf",
+    },
+    consents: {
+      treatmentConsent: true,
+      disclosureConsent: true,
+      privacyConsent: true,
+    },
   },
   {
     _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f1d"),
@@ -35,7 +104,30 @@ const patients = [
     fullName: "James Wilson",
     email: "james.wilson@example.com",
     phone: "+1234567893",
-    birthDate: new Date("1985-07-22")
+    birthDate: new Date("1985-07-22"),
+    gender: "Male",
+    address: "321 Elm St, Phoenix, AZ 85001",
+    occupation: "Marketing Manager",
+    emergencyContactName: "Patricia Wilson",
+    emergencyContactNumber: "+1234567953",
+    primaryPhysician: "Dr. Kevin Anderson",
+    insuranceProvider: "United Healthcare",
+    insurancePolicyNumber: "UH789123456",
+    allergies: "Cats, Dust mites",
+    currentMedication: "Claritin daily",
+    familyMedicalHistory: "Uncle had cancer",
+    pastMedicalHistory: "Knee surgery in 2015",
+    identificationType: "Passport",
+    identificationNumber: "PP85072201",
+    identificationDocument: {
+      fileName: "james_passport.pdf",
+      fileUrl: "https://storage.example.com/documents/james_passport.pdf",
+    },
+    consents: {
+      treatmentConsent: true,
+      disclosureConsent: true,
+      privacyConsent: false,
+    },
   },
   {
     _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f1e"),
@@ -43,128 +135,26 @@ const patients = [
     fullName: "Olivia Brown",
     email: "olivia.brown@example.com",
     phone: "+1234567894",
-    birthDate: new Date("1993-09-12")
+    birthDate: new Date("1993-09-12"),
+    gender: "Female",
+    address: "654 Maple Dr, Miami, FL 33101",
+    occupation: "Nurse",
+    emergencyContactName: "David Brown",
+    emergencyContactNumber: "+1234567954",
+    primaryPhysician: "Dr. Sarah Martinez",
+    insuranceProvider: "Humana",
+    insurancePolicyNumber: "HU321654987",
+    allergies: "Latex",
+    currentMedication: "Birth control pills",
+    familyMedicalHistory: "Sister has thyroid issues",
+    pastMedicalHistory: "Wisdom teeth removal",
+    identificationType: "Driver's License",
+    identificationNumber: "DL93091201",
+    identificationDocument: {
+      fileName: "olivia_drivers_license.pdf",
+      fileUrl: "https://storage.example.com/documents/olivia_drivers_license.pdf",
+    },
   },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f1f"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "William Taylor",
-    email: "william.taylor@example.com",
-    phone: "+1234567895",
-    birthDate: new Date("1991-11-30")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f10"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Sophia Anderson",
-    email: "sophia.anderson@example.com",
-    phone: "+1234567896",
-    birthDate: new Date("1995-04-25")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f11"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Daniel Martinez",
-    email: "daniel.martinez@example.com",
-    phone: "+1234567897",
-    birthDate: new Date("1989-02-20")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f12"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Charlotte Lee",
-    email: "charlotte.lee@example.com",
-    phone: "+1234567898",
-    birthDate: new Date("1996-06-05")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f13"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Benjamin Harris",
-    email: "benjamin.harris@example.com",
-    phone: "+1234567899",
-    birthDate: new Date("1987-08-08")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f14"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Amelia Walker",
-    email: "amelia.walker@example.com",
-    phone: "+1234567800",
-    birthDate: new Date("1994-12-18")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f15"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Henry Lewis",
-    email: "henry.lewis@example.com",
-    phone: "+1234567801",
-    birthDate: new Date("1986-10-03")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f16"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Grace Young",
-    email: "grace.young@example.com",
-    phone: "+1234567802",
-    birthDate: new Date("1997-01-27")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f17"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Logan Scott",
-    email: "logan.scott@example.com",
-    phone: "+1234567803",
-    birthDate: new Date("1990-09-14")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f18"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Zoe King",
-    email: "zoe.king@example.com",
-    phone: "+1234567804",
-    birthDate: new Date("1998-03-09")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f19"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Ethan Wright",
-    email: "ethan.wright@example.com",
-    phone: "+1234567805",
-    birthDate: new Date("1984-07-29")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f20"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Lily Adams",
-    email: "lily.adams@example.com",
-    phone: "+1234567806",
-    birthDate: new Date("1991-05-13")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f21"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Matthew Carter",
-    email: "matthew.carter@example.com",
-    phone: "+1234567807",
-    birthDate: new Date("1982-11-11")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f22"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Ava Perez",
-    email: "ava.perez@example.com",
-    phone: "+1234567808",
-    birthDate: new Date("1993-04-02")
-  },
-  {
-    _id: new mongoose.Types.ObjectId("60c72b2f9b1d8c001c8e4f23"),
-    user: new mongoose.Types.ObjectId(),
-    fullName: "Noah Ramirez",
-    email: "noah.ramirez@example.com",
-    phone: "+1234567809",
-    birthDate: new Date("1960-12-25")
-  }
 ];
 
 const seedPatients = async () => {
