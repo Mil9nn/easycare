@@ -1,5 +1,5 @@
 
-import DoctorCard from "@/components/DoctorCard";
+import DoctorCard from "@/components/doctor/DoctorCard";
 import { Button } from "@/components/ui/button";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { useAuthStore } from "@/hooks/useAuthStore";

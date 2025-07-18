@@ -4,12 +4,12 @@ import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import CustomFormField from "./CustomFormField";
+import CustomFormField from "../custom/CustomFormField";
 
 import { Lock, LockOpen, Mail, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/hooks/useAuthStore";
-import SubmitButton from "./SubmitButton";
+import SubmitButton from "../SubmitButton";
 import { FormFieldType, UserFormValidation } from "@/lib/validation";
 
 export function SignupPage() {

@@ -1,5 +1,5 @@
 import Chatbot from "@/components/chat/Chatbot";
-import DoctorCard from "@/components/DoctorCard";
+import DoctorCard from "@/components/doctor/DoctorCard";
 import SpecializationButton from "@/components/SpecializationButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useAdminStore } from "@/hooks/useAdminStore";

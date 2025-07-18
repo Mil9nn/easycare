@@ -1,4 +1,4 @@
-import { Dialog } from "@/components/Dialog";
+import { Dialog } from "@/components/custom/Dialog";
 import { ToggleSwitch } from "@/components/ToggleSwitch";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { Loader, SquarePen, Trash } from "lucide-react";

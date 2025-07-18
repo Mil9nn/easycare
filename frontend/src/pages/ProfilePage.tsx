@@ -1,4 +1,4 @@
-import CustomProfileCard from "@/components/CustomProfileCard";
+import CustomProfileCard from "@/components/custom/CustomProfileCard";
 import { useFormStore } from "@/hooks/useFormStore";
 import { formatDateTime } from "@/lib/utils";
 import { FormFieldType } from "@/lib/validation";

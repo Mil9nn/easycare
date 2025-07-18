@@ -1,7 +1,15 @@
 import { useAppointmentStore } from "@/hooks/useAppointmentStore";
+import type { PatientFormData } from "@/lib/validation";
 import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+
+type FullPatient = PatientFormData & {
+    identificationDocument?: {
+      fileUrl: string;
+      fileName: string;
+    };
+  }
 
 const Patient = () => {
   const { patientId } = useParams<{ patientId: string }>();
@@ -17,8 +25,8 @@ const Patient = () => {
 
   type CustomFieldProps = {
     title: string;
-    content: string | number | undefined;
     className?: string;
+    content?: string | null;
   };
 
   const CustomField = ({ title, content, className = "" }: CustomFieldProps) => (
@@ -30,7 +38,7 @@ const Patient = () => {
     </div>
   );
 
-  const patient = appointment?.patient;
+  const patient = appointment?.patient as unknown as FullPatient;
   const isLoading = useAppointmentStore((state) => state.isLoading);
 
   if (isLoading) {
@@ -71,7 +79,7 @@ const Patient = () => {
               <CustomField title="Full Name" content={patient?.fullName} />
               <CustomField title="Email" content={patient?.email} />
               <CustomField title="Phone" content={patient?.phone} />
-              <CustomField title="Birth Date" content={patient?.birthDate} />
+              <CustomField title="Birth Date" content={patient?.birthDate.toLocaleString()} />
               <CustomField title="Address" content={patient?.address} />
               <CustomField title="Gender" content={patient?.gender} />
             </section>
@@ -108,7 +116,26 @@ const Patient = () => {
               />
               <CustomField title="Insurance Provider" content={patient?.insuranceProvider} />
               <CustomField title="Policy Number" content={patient?.insurancePolicyNumber} />
+            </section>
+
+            {/* Showing the identify document patient shared with the clinic */}
+            <section className="bg-gray-50 p-6 rounded-xl col-span-full">
+              <h2 className="text-xl font-semibold text-gray-700 mb-6 pb-2 border-b border-gray-200">
+                Identification Document
+              </h2>
+              {/* identification type */}
               <CustomField title="ID Type" content={patient?.identificationType} />
+              {patient?.identificationDocument ? (
+                <div className="flex items-center justify-center">
+                  <img
+                    src={patient.identificationDocument.fileUrl}
+                    alt="Patient Identification Document"
+                    className="max-w-full h-auto rounded-lg shadow-md"
+                  />
+                </div>
+              ) : (
+                <p className="text-gray-400">No identification document provided.</p>
+              )}
             </section>
           </div>
         </div>

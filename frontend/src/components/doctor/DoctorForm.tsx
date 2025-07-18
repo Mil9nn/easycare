@@ -2,20 +2,20 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { Form, FormControl } from "@/components/ui/form";
-import CustomFormField from "./CustomFormField";
+import CustomFormField from "../custom/CustomFormField";
 import { FormFieldType } from "@/lib/validation";
 import { Stethoscope } from "lucide-react";
-import { availableDays, Specializations } from "./form/constants";
-import { SelectItem } from "./ui/select";
-import { Label } from "./ui/label";
+import { availableDays, Specializations } from "../form/constants";
+import { SelectItem } from "../ui/select";
+import { Label } from "../ui/label";
 import dayjs from "dayjs";
 import { TimePicker } from "@mui/x-date-pickers";
-import SubmitButton from "./SubmitButton";
-import FileUploader from "./FileUploader";
+import SubmitButton from "../SubmitButton";
+import FileUploader from "../FileUploader";
 import { useAdminStore } from "@/hooks/useAdminStore";
 
 import { doctorSchema } from "@/lib/validation";
-import { Checkbox } from "./ui/checkbox";
+import { Checkbox } from "../ui/checkbox";
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 

@@ -1,4 +1,5 @@
 import { Patient } from "../models/patient.model.js";
+import cloudinary from '../lib/cloudinary.js';
 
 export const createPatient = async (req, res) => {
     try {
@@ -10,32 +11,22 @@ export const createPatient = async (req, res) => {
             return res.status(400).json({ message: "Patient already exists for this user" });
         }
 
-        const {
-            fullName,
-            email,
-            phone,
-            birthDate,
-            gender,
-            address,
-            occupation,
-            emergencyContactName,
-            emergencyContactNumber,
-            primaryPhysician,
-            insuranceProvider,
-            insurancePolicyNumber,
-            allergies,
-            currentMedication,
-            familyMedicalHistory,
-            pastMedicalHistory,
-            identificationType,
-            identificationNumber,
-            treatmentConsent,
-            disclosureConsent,
-            privacyConsent,
-            fileName,
-        } = req.body;
+        const { fullName, email, phone, birthDate, gender, address, occupation, emergencyContactName,
+            emergencyContactNumber, insuranceProvider, insurancePolicyNumber,
+            allergies, currentMedication, familyMedicalHistory, pastMedicalHistory,
+            identificationType, identificationNumber, treatmentConsent, disclosureConsent,
+            privacyConsent, fileName } = req.body;
 
-        const fileUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+        // upload file to cloudinary
+        if (!req.file) {
+            return res.status(400).json({ message: "Identification document is required" });
+        }
+
+        console.log("File uploaded:", req.file);
+
+        const result = await cloudinary.uploader.upload(req.file.path);
+        const fileUrl = result.secure_url;
 
         const newPatient = await Patient.create({
             user: userId,

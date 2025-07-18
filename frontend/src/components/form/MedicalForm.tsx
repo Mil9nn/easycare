@@ -5,7 +5,7 @@ import { z } from "zod";
 import { Form, FormControl } from "@/components/ui/form";
 
 import { PatientFormValidation } from "@/lib/validation";
-import CustomFormField from "../CustomFormField";
+import CustomFormField from "../custom/CustomFormField";
 import { FormFieldType } from "@/lib/validation";
 import { SelectItem } from "../ui/select";
 import SubmitButton from "../SubmitButton";

@@ -2,7 +2,7 @@ import { useAppointmentStore } from "@/hooks/useAppointmentStore";
 import { formatDateTime } from "@/lib/utils";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import StatusBadge from "./StatusBadge";
+import StatusBadge from "./custom/StatusBadge";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 
 const AppointmentHistory = () => {

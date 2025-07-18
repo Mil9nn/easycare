@@ -1,5 +1,5 @@
 import { Form } from "@/components/ui/form";
-import CustomFormField from "../CustomFormField";
+import CustomFormField from "../custom/CustomFormField";
 import { SelectItem } from "@/components/ui/select";
 import SubmitButton from "@/components/SubmitButton";
 import { useState } from "react";

@@ -1,4 +1,4 @@
-import PassKeyModal from "@/components/PasskeyModal"
+import PassKeyModal from "@/components/custom/PasskeyModal"
 
 const AdminPage = () => {
 

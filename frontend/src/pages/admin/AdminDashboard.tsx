@@ -1,5 +1,5 @@
-import { AnalyticsChart } from "@/components/AnalyticsChart";
-import StatCard from "@/components/StatCard";
+import { AnalyticsChart } from "@/components/analytics/AnalyticsChart";
+import StatCard from "@/components/custom/StatCard";
 import { getColumns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/data-table";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";

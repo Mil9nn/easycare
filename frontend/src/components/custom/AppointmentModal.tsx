@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Button } from "./ui/button";
+import { Button } from "../ui/button";
 
 import {
   Dialog,
@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { AppointmentForm } from "./form/AppointmentForm";
+import { AppointmentForm } from "../form/AppointmentForm";
 import type { Appointment } from "@/types/types";
 
 export const AppointmentModal = ({

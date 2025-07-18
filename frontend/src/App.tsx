@@ -1,8 +1,8 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import MainLayout from "./layout/MainLayout";
-import { SignupPage } from "./components/SignupPage";
-import { LoginPage } from "./components/LoginPage";
+import { SignupPage } from "./components/authentication/SignupPage";
+import { LoginPage } from "./components/authentication/LoginPage";
 import { Toaster } from "react-hot-toast";
 import { MedicalForm } from "./components/form/MedicalForm";
 import { useEffect } from "react";
@@ -13,9 +13,9 @@ import SuccessPage from "./pages/SuccessPage";
 import { useFormStore } from "./hooks/useFormStore";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import { useAdminStore } from "./hooks/useAdminStore";
-import { DoctorForm } from "./components/DoctorForm";
+import { DoctorForm } from "./components/doctor/DoctorForm";
 import AdminLayout from "./layout/AdminLayout";
-import DoctorsList from "./components/DoctorsList";
+import DoctorsList from "./components/doctor/DoctorsList";
 import ManageDoctors from "./pages/admin/ManageDoctors";
 import {
   AdminRoute,
@@ -23,7 +23,7 @@ import {
   ProtectRoute,
 } from "./components/ProtectedRoute";
 import AppointmentPage from "./pages/AppointmentPage";
-import AllDoctors from "./components/AllDoctors";
+import AllDoctors from "./components/doctor/AllDoctors";
 import AdminPage from "./pages/admin/AdminPage";
 import ScrollToTop from "./components/ScrolltoTop";
 import { socket } from "./lib/socket";

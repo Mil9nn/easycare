@@ -1,6 +1,6 @@
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { useNavigate } from "react-router-dom";
-import { Specializations } from "./form/constants";
+import { Specializations } from "../form/constants";
 import { useState } from "react";
 
 const DoctorsList = () => {

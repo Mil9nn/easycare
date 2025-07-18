@@ -1,8 +1,8 @@
 import { useAdminStore } from "@/hooks/useAdminStore";
-import DoctorCard from "./DoctorCard";
+import DoctorCard from "../doctor/DoctorCard";
 import { Loader } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Specializations } from "./form/constants";
+import { Specializations } from "../form/constants";
 import type { ChangeEvent } from "react";
 
 const AllDoctors = () => {

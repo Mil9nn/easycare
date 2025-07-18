@@ -77,6 +77,8 @@ export const PatientFormValidation = z.object({
   }),
 });
 
+export type PatientFormData = z.infer<typeof PatientFormValidation>;
+
 export const CreateAppointmentSchema = z.object({
   primaryPhysician: z.string().min(2, "Select at least one doctor"),
   schedule: z

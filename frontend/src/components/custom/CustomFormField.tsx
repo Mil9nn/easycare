@@ -13,14 +13,14 @@ import type {
   ControllerRenderProps,
   FieldValues,
 } from "react-hook-form";
-import { Checkbox } from "./ui/checkbox";
-import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
+import { Checkbox } from "../ui/checkbox";
+import { Select, SelectContent, SelectTrigger, SelectValue } from "../ui/select";
 
 import { FormFieldType, PatientFormValidation } from "@/lib/validation";
 
 import type { Path } from "react-hook-form";
 import { FileText, type LucideIcon } from "lucide-react";
-import { Textarea } from "./ui/textarea";
+import { Textarea } from "../ui/textarea";
 
 import { EyeOutlined, EyeInvisibleOutlined } from "@ant-design/icons";
 

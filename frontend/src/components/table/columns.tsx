@@ -1,8 +1,8 @@
 import type { ColumnDef } from "@tanstack/react-table";
 
-import StatusBadge from "../StatusBadge";
+import StatusBadge from "../custom/StatusBadge";
 import { convertFileToUrl, formatDateTime } from "@/lib/utils";
-import AppointmentModal from "../AppointmentModal";
+import AppointmentModal from "../custom/AppointmentModal";
 import type { Appointment } from "@/types/types";
 
 
