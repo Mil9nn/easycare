@@ -1,10 +1,7 @@
 import { useAppointmentStore } from "@/hooks/useAppointmentStore";
-import { Loader, X } from "lucide-react";
+import { Loader } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useAdminStore } from "@/hooks/useAdminStore";
-
-
 
 const Patient = () => {
   const { patientId } = useParams<{ patientId: string }>();
@@ -21,106 +18,100 @@ const Patient = () => {
   type CustomFieldProps = {
     title: string;
     content: string | number | undefined;
+    className?: string;
   };
 
-  const CustomField = ({ title, content }: CustomFieldProps) => (
-    <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-4">
-      <h3 className="font-medium text-sm sm:text-base text-gray-700">
-        {title}
-      </h3>
-      <p className="text-sm text-gray-600">{content || "Not Provided"}</p>
+  const CustomField = ({ title, content, className = "" }: CustomFieldProps) => (
+    <div className={`mb-5 last:mb-0 ${className}`}>
+      <h3 className="text-md font-medium text-gray-500 mb-1">{title}</h3>
+      <p className="text-lg font-light text-gray-800">
+        {content || <span className="text-gray-400">Not Provided</span>}
+      </p>
     </div>
   );
 
   const patient = appointment?.patient;
   const isLoading = useAppointmentStore((state) => state.isLoading);
 
-  const menuOpen = useAdminStore((state) => state.menuOpen);
-  const setMenuOpen = useAdminStore((state) => state.setMenuOpen);
-
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <Loader className="animate-spin text-gray-500" size={24} />
-        <span className="ml-2 text-gray-500">please hold on...</span>
+      <div className="flex flex-col items-center justify-center h-screen space-y-4">
+        <Loader className="animate-spin h-8 w-8 text-blue-500" />
+        <span className="text-gray-600 font-light">Loading patient details...</span>
       </div>
-    )
+    );
   }
 
   return (
-    <div
-      className={`patient-details fixed top-0 right-0 z-50 remove-scrollbar ${
-        menuOpen ? "translate-x-0" : "translate-x-full"
-      } transition-transform duration-300`}
-    >
-      <div className="space-y-6 py-5 sm:px-5 max-w-4xl mx-auto">
-        <div className="toggleBar">
-          <X
-            onClick={() => setMenuOpen(false)}
-            className="hover:scale-105 active:scale-95 cursor-pointer text-rose-500 transition-transform ease-in-out duration:400"
-          />
+    <div className="min-h-screen py-4 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
+        <div className="bg-white rounded shadow-sm overflow-hidden">
+          {/* Header */}
+          <div className="bg-emerald-50 px-6 py-8 border-b border-emerald-200">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h1 className="text-3xl font-light text-gray-900 mb-1">{patient?.fullName}</h1>
+                <p className="text-blue-600 font-medium">Patient ID: {patientId}</p>
+              </div>
+              <div className="mt-4 sm:mt-0">
+                <span className="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full uppercase font-semibold tracking-wide">
+                  Patient
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Main Content */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
+            {/* Personal Information */}
+            <section className="bg-gray-50 p-6 rounded-xl">
+              <h2 className="text-xl font-semibold text-gray-700 mb-6 pb-2 border-b border-gray-200">
+                Personal Information
+              </h2>
+              <CustomField title="Full Name" content={patient?.fullName} />
+              <CustomField title="Email" content={patient?.email} />
+              <CustomField title="Phone" content={patient?.phone} />
+              <CustomField title="Birth Date" content={patient?.birthDate} />
+              <CustomField title="Address" content={patient?.address} />
+              <CustomField title="Gender" content={patient?.gender} />
+            </section>
+
+            {/* Medical Information */}
+            <section className="bg-gray-50 p-6 rounded-xl">
+              <h2 className="text-xl font-semibold text-gray-700 mb-6 pb-2 border-b border-gray-200">
+                Medical Information
+              </h2>
+              <CustomField title="Allergies" content={patient?.allergies} />
+              <CustomField 
+                title="Current Medication" 
+                content={patient?.currentMedication} 
+                className={!patient?.currentMedication ? "text-gray-400" : ""}
+              />
+              <CustomField 
+                title="Past Medical History" 
+                content={patient?.pastMedicalHistory} 
+              />
+              <CustomField
+                title="Family Medical History"
+                content={patient?.familyMedicalHistory || "No medical history available"}
+              />
+            </section>
+
+            {/* Insurance & Emergency */}
+            <section className="bg-gray-50 p-6 rounded-xl">
+              <h2 className="text-xl font-semibold text-gray-700 mb-6 pb-2 border-b border-gray-200">
+                Insurance & Emergency
+              </h2>
+              <CustomField 
+                title="Emergency Contact" 
+                content={`${patient?.emergencyContactName} (${patient?.emergencyContactNumber})`} 
+              />
+              <CustomField title="Insurance Provider" content={patient?.insuranceProvider} />
+              <CustomField title="Policy Number" content={patient?.insurancePolicyNumber} />
+              <CustomField title="ID Type" content={patient?.identificationType} />
+            </section>
+          </div>
         </div>
-        <header className="space-y-2">
-          <h1 className="text-xl font-bold text-primary-text tracking-wide">Patient Details</h1>
-          <p className="text-sm text-gray-500">
-            Patient details, including personal information and medical history
-          </p>
-        </header>
-
-        <section className="space-y-4">
-          <CustomField title="Full Name:" content={patient?.fullName} />
-          <CustomField title="Email:" content={patient?.email} />
-          <CustomField title="Phone:" content={patient?.phone} />
-          {/* <CustomField title="Birth Date:" content={patient?.birthDate} /> */}
-          <CustomField title="Address:" content={patient?.address} />
-        </section>
-
-        <div className="h-0.5 w-full bg-gray-200 rounded-full" />
-
-        <section className="space-y-4">
-          <CustomField title="Allergies:" content={patient?.allergies} />
-          <CustomField
-            title="Current Medication:"
-            content={patient?.currentMedication}
-          />
-          <CustomField
-            title="Past Medical History:"
-            content={patient?.pastMedicalHistory}
-          />
-          <CustomField
-            title="Family Medical History:"
-            content={
-              patient?.familyMedicalHistory || "No medical history available."
-            }
-          />
-          <CustomField title="Gender:" content={patient?.gender} />
-        </section>
-
-        <div className="h-0.5 w-full bg-gray-200 rounded-full" />
-
-        <section className="space-y-4">
-          <CustomField
-            title="Emergency Contact Name:"
-            content={patient?.emergencyContactName}
-          />
-          <CustomField
-            title="Emergency Contact Number:"
-            content={patient?.emergencyContactNumber}
-          />
-          <CustomField
-            title="Insurance Provider:"
-            content={patient?.insuranceProvider}
-          />
-          <CustomField
-            title="Insurance Policy Number:"
-            content={patient?.insurancePolicyNumber}
-          />
-          <CustomField
-            title="Identification Type:"
-            content={patient?.identificationType}
-          />
-          {/* <CustomField title="Identification Document:" content={patient?.identificationDocument} /> */}
-        </section>
       </div>
     </div>
   );

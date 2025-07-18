@@ -29,6 +29,7 @@ import ScrollToTop from "./components/ScrolltoTop";
 import { socket } from "./lib/socket";
 import { setupAppointmentSocketListeners } from "./lib/setupAppointmentSocketListener";
 import AppointmentHistory from "./components/AppointmentHistory";
+import PatientDialogue from "./components/PatientDialogue";
 import Patient from "./components/Patient";
 
 const SocketManager = () => {
@@ -164,8 +165,9 @@ function App() {
               </AdminRoute>
             }
           >
-            <Route path="patient/:patientId" element={<Patient />} />
+            <Route path="patient/:patientId" element={<PatientDialogue />} />
           </Route>
+          <Route path="/admin/dashboard/patient/:patientId/page" element={<Patient />} />
           <Route
             path="/admin/add-doctor"
             element={

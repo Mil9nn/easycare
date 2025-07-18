@@ -365,11 +365,5 @@
 }
 
 .appointment-item {
-  @apply grid grid-cols-[50px_repeat(5,_1fr)] max-w-5xl mx-auto items-center justify-between p-3 rounded shadow-sm hover:shadow-md transition-shadow duration-200;
+  @apply grid grid-cols-[50px_repeat(4,_1fr)_50px] max-w-5xl mx-auto items-center justify-between p-3 rounded shadow-sm hover:shadow-md transition-shadow duration-200;
 }
-
-/* sidebar patient details */
-.patient-details {
-  @apply w-full h-full mx-auto p-5 space-y-4 max-w-sm overflow-y-auto bg-white backdrop-blur-md shadow-lg border border-gray-200;
-}
-

@@ -59,7 +59,7 @@ export const sendAppointmentEmail = async (appointmentData) => {
     };
 
     try {
-        const info = await transporter.sendMail(mailOptions);
+        const info = transporter.sendMail(mailOptions);
     } catch (error) {
         console.error('❌ Error sending email to admin:', error);
     }
@@ -111,7 +111,7 @@ export const sendPatientEmail = async (appointmentData) => {
     };
 
     try {
-        const info = await transporter.sendMail(mailOptions);
+        const info = transporter.sendMail(mailOptions);
     } catch (error) {
         console.error('❌ Error sending patient email:', error);
     }
