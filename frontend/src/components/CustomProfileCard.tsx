@@ -1,10 +1,10 @@
 import { ClipboardList, Pencil, User, type LucideIcon } from "lucide-react";
-import { Button } from "../ui/button";
-import CustomFormField from "./CustomFormField";
+import { Button } from "./ui/button";
+import CustomFormField from "./custom/CustomFormField";
 import { useForm } from "react-hook-form";
 import { FormFieldType } from "@/lib/validation";
 import { useState } from "react";
-import { Form } from "../ui/form";
+import { Form } from "./ui/form";
 
 export type ProfileField = {
   name: string;
