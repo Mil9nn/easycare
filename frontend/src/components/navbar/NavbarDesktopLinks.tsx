@@ -3,10 +3,6 @@ import { Button } from "../ui/button";
 import {
   LogIn,
   LogOut,
-  ClipboardList,
-  CalendarPlus,
-  UserPlus,
-  Stethoscope,
   Home,
 } from "lucide-react";
 import type { NavbarProps } from "./Navbar";
@@ -45,32 +41,16 @@ const NavbarDesktopLinks = ({
   }) => {
     const trackedPaths = [
       { name: "", path: "/", icon: Home, show: true, className: "hidden" },
-      { name: "All doctors", path: "/doctors", icon: Stethoscope, show: true, className: "hidden md:flex" },
+      { name: "All doctors", path: "/doctors", show: true, className: "hidden md:flex" },
       {
-        name: "Book appointment",
-        path: "/book-appointment",
-        icon: CalendarPlus,
-        show: isLoggedIn && isPatient,
-        className: "hidden md:flex",
-      },
-      {
-        name: "Appointment history",
+        name: "Dashboard",
         path: `/appointments/${patientId}`,
-        icon: ClipboardList,
-        show: isLoggedIn && isPatient,
-        className: "hidden md:flex",
-      },
-      {
-        name: "Profile",
-        path: "/profile",
-        icon: ClipboardList,
         show: isLoggedIn && isPatient,
         className: "hidden md:flex",
       },
       {
         name: "Register as patient",
         path: "/medical-form",
-        icon: UserPlus,
         show: isLoggedIn && !isPatient,
       },
     ];
@@ -87,10 +67,9 @@ const NavbarDesktopLinks = ({
               className={({ isActive }) =>
                 `nav-link flex items-center gap-2 ${
                   trackedPath.className || ""
-                } ${isActive ? "text-indigo-500" : "text-primary-text"}`
+                } ${isActive ? "text-[#A8DADC]" : "text-[#F1FAEE]"}`
               }
             >
-              <trackedPath.icon className="size-5" />
               {trackedPath.name}
             </NavLink>
           ))}
@@ -128,7 +107,7 @@ const NavbarDesktopLinks = ({
 
       {/* === UNDERLINE INDICATOR === */}
       <div
-        className="absolute -bottom-5 h-[2.5px] bg-indigo-500 rounded-full transition-all duration-300"
+        className="absolute -bottom-3 h-[2.5px] bg-[#A8DADC] rounded-full transition-all duration-300"
         style={{
           left: `${indicatorStyle.left}px`,
           width: `${indicatorStyle.width}px`,

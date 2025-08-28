@@ -31,9 +31,9 @@ import { setupAppointmentSocketListeners } from "./lib/setupAppointmentSocketLis
 import AppointmentHistory from "./components/AppointmentHistory";
 import PatientDialogue from "./components/PatientDialogue";
 import Patient from "./components/Patient";
+import PatientDashboard from "./components/PatientDashboard";
 
 const SocketManager = () => {
-
   useEffect(() => {
     if (!socket.connected) {
       socket.connect();
@@ -86,8 +86,8 @@ function App() {
 
   return (
     <>
-    <SocketManager />
-    <ScrollToTop />
+      <SocketManager />
+      <ScrollToTop />
       <Routes>
         <Route element={<MainLayout />}>
           <Route path="/" element={<Home />} />
@@ -127,14 +127,6 @@ function App() {
             }
           />
 
-          <Route
-            path="/profile"
-            element={
-              <ProtectRoute>
-                <ProfilePage />
-              </ProtectRoute>
-            }
-          />
           <Route path="/success/:appointmentId" element={<SuccessPage />} />
 
           <Route path="/doctor/:doctorId" element={<AppointmentPage />} />
@@ -149,13 +141,21 @@ function App() {
               </PatientRoute>
             }
           />
-          <Route path="/appointments/:patientId" element={<AppointmentHistory />} />
-          <Route
-            path="/admin"
-            element={<AdminPage />}
-          />
+          {/* <Route
+            path="/appointments/:patientId"
+            element={<AppointmentHistory />}
+          /> */}
+
+          <Route path="/admin" element={<AdminPage />} />
         </Route>
+
+        <Route path="/appointments/:patientId" element={<PatientDashboard />}>
+          <Route path="profile" element={<ProfilePage />} />
+          <Route path="history" element={<AppointmentHistory />} />
+        </Route>
+
         
+
         <Route element={<AdminLayout />}>
           <Route
             path="/admin/dashboard"
@@ -167,7 +167,10 @@ function App() {
           >
             <Route path="patient/:patientId" element={<PatientDialogue />} />
           </Route>
-          <Route path="/admin/dashboard/patient/:patientId/page" element={<Patient />} />
+          <Route
+            path="/admin/dashboard/patient/:patientId/page"
+            element={<Patient />}
+          />
           <Route
             path="/admin/add-doctor"
             element={

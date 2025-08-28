@@ -1,4 +1,4 @@
-import { ClipboardList, Pencil, User, type LucideIcon } from "lucide-react";
+import { Pencil, type LucideIcon } from "lucide-react";
 import { Button } from "../ui/button";
 import CustomFormField from "./CustomFormField";
 import { useForm } from "react-hook-form";
@@ -44,8 +44,9 @@ const EditField = ({
           toggleEdit(index);
         })}
       >
-        <div className="edit-field-wrapper flex items-center gap-2">
-          <CustomFormField
+        <div className="edit-field-wrapper">
+          <div className="flex-1">
+            <CustomFormField
             control={form.control}
             name="editableValue"
             fieldType={field.fieldType ?? FormFieldType.INPUT}
@@ -53,6 +54,7 @@ const EditField = ({
             placeholder={`Enter ${field.label}`}
             icon={field.icon}
           />
+          </div>
           <div className="flex items-center gap-2">
             <Button
               type="submit"
@@ -80,7 +82,6 @@ const EditField = ({
 
 const CustomProfileCard = ({
   title,
-  icon: TitleIcon = User,
   fields,
 }: CustomProfileCardProps) => {
   const [editStates, setEditStates] = useState<{ [key: number]: boolean }>({});
@@ -103,31 +104,28 @@ const CustomProfileCard = ({
 
   return (
     <section className="profile-card">
-      <h3 className="heading-tertiary flex items-center gap-2 text-blue-600">
-        <TitleIcon className="text-xl" /> {title}
+      <h3 className="text-xl font-extrabold">
+         {title}
       </h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+      <div className="mt-5 space-y-5">
         {fields.map((field, index) => {
-          const FieldIcon = field.icon ?? ClipboardList;
-          const color = field.colorClass ?? "text-pink-500";
           return (
-            <div
-              key={index}
-              className="profile-info-row flex items-center gap-2"
-            >
+            <div key={index} className="flex items-center gap-2">
               {editStates[index] ? (
-                <EditField
+                <div className="w-full">
+                  <EditField
                   field={field}
                   index={index}
                   toggleEdit={toggleEdit}
                 />
+                </div>
               ) : (
                 <>
                   <div className="flex items-center gap-2 flex-1">
-                    <FieldIcon className={`${color} size-5`} />
-                    <span>
-                      <strong>{field.label}</strong> {field.value || "—"}
-                    </span>
+                    <div className="space-y-2">
+                      <p><strong>{field.label}</strong></p>
+                      <p>{field.value || "—"}</p>
+                    </div>
                   </div>
                   {field.onSave &&
                     field.inputType !== "email" &&

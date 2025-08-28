@@ -32,7 +32,7 @@ export default function AdminNavbar() {
             to="/admin/dashboard"
             className={({ isActive }) =>
           `sidebar-nav-link flex ${
-            isActive ? "text-indigo-500" : "text-primary-text"
+            isActive ? "text-indigo-500" : "text-primary"
           }`
         }
             onClick={() => setMenuOpen(false)}
@@ -43,7 +43,7 @@ export default function AdminNavbar() {
           
           <NavLink to="/admin/list/doctor" className={({ isActive }) =>
           `link ${
-            isActive ? "text-indigo-500" : "text-primary-text"
+            isActive ? "text-indigo-500" : "text-primary"
           }`
         }>
             <List className="w-5 h-5" />
@@ -54,7 +54,7 @@ export default function AdminNavbar() {
             to="/admin/add-doctor"
             className={({ isActive }) =>
           `link flex ${
-            isActive ? "text-indigo-500" : "text-primary-text"
+            isActive ? "text-indigo-500" : "text-primary"
           }`
         }
           >
@@ -100,7 +100,7 @@ export default function AdminNavbar() {
             to="/admin/dashboard"
             className={({ isActive }) =>
           `sidebar-nav-link flex ${
-            isActive ? "text-indigo-500" : "text-primary-text"
+            isActive ? "text-indigo-500" : ""
           }`
         }
             onClick={() => setMenuOpen(false)}
@@ -113,7 +113,7 @@ export default function AdminNavbar() {
             to="/admin/list/doctor"
             className={({ isActive }) =>
           `sidebar-nav-link flex ${
-            isActive ? "text-indigo-500" : "text-primary-text"
+            isActive ? "text-indigo-500" : ""
           }`
         }
             onClick={() => setMenuOpen(false)}
@@ -126,7 +126,7 @@ export default function AdminNavbar() {
             to="/admin/add-doctor"
            className={({ isActive }) =>
           `sidebar-nav-link flex ${
-            isActive ? "text-indigo-500" : "text-primary-text"
+            isActive ? "text-indigo-500" : ""
           }`
         }
             onClick={() => setMenuOpen(false)}

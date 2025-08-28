@@ -24,17 +24,16 @@ const Chatbot = () => {
   return (
     <div className="relative">
       <form onSubmit={handleSend}
-        className={`chatbot-wrapper ${
+        className={` ${
           openBot ? "translate-y-0" : "translate-y-full opacity-0 pointer-events-none invisible"
         } bg-white shadow-2xl rounded-2xl transition-all duration-500 overflow-hidden border border-gray-200 flex flex-col`}
       >
         <div className="px-5 pt-4 pb-2">
           <h1 className="text-lg sm:text-xl font-semibold text-gray-800">
-            👋 Hi there! I'm{" "}
-            <span className="text-teal-500 font-bold">EasyBot</span>
+            <span className="text-teal-500 font-bold">AI Symptom Checker</span>
           </h1>
           <p className="text-sm text-gray-500">
-            Your personal health assistant. How can I help you today?
+           Understand your symptoms with AI
           </p>
           <X
             onClick={() => {
@@ -48,10 +47,7 @@ const Chatbot = () => {
 
         {!message && <div className="question-template-wrapper">
           {[
-            "I need help choosing a doctor for my condition.",
-            "I have anxiety, which doctor can help me?",
             "What are the symptoms of diabetes?",
-            "How do I book an appointment?",
           ].map((q, i) => (
             <button onClick={() => {setMessage(q)}} key={i} className="question-template">
               {q}
@@ -65,7 +61,7 @@ const Chatbot = () => {
             value={message}
             onChange={handleChange}
             className="flex-1 px-4 py-2 rounded-full border border-gray-300 text-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-teal-400"
-            placeholder="Type your message here..."
+            placeholder="Describe your symptoms here..."
           />
           <button type="submit" className="text-teal-500 hover:text-teal-600 cursor-pointer transition-colors">
             {isSending ? <Loader className="animate-spin size-5" /> : <Send className="w-5 h-5" />}

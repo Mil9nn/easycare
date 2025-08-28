@@ -4,7 +4,6 @@ import { useFormStore } from "@/hooks/useFormStore";
 import { Loader } from "lucide-react";
 
 const BookAppointment = () => {
-
   const user = useAuthStore((state) => state.user);
   const patient = useFormStore((state) => state.patient);
   const isLoadingPatient = useFormStore((state) => state.isLoadingPatient);
@@ -25,13 +24,21 @@ const BookAppointment = () => {
   }
 
   return (
-    <div className="signup-page">
-      <AppointmentForm
-        userId={user?._id || ""}
-        patientId={patient?._id || ""}
-        type="create"
-      />
-    </div>
+    <div className="p-10 space-y-4">
+  <h2 className="text-2xl font-semibold tracking-tight">
+    🗓️ Review Your Appointment Details
+  </h2>
+  <p className="text-gray-500">
+    Please confirm the information below before submitting your request.
+  </p>
+  
+  <AppointmentForm
+    userId={user?._id || ""}
+    patientId={patient?._id || ""}
+    type="create"
+  />
+</div>
+
   );
 };
 

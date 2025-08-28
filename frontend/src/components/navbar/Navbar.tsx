@@ -6,21 +6,12 @@ import { useState } from "react";
 import NavbarDesktopLinks from "./NavbarDesktopLinks";
 import NavbarSidebarLinks from "./NavbarSidebarLinks";
 
-export type NavbarProps = {
-  isLoggedIn: boolean;
-  isPatient: boolean;
-  handleLogout: () => void;
-  setMenuOpen?: (open: boolean) => void;
-  patientId?: string;
-}
-
 const Navbar = () => {
   const navigate = useNavigate();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
   const patient = useFormStore((state) => state.patient);
   const setPatient = useFormStore((state) => state.setPatient);
-
   const patientId = useFormStore((state) => state.patient?._id);
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -35,46 +26,64 @@ const Navbar = () => {
   const isPatient = !!patient;
 
   return (
-    <div>
+    <header className="fixed top-0 left-0 w-full z-50">
       {/* Top Navbar */}
-      <div className="navbar">
-        <Link to="/" className="flex logo">
-          <img src="/assets/icons/logo-icon.svg" />
-          <p className="tracking-wide">EasyCare</p>
+      <nav className="flex items-center justify-between px-6 py-3 bg-[#1D3557] shadow-md">
+        {/* Logo + Branding */}
+        <Link to="/" className="flex items-center gap-2 group">
+          <img src="/assets/icons/logo-icon.svg" alt="EasyCare Logo" className="w-8 h-8" />
+          <p className="text-lg font-semibold text-[#A8DADC] tracking-wide group-hover:text-white transition-colors">
+            EasyCare
+          </p>
         </Link>
 
-        <div className="flex items-center gap-4">
+        {/* Desktop Links */}
+        <div className="hidden md:flex items-center gap-6">
           <NavbarDesktopLinks
             isLoggedIn={isLoggedIn}
             isPatient={isPatient}
             handleLogout={handleLogout}
             patientId={patientId}
           />
-
-          {!menuOpen && (
-            <Menu
-              onClick={() => setMenuOpen(true)}
-              className="cursor-pointer md:hidden hover:scale-105 active:scale-95 transition-all"
-            />
-          )}
         </div>
-      </div>
+
+        {/* Mobile Menu Button */}
+        <button
+          onClick={() => setMenuOpen(true)}
+          className="md:hidden p-2 text-white hover:bg-[#457B9D] rounded-lg transition-colors"
+        >
+          <Menu size={24} />
+        </button>
+      </nav>
 
       {/* Sidebar for mobile */}
-      <div className={`sidebar-nav ${menuOpen ? "translate-x-0" : "translate-x-full"}`}>
-        <X
-          onClick={() => setMenuOpen(false)}
-          className="self-end cursor-pointer hover:scale-105 active:scale-95 transition-all"
-        />
-        <NavbarSidebarLinks
-          isLoggedIn={isLoggedIn}
-          isPatient={isPatient}
-          handleLogout={handleLogout}
-          setMenuOpen={setMenuOpen}
-          patientId={patientId}
-        />
+      <div
+        className={`fixed top-0 right-0 h-full w-64 bg-[#1D3557] text-white shadow-lg transform transition-transform duration-300 ${
+          menuOpen ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        <div className="flex flex-col p-6 h-full">
+          {/* Close Button */}
+          <button
+            onClick={() => setMenuOpen(false)}
+            className="self-end p-2 hover:bg-[#457B9D] rounded-lg transition-colors"
+          >
+            <X size={24} />
+          </button>
+
+          {/* Sidebar Links */}
+          <div className="mt-8 space-y-4">
+            <NavbarSidebarLinks
+              isLoggedIn={isLoggedIn}
+              isPatient={isPatient}
+              handleLogout={handleLogout}
+              setMenuOpen={setMenuOpen}
+              patientId={patientId}
+            />
+          </div>
+        </div>
       </div>
-    </div>
+    </header>
   );
 };
 

@@ -1,5 +1,3 @@
-import clsx from "clsx";
-import { Dot } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 type DoctorCardProps = {
@@ -15,7 +13,6 @@ const DoctorCard = ({
   name,
   specialization,
   imageSrc,
-  className,
   doctorId,
   isActive,
 }: DoctorCardProps) => {
@@ -29,12 +26,14 @@ const DoctorCard = ({
 
   return (
     <div
-      className="relative w-full h-full min-w-[200px] overflow-hidden hover:translate-y-[-2px] shadow hover:shadow-lg transition-shadow rounded cursor-pointer text-gray-900"
+      className="relative cursor-pointer group rounded-2xl overflow-hidden 
+                bg-white/5 backdrop-blur-md border border-white/10 
+                shadow-sm shadow-black/30 hover:scale-[1.02] transition transform duration-700"
       onClick={handleClick}
     >
-      <div className={clsx(`h-56 w-full overflow-hidden`, `${className}`)}>
+      <div className={`h-56 w-full`}>
         <img
-          className="w-full h-fit max-w-60 max-h-56 rounded-t object-fit overflow-hidden"
+          className="w-full h-56 object-cover group-hover:scale-105 transition duration-700"
           src={
             Array.isArray(imageSrc)
               ? URL.createObjectURL(imageSrc[0])
@@ -44,22 +43,19 @@ const DoctorCard = ({
         />
       </div>
 
-      <div className="p-6 pb-7 duration-[0.3s] bg-white">
-        <div className="flex flex-col ">
-          <span className="text-md font-semibold">{name}</span>
-          <span className="text-gray-600 capitalize text-xs">{specialization}</span>
+      <div className="bg-white">
+        <div className="p-4 space-y-1">
+          <h4 className="text-lg font-semibold">{name}</h4>
+          <p className="capitalize text-sm text-gray-400">{specialization}</p>
+          <p className="text-xs text-gray-500">12+ years</p>
         </div>
       </div>
-      {isActive && 
-        <span className="absolute bottom-0 left-0 inline-flex items-center w-fit bg-green-100 text-green-700 text-xs font-medium px-2 py-0.5 rounded">
-          <Dot className="size-5 text-green-500" />
-          Available
-        </span>}
-       
-        {!isActive && <span className="absolute bottom-0 left-0 inline-flex items-center gap-1 w-fit bg-gray-100 text-gray-700 text-xs font-medium px-2 py-0.5 rounded">
-          <Dot className="size-5 text-gray-500" />
-          Not Available
-        </span>}
+      {isActive && (
+        <span className="absolute bottom-0 right-0 flex items-center gap-1 w-fit bg-green-100 text-xs font-medium p-1">
+          <span className="w-3 h-3 bg-green-500 border-2 border-white shadow-md rounded-full" />
+          <span>Available</span>
+        </span>
+      )}
     </div>
   );
 };

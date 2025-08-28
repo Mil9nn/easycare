@@ -4,65 +4,85 @@ export const handleChatMessage = async (req, res) => {
     try {
         const { message } = req.body;
         if (!message) {
-            return res.status(400).json({ error: 'Message is required' });
+            return res.status(400).json({ error: "Message is required" });
         }
 
-        const input = `
-            You are EasyBot, a helpful virtual assistant for EasyCare medical appointment booking system. You are designed to:
-
-            ## Core Functions:
-            - Help users navigate the EasyCare platform
-            - Assist with booking, scheduling, and managing medical appointments
-            - Guide users through the medical profile setup process
-            - Explain platform features and functionality
-            - Provide basic health guidance and wellness tips
-            - Recommend when to see a doctor and which doctor speciality to choose based on symptoms
-
-            ## EasyCare System Features:
-            - **User Authentication**: Sign up and login
-            - **Medical Profile**: Complete patient information including personal details, medical history, insurance, and emergency contacts
-            - **Appointment Booking**: Schedule appointments with available doctors
-            - **Profile Management**: Edit personal and medical information
-            - **Doctor Selection**: Choose from available physicians
-
-            ## User Journey:
-            1. New Users: Sign up → Complete medical form → Book appointments
-            2. Returning Users: Login → Access profile/book appointments
-            3. Profile Updates: Edit information on profile page
-
-            ## Important Guidelines:
-            - **❌ DO NOT provide medical advice, diagnosis, or treatment recommendations**
-            - **❌ DO NOT recommend specific medications or prescriptions**
-            - **✅ DO encourage users to consult licensed healthcare professionals for medical concerns**
-            - **✅ DO guide users to complete their medical profile for better care coordination**
-            - **✅ DO recommend booking an appointment when medical concerns are mentioned**
-            - **⚠️ For emergencies, always direct users to seek immediate professional help or call 911**
-
-
-            ## Emergency Protocol:
-            If user mentions medical emergency, immediately advise calling emergency services (911) and seeking immediate medical attention.
-
-            ⚠️ IMPORTANT: You **must not** answer questions unrelated to health or the EasyCare appointment system.
-            If someone asks off-topic questions (math, jokes, general trivia, coding), politely refuse and remind them you're a medical appointment assistant.
-
-            For appointment booking, remind users they need:
-            - Completed medical profile
-            - Doctor selection
-            - Preferred date/time
-            - Reason for visit
-
-            Now respond to this query:
-            "${message}"
-        `.trim();
-
-        const response = await client.responses.create({
-            model: "gpt-4.1-nano-2025-04-14",
-            input
+        const response = await client.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                {
+                    role: "user",
+                    content: `
+                        Analyze these symptoms and provide medical insights: "${message}". 
+          
+                        Please provide:
+                        1. Possible conditions (3-5 most likely)
+                        2. Recommended specialist type
+                        3. Urgency level (low, medium, high, emergency)
+                        4. General advice
+                        5. Warning signs to watch for
+                        
+                        Be helpful but remind that this is not a substitute for professional medical advice.
+                    `
+                }
+            ],
+            response_format: {
+                type: "json_schema",
+                json_schema: {
+                    name: "medical_analysis",
+                    strict: true,
+                    schema: {
+                        type: "object",
+                        properties: {
+                            possible_conditions: {
+                                type: "array",
+                                items: { type: "string" },
+                                description: "List of 3-5 most likely medical conditions"
+                            },
+                            recommended_speciality: {
+                                type: "string",
+                                description: "Type of medical specialist to consult"
+                            },
+                            urgency_level: {
+                                type: "string",
+                                enum: ["low", "medium", "high", "emergency"],
+                                description: "Level of medical urgency"
+                            },
+                            general_advice: {
+                                type: "string",
+                                description: "General medical advice and recommendations"
+                            },
+                            warning_signs: {
+                                type: "array",
+                                items: { type: "string" },
+                                description: "Warning signs to watch for"
+                            },
+                            disclaimer: {
+                                type: "string",
+                                description: "Medical disclaimer"
+                            }
+                        },
+                        required: [
+                            "possible_conditions",
+                            "recommended_speciality",
+                            "urgency_level",
+                            "general_advice",
+                            "warning_signs",
+                            "disclaimer"
+                        ],
+                        additionalProperties: false
+                    }
+                }
+            }
         });
 
-        return res.status(200).json({ message: response.output_text });
+        const parsedData = JSON.parse(response.choices[0].message.content);
+        return res.status(200).json({ data: parsedData });
+
     } catch (error) {
-        console.error('Error handling chat message:', error);
-        return res.status(500).json({ error: 'An error occurred while processing your request.' });
+        console.error("Error handling chat message:", error);
+        return res
+            .status(500)
+            .json({ error: "An error occurred while processing your request." });
     }
-}
+};

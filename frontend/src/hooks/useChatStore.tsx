@@ -14,11 +14,10 @@ export const useChatStore = create<ChatStore>((set) => ({
         set({ isSending: true });
         try {
             const response = await axiosInstance.post('/chatbot/chat', { message })
-            const botMessage = response.data.message;
+            console.log(response.data.data);
+            const botMessage = response.data.data;
             
-            set((state) => ({
-                messages: [...state.messages, { text: message, isUser: true }, { text: botMessage, isUser: false }]
-            }));
+            set({ messages: [botMessage] });
         } catch (error) {
             console.error('Error sending message:', error);
             throw error;

@@ -26,17 +26,17 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="profile-page space-y-6">
+    <div className="space-y-6 w-full p-3 md:p-5">
       <header className="mb-6">
-        <h2 className="heading-secondary text-2xl font-semibold text-gray-900">
-          Your Medical Profile
-        </h2>
+        <h1 className="text-xl font-extrabold text-gray-900 mt-3">
+          Your Medical Information
+        </h1>
         <p className="text-primary-text mt-2">
           Keep your information up to date for faster, safer care.
         </p>
       </header>
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
         <CustomProfileCard
           title="Personal Information"
           icon={UserCircle}
@@ -110,7 +110,7 @@ const ProfilePage = () => {
             },
             {
               name: "pastMedicalHistory",
-              label: "Past Medical History:",
+              label: "Medical History:",
               value: patient?.pastMedicalHistory,
               icon: User,
               colorClass: "text-purple-500",

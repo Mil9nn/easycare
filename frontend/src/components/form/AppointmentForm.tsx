@@ -1,6 +1,5 @@
 import { Form } from "@/components/ui/form";
 import CustomFormField from "../custom/CustomFormField";
-import { SelectItem } from "@/components/ui/select";
 import SubmitButton from "@/components/SubmitButton";
 import { useState } from "react";
 
@@ -9,13 +8,63 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { FormFieldType, getAppointmentSchema } from "@/lib/validation";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useAppointmentStore } from "../../hooks/useAppointmentStore";
-import type { Appointment } from "@/types/types";
-import { useAdminStore } from "@/hooks/useAdminStore";
+import type { Appointment, Status } from "@/types/types";
 
-import { useLocation } from "react-router-dom";
-import { Calendar } from "lucide-react";
+// --- helper: merge date + time into one ISO string ---
+function mergeDateTime(date?: string, time?: string): string | null {
+  if (!date || !time) return null;
+  const baseDate = new Date(date);
+  const timeDate = new Date(time);
+  baseDate.setHours(timeDate.getHours(), timeDate.getMinutes());
+  return baseDate.toISOString();
+}
+
+/**
+ * Convert strings like "28/08/2025, 06:00:00" -> "28/08/2025, 6:00 am"
+ * Works when time has seconds or not. If the input doesn't match,
+ * it returns the original string.
+ */
+function convertMergedToAmPm(
+  merged: string,
+  opts: { upperCaseSuffix?: boolean } = {}
+): string {
+  if (!merged || typeof merged !== "string") return "";
+
+  const { upperCaseSuffix = true } = opts;
+
+  // Split on the first comma (common format: "date, time")
+  const commaIndex = merged.indexOf(",");
+  let datePart: string;
+  let timePart: string;
+
+  if (commaIndex !== -1) {
+    datePart = merged.slice(0, commaIndex).trim();
+    timePart = merged.slice(commaIndex + 1).trim();
+  } else {
+    // No comma — try to find the time inside the string
+    const timeMatch = merged.match(/([01]?\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?/);
+    if (!timeMatch) return merged;
+    const timeStart = timeMatch.index || 0;
+    datePart = merged.slice(0, timeStart).replace(/,?\s*$/, "").trim();
+    timePart = timeMatch[0];
+  }
+
+  // Extract the HH:mm (ignore seconds if present)
+  const timeMatch = timePart.match(/([01]?\d|2[0-3]):([0-5]\d)(?::([0-5]\d))?/);
+  if (!timeMatch) return merged;
+
+  const hh = parseInt(timeMatch[1], 10);
+  const mm = timeMatch[2].padStart(2, "0");
+  const suffix = hh >= 12 ? (upperCaseSuffix ? "PM" : "pm") : (upperCaseSuffix ? "AM" : "am");
+  const hh12 = hh % 12 || 12;
+  const converted = `${hh12}:${mm} ${suffix}`;
+
+  // If datePart is empty, just return the time
+  return datePart ? `${datePart}, ${converted}` : converted;
+}
+
 
 export function AppointmentForm({
   userId,
@@ -34,6 +83,8 @@ export function AppointmentForm({
   const location = useLocation();
 
   const preSelectedDoctor = location.state?.doctor?.name || "";
+  const preSelectedDate = location.state?.schedule?.date;
+  const preSelectedTime = location.state?.schedule?.time;
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,38 +92,31 @@ export function AppointmentForm({
 
   const AppointmentFormValidation = getAppointmentSchema(type);
 
-  const { doctors } = useAdminStore();
+  const defaultSchedule =
+    appointment?.schedule
+      ? new Date(appointment.schedule).toISOString().slice(0, 16)
+      : mergeDateTime(preSelectedDate, preSelectedTime) ||
+        new Date().toISOString().slice(0, 16);
 
   const form = useForm<z.infer<typeof AppointmentFormValidation>>({
     resolver: zodResolver(AppointmentFormValidation),
     defaultValues: {
       primaryPhysician: preSelectedDoctor || appointment?.primaryPhysician,
-      schedule: appointment ? new Date(appointment.schedule).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
-      reason: appointment ? appointment.reason : "",
-      note: appointment ? appointment.note : "",
+      schedule: defaultSchedule,
+      reason: appointment?.reason || "",
+      note: appointment?.note || "",
       cancellationReason: appointment?.cancellationReason || "",
     },
   });
 
-  let status;
+  const statusMap: Record<typeof type, Status> = {
+    create: "pending",
+    schedule: "scheduled",
+    cancel: "cancelled",
+  };
 
   async function onSubmit(values: z.infer<typeof AppointmentFormValidation>) {
     setIsLoading(true);
-
-    switch (type) {
-      case "create":
-        status = "pending";
-        break;
-      case "schedule":
-        status = "scheduled";
-        break;
-      case "cancel":
-        status = "cancelled";
-        break;
-      default:
-        status = "pending";
-        break;
-    }
 
     try {
       if (type === "create" && patientId) {
@@ -82,15 +126,12 @@ export function AppointmentForm({
           primaryPhysician: values.primaryPhysician,
           schedule: new Date(values.schedule),
           note: values.note,
-          status: status as Status,
+          status: statusMap[type],
           reason: values.reason!,
         };
 
-        const appointment = await createAppointment(appointmentData, navigate);
-
-        if (appointment) {
-          form.reset();
-        }
+        const created = await createAppointment(appointmentData, navigate);
+        if (created) form.reset();
       } else {
         const appointmentToUpdate = {
           userId,
@@ -98,14 +139,14 @@ export function AppointmentForm({
           appointment: {
             primaryPhysician: values.primaryPhysician,
             schedule: new Date(values.schedule),
-            status: status as Status,
+            status: statusMap[type],
             cancellationReason: values.cancellationReason,
           },
           type,
         };
-        const updatedAppointment = await updateAppointment(appointmentToUpdate);
 
-        if (updatedAppointment && setOpen) {
+        const updated = await updateAppointment(appointmentToUpdate);
+        if (updated && setOpen) {
           setOpen(false);
           form.reset();
         }
@@ -117,92 +158,59 @@ export function AppointmentForm({
     }
   }
 
-  let buttonLabel;
-
-  switch (type) {
-    case "cancel":
-      buttonLabel = "Cancel Appointment";
-      break;
-    case "create":
-      buttonLabel = "Create Appointment";
-      break;
-    case "schedule":
-      buttonLabel = "Schedule Appointment";
-      break;
-    default:
-      status = "pending";
-      break;
-  }
+  const buttonLabel =
+    type === "cancel"
+      ? "Cancel Appointment"
+      : type === "create"
+      ? "Confirm"
+      : "Schedule Appointment";
 
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-10">
-        {type === "create" && (
-          <section>
-            <h2 className="text-2xl font-bold">Hey there👋</h2>
-            <p className="text-sm opacity-55 font-extralight">
-              Request a new appointment in 10 seconds
-            </p>
-          </section>
-        )}
         {type !== "cancel" && (
-          <>
-            <section className="space-y-5">
-              <CustomFormField
-                fieldType={FormFieldType.SELECT}
-                control={form.control}
-                name="primaryPhysician"
-                label="Doctor"
-                placeholder="Select a doctor"
-              >
-                {doctors?.map((doctor, index) => (
-                  <SelectItem key={index} value={doctor.fullName}>
-                    <div className="flex items-center gap-2">
-                      <img
-                        src={
-                          Array.isArray(doctor.profileImage)
-                            ? URL.createObjectURL(doctor.profileImage[0])
-                            : doctor.profileImage
-                        }
-                        alt={doctor.fullName}
-                        width={26}
-                        height={26}
-                        className="w-8 h-8 bg-indigo-300 rounded-full object-cover"
-                      />
-                      <p>{doctor.fullName}</p>
-                    </div>
-                  </SelectItem>
-                ))}
-              </CustomFormField>
+          <section className="space-y-3">
+            {/* Preview Selected Doctor */}
+            <div className="text-sm text-gray-600">
+              <p>
+                Your selected doctor is:{" "}
+                <span className="font-medium text-gray-900">{preSelectedDoctor}</span>
+              </p>
+            </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 items-center justify-between gap-4">
-                <CustomFormField
-                  fieldType={FormFieldType.TEXTAREA}
-                  control={form.control}
-                  name="reason"
-                  label="Reason for appointment"
-                  placeholder="ex: Annual monthly checkup"
-                />
-                <CustomFormField
-                  fieldType={FormFieldType.TEXTAREA}
-                  control={form.control}
-                  name="note"
-                  label="Additional notes (if any)"
-                  placeholder="ex: I have a persistent cough"
-                />
-              </div>
+            {/* Preview Selected Date */}
+            <div className="text-sm text-gray-600">
+              <p>
+                Your selected appointment date and time is:{" "}
+                <span className="font-medium text-gray-900">
+                  {form.getValues("schedule")
+                    ? convertMergedToAmPm(new Date(form.getValues("schedule")).toLocaleString())
+                    : "Not selected"}
+                </span>
+              </p>
+            </div>
+            
+              
+                
+
+            {/* Reason + Note */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <CustomFormField
-                fieldType={FormFieldType.DATE_PICKER}
-                inputType="datetime-local"
+                fieldType={FormFieldType.TEXTAREA}
                 control={form.control}
-                name="schedule"
-                label="Expected appointment date"
-                showTimeSelect
-                dateFormat="MM/dd/yyyy - hh:mm aa"
-                icon={Calendar}
+                name="reason"
+                label="Reason for appointment"
+                placeholder="ex: Annual monthly checkup"
               />
-            </section>
-          </>
+              <CustomFormField
+                fieldType={FormFieldType.TEXTAREA}
+                control={form.control}
+                name="note"
+                label="Additional notes (if any)"
+                placeholder="ex: I have a persistent cough"
+              />
+            </div>
+          </section>
         )}
 
         {type === "cancel" && (
@@ -214,12 +222,13 @@ export function AppointmentForm({
             placeholder="Urgent meeting came up"
           />
         )}
+
         <SubmitButton
           isLoading={isLoading}
           className={`${
             type === "cancel"
-              ? "bg-red-400 text-white hover:bg-red-500 cursor-pointer"
-              : "bg-teal-400 hover:bg-teal-500 cursor-pointer"
+              ? "bg-red-400 text-white hover:bg-red-500"
+              : "bg-teal-400 hover:bg-teal-500"
           } w-full`}
           label={buttonLabel}
         />

@@ -88,7 +88,7 @@
 }
 
 .navbar {
-  @apply w-screen h-20 flex items-center justify-between lg:px-30 p-4 bg-primary shadow-md fixed top-0 left-0 z-50;
+  @apply w-screen h-20 flex items-center justify-between lg:px-30 p-4 bg-[#1d3557] shadow-md fixed top-0 left-0 z-50;
 }
 
 .sidebar-nav {
@@ -189,7 +189,7 @@
 }
 
 .edit-field-wrapper {
-  @apply flex flex-col items-end gap-1 w-full max-w-sm mx-auto p-1 rounded-lg;
+  @apply flex flex-col gap-1 w-full p-1 rounded-lg;
 }
 
 .request-details {
@@ -279,8 +279,7 @@
 }
 
 .profile-card {
-  @apply bg-white rounded-xl p-5 border border-gray-100 shadow-sm;
-  @apply hover:shadow-md transition-shadow duration-200; 
+  @apply bg-white rounded-xl p-5 max-w-md border border-gray-100 shadow-sm; 
 }
 
 
@@ -334,7 +333,7 @@
 }
 
 .chat-container {
-  @apply  flex flex-col h-60 overflow-hidden flex-1 overflow-y-auto px-4 py-2 space-y-2
+  @apply  flex flex-col h-80 overflow-hidden flex-1 overflow-y-auto px-4 py-2 space-y-2
 }
 
 .message {
@@ -366,4 +365,8 @@
 
 .appointment-item {
   @apply grid grid-cols-[50px_repeat(4,_1fr)_50px] max-w-5xl mx-auto items-center justify-between p-3 rounded shadow-sm hover:shadow-md transition-shadow duration-200;
+}
+
+h2 {
+  @apply text-xl font-bold;
 }
