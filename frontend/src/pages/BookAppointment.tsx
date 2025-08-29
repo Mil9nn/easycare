@@ -26,7 +26,7 @@ const BookAppointment = () => {
   return (
     <div className="p-10 space-y-4">
   <h2 className="text-2xl font-semibold tracking-tight">
-    🗓️ Review Your Appointment Details
+    Review Your Appointment Details
   </h2>
   <p className="text-gray-500">
     Please confirm the information below before submitting your request.

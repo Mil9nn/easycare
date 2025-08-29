@@ -48,7 +48,7 @@ const AllDoctors = () => {
         </header>
 
         {/* Floating Search + Filter Bar */}
-        <section className="flex items-center gap-4 w-[90%] max-w-3xl mx-auto bg-white border border-white/20 backdrop-blur-md rounded-2xl px-5 py-4 shadow-lg shadow-black/40 z-50">
+        <section className="flex flex-col sm:flex-row sm:items-center gap-4 w-[90%] max-w-3xl mx-auto bg-white border border-white/20 backdrop-blur-md rounded-2xl px-5 py-4 shadow-lg shadow-black/40 z-50">
           {/* Search Bar */}
           <div className="relative flex-1">
             <input
@@ -94,7 +94,7 @@ const AllDoctors = () => {
                 : "Showing all doctors"}
             </span>
             <span className="text-gray-500 text-md font-normal">
-              Click on a doctor for more details...
+              Click on a doctor to continue...
             </span>
           </p>
         </div>

@@ -1,5 +1,5 @@
 import { useChatStore } from "@/hooks/useChatStore";
-import { Loader, Send, X } from "lucide-react";
+import { BrainCircuit, Loader, Send, X } from "lucide-react";
 import { useState } from "react";
 
 import ChatContainer from "./ChatContainer";
@@ -30,7 +30,7 @@ const Chatbot = () => {
           openBot
             ? "translate-y-0"
             : "translate-y-full opacity-0 pointer-events-none invisible"
-        } bg-black  sm:max-w-lg w-fit shadow-2xl rounded-2xl transition-all duration-500 fixed bottom-6 right-6 overflow-hidden border border-gray-200 flex flex-col`}
+        } bg-black sm:max-w-lg w-fit shadow-2xl rounded-2xl transition-all duration-500 fixed bottom-6 right-6 overflow-hidden border border-gray-200 flex flex-col`}
       >
         <div className="px-5 pt-4 pb-2">
           <h1 className="text-lg sm:text-xl font-semibold text-gray-800">
@@ -92,14 +92,7 @@ const Chatbot = () => {
              text-white shadow-lg rounded-2xl cursor-pointer px-4 py-3 
              hover:scale-105 hover:shadow-2xl transition-transform duration-1000"
         >
-          <img
-            src="/assets/icons/logo-icon.svg"
-            alt="AI Symptom Checker"
-            className="w-10 h-10 drop-shadow-md"
-          />
-          <h3 className="font-semibold text-base sm:text-lg tracking-wide leading-snug">
-            AI Symptom Checker
-          </h3>
+          <BrainCircuit />
         </div>
       )}
     </div>

@@ -79,9 +79,7 @@ const AppointmentPage = () => {
               {/* "/assets/doctors/doctor-riya.jpg" */}
               <img
                 src={
-                  doctor.profileImage && doctor.profileImage.length > 0
-                    ? URL.createObjectURL(doctor.profileImage[0])
-                    : "/default-doctor.png"
+                  Array.isArray(doctor.profileImage) ? URL.createObjectURL(new Blob(doctor.profileImage)) : doctor.profileImage
                 }
                 alt="Dr. Ananya Sharma"
                 width={550}
@@ -153,7 +151,7 @@ const AppointmentPage = () => {
 
         {/* Floating Book Appointment Button */}
         {canBook && (
-          <div className="fixed bottom-6 right-6">
+          <div className="fixed bottom-25 right-6">
             <button
               onClick={() => handleClick(doctor || ({} as CreateDoctorParams))}
               className="relative group overflow-hidden px-8 py-4 bg-pink-600 text-lg font-bold rounded-full shadow-lg cursor-pointer"

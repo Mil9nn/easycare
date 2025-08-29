@@ -2,6 +2,7 @@ import DoctorCard from "@/components/doctor/DoctorCard";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
 import { useRef } from "react";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const doctors = useAdminStore((state) => state.doctors);
@@ -29,7 +30,7 @@ const Home = () => {
         {/* Content Wrapper */}
         <div className="relative max-w-7xl mx-auto px-6 py-5 space-y-16">
           <div className="flex flex-col items-center gap-1 justify-center">
-            <h1 className="text-3xl font-extrabold tracking-tight leading-tight">
+            <h1 className="text-3xl font-extrabold tracking-tight leading-tight text-center">
               Welcome to{" "}
               <span className="uppercase text-blue-400">Harmony Care</span>
             </h1>
@@ -49,10 +50,12 @@ const Home = () => {
               Book, manage and track your appointments anytime, anywhere.
             </p>
             <div>
-              <button className="relative group z-0 overflow-hidden px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-300 cursor-pointer">
+              <Link to="/doctors">
+                <button className="relative group z-0 overflow-hidden px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-300 cursor-pointer">
                 <span className="relative z-10">Book an Appointment</span>
-                <span className="absolute top-0 left-0 translate-y-full z-0 group-hover:translate-y-0 transition-transform duration-1000 ease-in-out w-full h-full bg-purple-500"></span>
+                <span className="absolute top-0 left-0 translate-y-full z-0 group-hover:translate-y-0 transition-transform duration-1000 ease-in-out w-full h-full bg-rose-500"></span>
               </button>
+              </Link>
             </div>
           </div>
 
@@ -124,7 +127,7 @@ const Home = () => {
               Book, reschedule or cancel at your convenience.
             </p>
           </div>
-          <div className="w-xs h-90 rounded-3xl overflow-hidden bg-white shadow hover:shadow-lg transition-all">
+          <div className="w-fit h-90 rounded-3xl overflow-hidden bg-white shadow hover:shadow-lg transition-all">
             <img
               src="/assets/assets_frontend/health_records.jpg"
               alt="Records"
@@ -154,7 +157,7 @@ const Home = () => {
             </p>
           </div>
         ) : (
-          <div className="relative px-4">
+          <div className="relative">
             {/* Left Arrow */}
             <button
               onClick={() => scroll("left")}

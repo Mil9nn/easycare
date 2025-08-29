@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import { LayoutDashboard, LogOut } from "lucide-react";
+import { Home, LayoutDashboard, LogOut } from "lucide-react";
 import type { NavbarProps } from "./Navbar";
 
 const NavbarSidebarLinks = ({
@@ -12,6 +12,19 @@ const NavbarSidebarLinks = ({
 
   return (
     <div className="flex flex-col gap-2">
+      <NavLink
+          to={`/`}
+          onClick={() => setMenuOpen?.(false)}
+          className={({ isActive }) =>
+            `sidebar-nav-link flex ${
+              isActive ? "text-rose-500" : ""
+            }`
+          }
+        >
+          <Home className="size-5" />
+          Home
+        </NavLink>
+
       {isLoggedIn && isPatient && (
         <NavLink
           to={`/appointments/${patientId}`}

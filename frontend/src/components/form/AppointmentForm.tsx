@@ -181,8 +181,8 @@ export function AppointmentForm({
             {/* Preview Selected Date */}
             <div className="text-sm text-gray-600">
               <p>
-                Your selected appointment date and time is:{" "}
-                <span className="font-medium text-gray-900">
+                Your selected appointment date and time is:<br />
+                <span className="font-medium text-gray-900">🗓️ {" "}
                   {form.getValues("schedule")
                     ? convertMergedToAmPm(new Date(form.getValues("schedule")).toLocaleString())
                     : "Not selected"}

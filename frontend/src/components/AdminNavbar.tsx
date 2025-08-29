@@ -20,7 +20,7 @@ export default function AdminNavbar() {
           <Link to="/">
             <div className="flex logo">
               <img src="/assets/icons/logo-icon.svg" />
-              <p className="tracking-wide">EasyCare</p>
+              <p className="tracking-wide">HarmonyCare</p>
             </div>
           </Link>
 
