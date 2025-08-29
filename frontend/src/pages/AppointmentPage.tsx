@@ -34,8 +34,8 @@ const AppointmentPage = () => {
         },
         schedule: {
           date: selectedDate?.toISOString(),
-          time: selectedTime?.toISOString()
-        }
+          time: selectedTime?.toISOString(),
+        },
       },
     });
   };
@@ -76,8 +76,13 @@ const AppointmentPage = () => {
         {doctor && (
           <div className="relative grid lg:grid-cols-2 gap-12 items-start mb-20">
             <div className="space-y-5">
+              {/* "/assets/doctors/doctor-riya.jpg" */}
               <img
-                src={"/assets/doctors/doctor-riya.jpg"}
+                src={
+                  doctor.profileImage && doctor.profileImage.length > 0
+                    ? URL.createObjectURL(doctor.profileImage[0])
+                    : "/default-doctor.png"
+                }
                 alt="Dr. Ananya Sharma"
                 width={550}
                 height={500}
@@ -106,19 +111,19 @@ const AppointmentPage = () => {
                 invasive treatments."
               </p>
               <p className="text-gray-500 dark:text-gray-400 italic">
-                Availability: Mon – Fri | {doctor.availableFrom} -{" "}
-                {doctor.availableTo}
+                Availability:{" "}
+                <div className="inline-flex flex-wrap gap-2">
+                  {doctor.availableDays.map((day, index) => (
+                    <span
+                      key={index}
+                      className="px-3 py-1 text-xs font-medium bg-pink-200 text-gray-700 rounded-full"
+                    >
+                      {day}
+                    </span>
+                  ))}
+                </div>{" "}
+                | {doctor.availableFrom} - {doctor.availableTo}
               </p>
-              <div className="flex flex-wrap gap-2">
-                {doctor.availableDays.map((day, index) => (
-                  <span
-                    key={index}
-                    className="px-3 py-1 text-xs font-medium bg-gray-100 text-gray-700 rounded-full"
-                  >
-                    {day}
-                  </span>
-                ))}
-              </div>
             </div>
           </div>
         )}
@@ -150,7 +155,7 @@ const AppointmentPage = () => {
         {canBook && (
           <div className="fixed bottom-6 right-6">
             <button
-              onClick={() => handleClick(doctor)}
+              onClick={() => handleClick(doctor || ({} as CreateDoctorParams))}
               className="relative group overflow-hidden px-8 py-4 bg-pink-600 text-lg font-bold rounded-full shadow-lg cursor-pointer"
             >
               <span className="relative z-20">Proceed</span>

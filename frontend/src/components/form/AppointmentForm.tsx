@@ -10,7 +10,7 @@ import { z } from "zod";
 import { FormFieldType, getAppointmentSchema } from "@/lib/validation";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAppointmentStore } from "../../hooks/useAppointmentStore";
-import type { Appointment, Status } from "@/types/types";
+import type { Appointment } from "@/types/types";
 
 // --- helper: merge date + time into one ISO string ---
 function mergeDateTime(date?: string, time?: string): string | null {

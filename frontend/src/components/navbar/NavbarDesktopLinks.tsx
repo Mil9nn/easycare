@@ -5,8 +5,8 @@ import {
   LogOut,
   Home,
 } from "lucide-react";
-import type { NavbarProps } from "./Navbar";
 import { useEffect, useRef, useState } from "react";
+import type{ NavbarProps } from "./Navbar";
 
 const NavbarDesktopLinks = ({
   isLoggedIn,
@@ -40,7 +40,7 @@ const NavbarDesktopLinks = ({
     isPatient: boolean;
   }) => {
     const trackedPaths = [
-      { name: "", path: "/", icon: Home, show: true, className: "hidden" },
+      { name: "Home", path: "/", icon: Home, show: true, className: "hidden md:flex" },
       { name: "All doctors", path: "/doctors", show: true, className: "hidden md:flex" },
       {
         name: "Dashboard",
@@ -67,7 +67,7 @@ const NavbarDesktopLinks = ({
               className={({ isActive }) =>
                 `nav-link flex items-center gap-2 ${
                   trackedPath.className || ""
-                } ${isActive ? "text-[#A8DADC]" : "text-[#F1FAEE]"}`
+                } ${isActive ? "text-rose-600" : "text-rose-500"}`
               }
             >
               {trackedPath.name}
@@ -107,7 +107,7 @@ const NavbarDesktopLinks = ({
 
       {/* === UNDERLINE INDICATOR === */}
       <div
-        className="absolute -bottom-3 h-[2.5px] bg-[#A8DADC] rounded-full transition-all duration-300"
+        className="absolute -bottom-3 h-[2.5px] bg-rose-500 rounded-full transition-all duration-300"
         style={{
           left: `${indicatorStyle.left}px`,
           width: `${indicatorStyle.width}px`,

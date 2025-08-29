@@ -88,7 +88,7 @@
 }
 
 .navbar {
-  @apply w-screen h-20 flex items-center justify-between lg:px-30 p-4 bg-[#1d3557] shadow-md fixed top-0 left-0 z-50;
+  @apply w-screen h-20 flex items-center justify-between lg:px-30 p-4 bg-white shadow-md fixed top-0 left-0 z-50;
 }
 
 .sidebar-nav {

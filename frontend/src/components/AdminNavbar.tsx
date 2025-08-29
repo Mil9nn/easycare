@@ -1,4 +1,4 @@
-import { ClipboardPlus, LayoutDashboard, List, LogOutIcon, Menu, X } from "lucide-react";
+import { LayoutDashboard, LogOutIcon, Menu, X } from "lucide-react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Button } from "./ui/button";
 import { useAdminStore } from "@/hooks/useAdminStore";
@@ -32,7 +32,7 @@ export default function AdminNavbar() {
             to="/admin/dashboard"
             className={({ isActive }) =>
           `sidebar-nav-link flex ${
-            isActive ? "text-indigo-500" : "text-primary"
+            isActive ? "text-indigo-500" : "text-gray-800"
           }`
         }
             onClick={() => setMenuOpen(false)}
@@ -43,23 +43,10 @@ export default function AdminNavbar() {
           
           <NavLink to="/admin/list/doctor" className={({ isActive }) =>
           `link ${
-            isActive ? "text-indigo-500" : "text-primary"
+            isActive ? "text-indigo-500" : "text-gray-800"
           }`
         }>
-            <List className="w-5 h-5" />
             Manage doctors
-          </NavLink>
-
-          <NavLink
-            to="/admin/add-doctor"
-            className={({ isActive }) =>
-          `link flex ${
-            isActive ? "text-indigo-500" : "text-primary"
-          }`
-        }
-          >
-            <ClipboardPlus className="w-5 h-5" />
-            <span>Add Doctor</span>
           </NavLink>
 
           <Button
@@ -118,21 +105,7 @@ export default function AdminNavbar() {
         }
             onClick={() => setMenuOpen(false)}
           >
-            <List className="size-5" />
             Manage doctors
-          </NavLink>
-
-          <NavLink
-            to="/admin/add-doctor"
-           className={({ isActive }) =>
-          `sidebar-nav-link flex ${
-            isActive ? "text-indigo-500" : ""
-          }`
-        }
-            onClick={() => setMenuOpen(false)}
-          >
-            <ClipboardPlus className="w-5 h-5" />
-            <span>Add Doctor</span>
           </NavLink>
 
           <button

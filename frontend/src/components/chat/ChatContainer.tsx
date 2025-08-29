@@ -1,10 +1,15 @@
 import { ScrollArea } from "../ui/scroll-area";
 import { useEffect, useRef } from "react";
 
-type ChatMessage = {
-  text: string;
+export type ChatMessage = {
   isUser: boolean;
-};
+  urgency_level: string;
+  possible_conditions: string[];
+  recommended_speciality: string;
+  general_advice: string;
+  warning_signs: string[];
+  disclaimer: string;
+}
 
 type ChatContainerProps = {
   messages: ChatMessage[];
@@ -33,10 +38,18 @@ const ChatContainer = ({ messages }: ChatContainerProps) => {
                   : "mr-auto bg-gradient-to-r from-zinc-100 to-zinc-200"
               }`}
             >
-              {/* Title */}
-              <h3 className="font-bold text-xl text-zinc-900 mb-4">
-                Analysis Results
-              </h3>
+              <div className="flex items-center justify-between gap-5 mb-4">
+                {/* Title */}
+                <h3 className="font-bold text-xl text-zinc-900">
+                  Analysis Results
+                </h3>
+                {/* Urgency */}
+                <div className="">
+                  <span className="uppercase text-xs font-semibold tracking-wide px-3 py-1 rounded-full bg-yellow-400 text-zinc-900">
+                    {msg.urgency_level} Priority
+                  </span>
+                </div>
+              </div>
 
               {/* Possible Conditions */}
               <div className="mb-4">
@@ -62,13 +75,6 @@ const ChatContainer = ({ messages }: ChatContainerProps) => {
                 </h4>
                 <span className="px-3 py-1 text-sm rounded-full bg-green-600/20 text-green-700 font-medium">
                   {msg.recommended_speciality}
-                </span>
-              </div>
-
-              {/* Urgency */}
-              <div className="absolute top-1 right-2">
-                <span className="uppercase text-xs font-semibold tracking-wide px-3 py-1 rounded-full bg-yellow-400 text-zinc-900">
-                  {msg.urgency_level} Priority
                 </span>
               </div>
 

@@ -1,6 +1,6 @@
 import { Link, NavLink } from "react-router-dom";
 import { LayoutDashboard, LogOut } from "lucide-react";
-import type NavbarProps  from "./Navbar";
+import type { NavbarProps } from "./Navbar";
 
 const NavbarSidebarLinks = ({
   isLoggedIn,

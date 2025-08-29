@@ -1,4 +1,3 @@
-import Chatbot from "@/components/chat/Chatbot";
 import DoctorCard from "@/components/doctor/DoctorCard";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
@@ -21,7 +20,7 @@ const Home = () => {
   };
 
   return (
-    <div>
+    <div className="relative">
       <section className="relative min-h-screen overflow-hidden">
         {/* Background Accent */}
         <div className="absolute top-0 left-0 w-[50%] h-full bg-blue-500/10"></div>
@@ -52,7 +51,7 @@ const Home = () => {
             <div>
               <button className="relative group z-0 overflow-hidden px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-300 cursor-pointer">
                 <span className="relative z-10">Book an Appointment</span>
-                <span className="absolute top-0 left-0 translate-y-full z-5 group-hover:translate-y-0 transition-transform duration-1000 ease-in-out w-full h-full bg-purple-500"></span>
+                <span className="absolute top-0 left-0 translate-y-full z-0 group-hover:translate-y-0 transition-transform duration-1000 ease-in-out w-full h-full bg-purple-500"></span>
               </button>
             </div>
           </div>
@@ -98,11 +97,11 @@ const Home = () => {
       {/* Features Section */}
       <section className="py-20 px-6 bg-[#F1FAEE] bg-gradient-to-br from-[#F1FAEE] via-white to-[#A8DADC]/30">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-center">
-          <div className="p-8 rounded-2xl bg-white shadow hover:shadow-lg transition-all">
+          <div className="w-xs h-90 rounded-3xl overflow-hidden bg-white shadow hover:shadow-lg transition-all">
             <img
-              src="/assets/icons/doctor.svg"
+              src="/assets/assets_frontend/qualified_doctor.jpg"
               alt="Doctors"
-              className="mx-auto w-12 h-12 mb-4"
+              className="mx-auto w-80 h-50 mb-4"
             />
             <h3 className="text-xl font-semibold text-[#1D3557]">
               Qualified Doctors
@@ -112,11 +111,11 @@ const Home = () => {
               specialties.
             </p>
           </div>
-          <div className="p-8 rounded-2xl bg-white shadow hover:shadow-lg transition-all">
+          <div className="w-xs h-90 rounded-3xl overflow-hidden bg-white shadow hover:shadow-lg transition-all">
             <img
-              src="/assets/icons/appointment.svg"
+              src="/assets/assets_frontend/book_consultation.jpg"
               alt="Appointments"
-              className="mx-auto w-12 h-12 mb-4"
+              className="mx-auto w-80 h-50 mb-4"
             />
             <h3 className="text-xl font-semibold text-[#1D3557]">
               Easy Appointments
@@ -125,11 +124,11 @@ const Home = () => {
               Book, reschedule or cancel at your convenience.
             </p>
           </div>
-          <div className="p-8 rounded-2xl bg-white shadow hover:shadow-lg transition-all">
+          <div className="w-xs h-90 rounded-3xl overflow-hidden bg-white shadow hover:shadow-lg transition-all">
             <img
-              src="/assets/icons/records.svg"
+              src="/assets/assets_frontend/health_records.jpg"
               alt="Records"
-              className="mx-auto w-12 h-12 mb-4"
+              className="mx-auto w-80 h-50 mb-4"
             />
             <h3 className="text-xl font-semibold text-[#1D3557]">
               Health Records
@@ -141,10 +140,7 @@ const Home = () => {
         </div>
       </section>
 
-      <div className="fixed bottom-5 right-5 z-50 w-full max-w-sm sm:max-w-lg">
-        <Chatbot />
-      </div>
-      <section className="max-w-7xl mx-auto p-10">
+      <section className="max-w-7xl mx-auto p-10 bg-red-100">
         <h1 className="text-2xl font-bold mb-1">Doctors</h1>
         <p className="text-gray-600 text-sm max-w-lg italic mb-5">
           Simply browse through our extensive list of trusted doctors, schedule
@@ -164,7 +160,7 @@ const Home = () => {
               onClick={() => scroll("left")}
               className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md rounded-full p-2 z-10"
             >
-              <ChevronLeft className="h-6 w-6 text-gray-700" />
+              <ChevronLeft className="h-6 w-6 text-gray-700 cursor-pointer" />
             </button>
 
             {/* Scrollable Container */}
@@ -191,7 +187,7 @@ const Home = () => {
               onClick={() => scroll("right")}
               className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md rounded-full p-2 z-10"
             >
-              <ChevronRight className="h-6 w-6 text-gray-700" />
+              <ChevronRight className="h-6 w-6 text-gray-700 cursor-pointer" />
             </button>
           </div>
         )}

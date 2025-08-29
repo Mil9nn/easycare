@@ -31,45 +31,54 @@ const AllDoctors = () => {
   };
 
   return (
-    <section className="max-sm:p-0 p-10">
+    <section className="max-sm:p-0 px-10 py-5">
       <div className="relative min-h-screen px-6 py-10 space-y-12">
         {/* Intro */}
-        <header className="mx-auto space-y-3">
-          <h1 className="text-3xl font-bold tracking-tight">
+        <header className="relative mx-auto text-center space-y-4 max-w-2xl">
+          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-rose-500 drop-shadow-lg">
             Our Trusted Doctors
           </h1>
-          <p className="text-gray-400 max-w-xl text-lg leading-relaxed">
+          <p className="text-gray-600 text-lg md:text-xl leading-relaxed">
             Choose from our expert doctors, select a convenient time slot, and
-            confirm your visit — all in just a few clicks. Your health,
-            simplified.
+            confirm your visit — all in just a few clicks.
+            <span className="block mt-1 font-semibold text-blue-400">
+              Your health, simplified.
+            </span>
           </p>
         </header>
 
-        <section className="flex max-xs:flex-col-reverse justify-between gap-5 max-w-2xl">
+        {/* Floating Search + Filter Bar */}
+        <section className="flex items-center gap-4 w-[90%] max-w-3xl mx-auto bg-white border border-white/20 backdrop-blur-md rounded-2xl px-5 py-4 shadow-lg shadow-black/40 z-50">
           {/* Search Bar */}
-          <div className="relative w-full max-w-xl">
+          <div className="relative flex-1">
             <input
               type="search"
               placeholder="Search by doctor name or specialty…"
-              className="w-full pl-12 pr-4 py-3 rounded-full 
-              bg-white/10 border border-white/20 
-              backdrop-blur-md shadow-md shadow-black/40
-              text-gray-500 placeholder-gray-500
-              focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+              className="w-full max-w-md shadow-2xl shadow-black/70 pl-12 pr-4 py-3 rounded-full
+                 bg-transparent border border-white/20
+                 text-gray-200 placeholder-gray-400
+                 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             />
-            <Search className="absolute top-1/2 left-4 -translate-y-1/2 text-gray-400" />
+            <Search className="absolute top-1/2 left-4 -translate-y-1/2 text-gray-400 w-5 h-5" />
           </div>
 
           {/* Specialization Filter */}
-          <div className="w-full max-w-[150px]">
+          <div className="w-44">
             <select
               id="specialization"
               onChange={handleChange}
               value={specialization || "all"}
-              className="w-full py-3 bg-white/10 border border-white/20 backdrop-blur-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition cursor-pointer p-2 outline-blue-500 max-w-sm rounded-md shadow-sm text-sm"
+              className="w-full py-3 px-3 rounded-xl cursor-pointer
+                 bg-transparent border  border-black
+                 text-gray-500 backdrop-blur-md
+                 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
             >
               {Specializations.map((spec) => (
-                <option key={spec.value} value={spec.value}>
+                <option
+                  key={spec.value}
+                  value={spec.value}
+                  className="text-black"
+                >
                   {spec.name}
                 </option>
               ))}

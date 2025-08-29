@@ -1,8 +1,9 @@
+import type { ChatMessage } from '@/components/chat/ChatContainer';
 import { axiosInstance } from '@/lib/axios';
 import { create } from 'zustand';
 
 interface ChatStore {
-    messages: { text: string; isUser: boolean }[];
+    messages: ChatMessage[];
     sendMessage: (message: string) => Promise<void>;
     isSending?: boolean;    
 }
