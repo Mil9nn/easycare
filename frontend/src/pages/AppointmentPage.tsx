@@ -108,7 +108,7 @@ const AppointmentPage = () => {
                 preventive heart care, advanced diagnostics, and minimally
                 invasive treatments."
               </p>
-              <p className="text-gray-500 dark:text-gray-400 italic">
+              <div className="text-gray-500 dark:text-gray-400 italic">
                 Availability:{" "}
                 <div className="inline-flex flex-wrap gap-2">
                   {doctor.availableDays.map((day, index) => (
@@ -121,7 +121,7 @@ const AppointmentPage = () => {
                   ))}
                 </div>{" "}
                 | {doctor.availableFrom} - {doctor.availableTo}
-              </p>
+              </div>
             </div>
           </div>
         )}

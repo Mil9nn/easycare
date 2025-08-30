@@ -178,7 +178,7 @@ export function MedicalForm() {
             />
           </div>
         </section>
-
+        
         {/* Medical History Form Section */}
         <section className="space-y-5">
           <h2 className="heading-secondary">Medical Information</h2>
