@@ -13,9 +13,6 @@ A healthcare appointment management platform that streamlines the process of boo
 - [Installation](#-installation)
 - [Environment Variables](#-environment-variables)
 - [Project Structure](#-project-structure)
-- [API Endpoints](#-api-endpoints)
-- [Usage](#-usage)
-- [Admin Access](#-admin-access)
 - [Contributing](#-contributing)
 - [License](#-license)
 
@@ -275,140 +272,6 @@ harmonycare/
 └── README.md
 ```
 
-## 🔗 API Endpoints
-
-### Authentication Routes (`/api/auth`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/signup` | Register new user | No |
-| POST | `/login` | User login | No |
-| POST | `/logout` | User logout | Yes |
-| GET | `/check` | Check auth status | Yes |
-| PUT | `/update-profile` | Update user profile | Yes |
-
-### Admin Routes (`/api/admin`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/verify-otp` | Verify admin OTP | No |
-| POST | `/logout` | Admin logout | Admin |
-| GET | `/check` | Check admin status | Admin |
-| PUT | `/appointment/schedule` | Schedule/cancel appointment | Admin |
-| GET | `/appointment/stats` | Get appointment statistics | Admin |
-| GET | `/appointment/weekly` | Get weekly appointments | Admin |
-| GET | `/patientData` | Get patients by age group | Admin |
-
-### Patient Routes (`/api/patient`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/` | Create patient profile | Yes |
-| GET | `/` | Get all patients | Yes |
-| GET | `/me` | Get current patient | Yes |
-| GET | `/:id` | Get patient by ID | Yes |
-| PUT | `/update/:id` | Update patient | Yes |
-
-### Appointment Routes (`/api/appointment`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/` | Create appointment | Yes |
-| PUT | `/` | Update appointment | Yes |
-| GET | `/` | Get all appointments | Admin |
-| GET | `/:id` | Get appointment by ID | Admin |
-| GET | `/patient/:id` | Get patient appointments | Yes |
-
-### Doctor Routes (`/api/doctor`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/add` | Add new doctor | Admin |
-| GET | `/all` | Get all doctors | No |
-| GET | `/:doctorId` | Get doctor by ID | No |
-| PUT | `/:doctorId` | Update doctor | Admin |
-| PUT | `/status/:doctorId` | Toggle doctor status | Admin |
-| DELETE | `/:doctorId` | Delete doctor | Admin |
-
-### Chatbot Routes (`/api/chatbot`)
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/chat` | AI symptom analysis | No |
-
-## 💻 Usage
-
-### For Patients
-
-1. **Sign Up / Login**
-   - Create an account or login with existing credentials
-   - Navigate to `/signup` or `/login`
-
-2. **Complete Medical Profile**
-   - Fill out comprehensive medical information
-   - Upload identification document
-   - Provide emergency contact details
-
-3. **Book Appointment**
-   - Browse doctors by specialization
-   - Select preferred date and time
-   - Provide reason for visit
-   - Submit appointment request
-
-4. **Track Appointments**
-   - View appointment history
-   - Check appointment status (Pending/Scheduled/Cancelled)
-   - Receive email notifications
-
-5. **AI Symptom Checker**
-   - Describe symptoms to the chatbot
-   - Get preliminary analysis
-   - Recommended specialist type
-   - Urgency level assessment
-
-### For Admins
-
-1. **Access Admin Panel**
-   - Navigate to `/admin`
-   - Enter OTP: `123456` (default)
-
-2. **Dashboard Overview**
-   - View real-time statistics
-   - Monitor appointment trends
-   - Analyze patient demographics
-
-3. **Manage Appointments**
-   - Review pending requests
-   - Schedule appointments
-   - Cancel appointments with reasons
-   - View detailed patient information
-
-4. **Manage Doctors**
-   - Add new doctors with profiles
-   - Update doctor information
-   - Toggle availability status
-   - Remove doctors from system
-
-## 🔐 Admin Access
-
-**Default Admin OTP:** `123456`
-
-To access the admin panel:
-1. Navigate to `/admin`
-2. Enter the OTP
-3. You'll be redirected to the admin dashboard
-
-**Important:** Change the default OTP in production by updating the `ADMIN_SECRET_OTP` environment variable.
-
-## 🌐 Production Deployment
-
-### Backend Deployment (Render/Railway/Heroku)
-
-1. Set all environment variables
-2. Update `NODE_ENV` to `production`
-3. Ensure MongoDB Atlas connection string is set
-4. Deploy the `/backend` directory
-
-### Frontend Deployment (Vercel/Netlify)
-
-1. Update API URL to production backend
-2. Build the project: `npm run build`
-3. Deploy the `/frontend/dist` directory
-
 ### Build for Production
 ```bash
 # Frontend
@@ -418,12 +281,6 @@ npm run build
 # Backend
 cd backend
 npm start
-```
-
-## 🧪 Testing
-```bash
-# Run tests (if implemented)
-npm test
 ```
 
 ## 🤝 Contributing
@@ -445,13 +302,6 @@ Contributions are welcome! Please follow these steps:
 ```
 5. Open a Pull Request
 
-### Code Style
-
-- Use ESLint and Prettier for code formatting
-- Follow existing code conventions
-- Write meaningful commit messages
-- Add comments for complex logic
-
 ## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
@@ -461,41 +311,3 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Email notifications may have delays during high traffic
 - AI symptom checker requires OpenAI API quota
 - Image uploads limited to 10MB
-
-## 🔮 Future Enhancements
-
-- [ ] Video consultation integration
-- [ ] Push notifications
-- [ ] Multi-language support
-- [ ] Payment gateway integration
-- [ ] Prescription management
-- [ ] Lab report uploads
-- [ ] SMS notifications
-- [ ] Mobile app (React Native)
-
-## 📞 Support
-
-For support, email support@harmonycare.com or create an issue in the repository.
-
-## 👨‍💻 Author
-
-**Murli Manohar Milan Singh**
-- GitHub: [@Mil9nn](https://github.com/Mil9nn)
-- LinkedIn: [Your Profile](https://www.linkedin.com/in/milan-singh-51351b1bb/)
-- Email: singhmilan314@gmail.com
-
-## 🙏 Acknowledgments
-
-- [React](https://reactjs.org/)
-- [Node.js](https://nodejs.org/)
-- [MongoDB](https://www.mongodb.com/)
-- [OpenAI](https://openai.com/)
-- [Cloudinary](https://cloudinary.com/)
-- [shadcn/ui](https://ui.shadcn.com/)
-- All open-source libraries used in this project
-
----
-
-⭐ **If you find this project useful, please consider giving it a star!**
-
-Made with ❤️ by [Murli Manohar Milan Singh]
