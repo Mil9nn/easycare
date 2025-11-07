@@ -13,46 +13,39 @@ const ManageDoctors = () => {
   const updateDoctorStatus = useAdminStore((state) => state.updateDoctorStatus);
 
   const { doctorId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getDoctorById(doctorId!);
   }, [getDoctorById, doctorId]);
 
-  const navigate = useNavigate();
+  const handleUpdate = () => navigate(`/admin/edit-doctor/${doctor?._id}`);
+  const handleDelete = async () => doctorId && (await deleteDoctor(doctorId));
+  const handleToggle = async () => {
+    await updateDoctorStatus(doctor!);
+    await getDoctorById(doctorId!);
+  };
 
   if (isLoading) {
     return (
-      <div className="h-[80vh] w-screen flex flex-col items-center justify-center">
-        <Loader className="animate-spin size-8 text-teal-500" />
-        <p className="text-sm text-gray-500 max-w-xs mt-2">
+      <div className="h-[80vh] flex flex-col items-center justify-center">
+        <Loader className="animate-spin size-6 text-blue-500" />
+        <p className="text-sm text-gray-500 mt-2">
           Loading doctor details...
         </p>
       </div>
     );
   }
 
-  const handleUpdate = async () => {
-    navigate(`/admin/edit-doctor/${doctor?._id}`);
-  };
-
-  const handleDelete = async () => {
-    if (!doctorId) {
-      console.error("Doctor ID is not defined");
-      return;
-    }
-    await deleteDoctor(doctorId!);
-  };
-
-  const handleToggle = async () => {
-    await updateDoctorStatus(doctor!);
-    await getDoctorById(doctorId!);
-  };
+  if (!doctor) return null;
 
   return (
-    <div className="p-7 bg-white shadow-sm">
-      {doctor && (
-        <div className="flex flex-col sm:flex-row items-stretch gap-4">
-          <div className="bg-indigo-500 rounded w-full max-w-70">
+    <div className="min-h-screen bg-gray-50 px-8 py-10">
+      <div className="max-w-5xl mx-auto bg-white border border-gray-200 rounded-2xl shadow-sm p-8 transition">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row gap-6">
+          {/* Profile Image */}
+          <div className="flex-shrink-0">
             <img
               src={
                 Array.isArray(doctor.profileImage)
@@ -60,79 +53,97 @@ const ManageDoctors = () => {
                   : doctor.profileImage
               }
               alt={doctor.fullName}
-              className="w-80 h-70 object-contain"
+              className="w-40 h-40 object-cover rounded-xl border border-gray-200"
             />
           </div>
-          <div className="flex-1 space-y-2 py-3">
-            <h3 className="text-xl font-semibold text-gray-800">
-              {doctor.fullName}
-            </h3>
-            <div className="flex items-center gap-3">
-              <p className="text-md capitalize text-gray-600 pb-1">
-                MBBS - {doctor.specialization}
-              </p>
-              <p className="text-xs text-gray-600 font-medium bg-primary border border-gray-300 p-1 px-2 rounded-full w-fit">
-                <span className="text-xs">{doctor.experience}</span> years
+
+          {/* Doctor Details */}
+          <div className="flex-1 space-y-4">
+            <div>
+              <h2 className="text-2xl font-semibold text-gray-800">
+                {doctor.fullName}
+              </h2>
+              <p className="text-sm text-gray-500">
+                MBBS — {doctor.specialization}
               </p>
             </div>
-            <p className="text-sm text-gray-600">
-              <span className="font-medium text-gray-700">Available:</span>{" "}
-              {doctor.availableDays.map((day, index) => (
-                <span
-                  key={index}
-                  className="bg-[#009689] capitalize text-xs font-medium mr-2 rounded px-2 text-white p-0.5"
-                >
-                  {day}
-                </span>
-              ))}
-            </p>
-            <p className="flex items-center gap-2">
-              <span className="font-medium text-gray-700">Time:</span>
-              <span className="text-xs text-white font-medium bg-indigo-400 rounded px-2">
-                {doctor.availableFrom} – {doctor.availableTo}
-              </span>{" "}
-            </p>
-            <p className="max-w-[700px]  text-sm">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              euismod magna vel magna tincidunt, ac malesuada lorem eleifend.
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              euismod magna vel magna tincidunt, ac malesuada lorem eleifend.
-            </p>
-            <div className="flex items-center justify-between">
-              <div>
-              <span className="text-sm font-medium text-gray-700 mr-2">
-                Status:
+
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="text-sm text-gray-600">
+                <strong>{doctor.experience}</strong> years experience
               </span>
-              <ToggleSwitch
-                isActive={doctor.isActive!}
-                onToggle={handleToggle}
-              />
+              <span
+                className={`px-2 py-1 text-xs font-medium rounded-full ${
+                  doctor.isActive
+                    ? "bg-green-100 text-green-700"
+                    : "bg-red-100 text-red-700"
+                }`}
+              >
+                {doctor.isActive ? "Active" : "Inactive"}
+              </span>
             </div>
+
+            <div className="pt-3 border-t border-gray-100 space-y-2">
+              <p className="text-sm text-gray-600">
+                <span className="font-medium text-gray-700">Available Days:</span>{" "}
+                {doctor.availableDays.map((day, idx) => (
+                  <span
+                    key={idx}
+                    className="inline-block bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded mr-1"
+                  >
+                    {day}
+                  </span>
+                ))}
+              </p>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium text-gray-700">Timings:</span>{" "}
+                <span className="bg-blue-50 text-blue-700 text-xs font-medium px-2 py-1 rounded">
+                  {doctor.availableFrom} – {doctor.availableTo}
+                </span>
+              </p>
+            </div>
+
+            <div className="pt-3 border-t border-gray-100">
+              <p className="text-sm text-gray-600 leading-relaxed">
+                <strong>About:</strong> Specializes in{" "}
+                <span className="capitalize">{doctor.specialization}</span> with{" "}
+                {doctor.experience}+ years of clinical experience. Available for
+                consultations on{" "}
+                {doctor.availableDays.join(", ")}.
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-700 font-medium">Status:</span>
+                <ToggleSwitch isActive={doctor.isActive!} onToggle={handleToggle} />
+              </div>
+
               <div className="flex gap-3">
                 <Dialog
-                  label={"Edit"}
-                  title="You'll be redirected to the edit page."
-                  description="Update the doctor's information there."
+                  label="Edit"
+                  title="Redirect to edit page"
+                  description="You can update the doctor's information there."
                   icon={SquarePen}
                   mode="edit"
-                  className="text-emerald-500 bg-emerald-100 shadow-md flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-105 active:scale-95 duration-400 transtion-transform ease-in-out"
+                  className="flex items-center gap-2 text-blue-600 border border-blue-200 bg-blue-50 hover:bg-blue-100 px-4 py-2 rounded-lg text-sm font-medium transition"
                   onClick={handleUpdate}
                 />
                 <Dialog
-                  label={"Delete"}
-                  title="Are you absolutely sure?"
-                  description="This will permanently delete the doctor and remove all associated data 
-                from our servers."
+                  label="Delete"
+                  title="Are you sure?"
+                  description="This will permanently remove the doctor's profile."
                   icon={Trash}
                   mode="delete"
-                  className="text-rose-500 bg-rose-100 shadow-md flex items-center gap-1 p-2 px-3 rounded-full cursor-pointer hover:scale-105 active:scale-95 duration-400 transtion-transform ease-in-out"
+                  className="flex items-center gap-2 text-red-600 border border-red-200 bg-red-50 hover:bg-red-100 px-4 py-2 rounded-lg text-sm font-medium transition"
                   onClick={handleDelete}
                 />
               </div>
             </div>
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 };

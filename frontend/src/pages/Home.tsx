@@ -1,199 +1,104 @@
-import DoctorCard from "@/components/doctor/DoctorCard";
-import { useAdminStore } from "@/hooks/useAdminStore";
-import { ChevronLeft, ChevronRight, Loader } from "lucide-react";
-import { useRef } from "react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
-  const doctors = useAdminStore((state) => state.doctors);
-  const gettingDoctors = useAdminStore((state) => state.gettingDoctors);
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: "left" | "right") => {
-    if (scrollRef.current) {
-      const { clientWidth } = scrollRef.current;
-      scrollRef.current.scrollBy({
-        left: direction === "left" ? -clientWidth : clientWidth,
-        behavior: "smooth",
-      });
-    }
-  };
 
   return (
     <div className="relative">
-      <section className="relative min-h-screen overflow-hidden">
-        {/* Background Accent */}
-        <div className="absolute top-0 left-0 w-[50%] h-full bg-blue-500/10"></div>
-        <div className="absolute bottom-0 right-0 w-[50%] h-full bg-pink-500/10"></div>
+      {/* HERO SECTION */}
+      <section className="relative min-h-[calc(100vh-65px)] bg-red-100 flex flex-col justify-center items-center overflow-hidden ">
+        <div className="absolute top-0 left-0 w-[50%] h-full bg-gradient-to-b from-blue-200/30 to-transparent blur-3xl"></div>
+        <div className="absolute bottom-0 right-0 w-[50%] h-full bg-gradient-to-t from-rose-200/30 to-transparent blur-3xl"></div>
 
-        {/* Content Wrapper */}
-        <div className="relative max-w-7xl mx-auto px-6 py-5 space-y-16">
-          <div className="flex flex-col items-center gap-1 justify-center">
-            <h1 className="text-3xl font-extrabold tracking-tight leading-tight text-center">
-              Welcome to{" "}
-              <span className="uppercase text-blue-400">Harmony Care</span>
-            </h1>
-            <p className="text-lg text-zinc-700">
-              Where compassion meets innovation
-            </p>
-            <p className="italic text-zinc-800">“Your health, our mission”</p>
-          </div>
-
-          <div className="text-center space-y-6"></div>
-
-          <div className="text-center space-y-6">
-            <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight leading-tight">
-              Healthcare made <span className="text-blue-400">Simple</span>
-            </h1>
-            <p className="text-lg text-gray-700 max-w-2xl mx-auto">
-              Book, manage and track your appointments anytime, anywhere.
-            </p>
-            <div>
-              <Link to="/doctors">
-                <button className="relative group z-0 overflow-hidden px-8 py-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-full shadow-lg transition-all duration-300 cursor-pointer">
-                <span className="relative z-10">Book an Appointment</span>
-                <span className="absolute top-0 left-0 translate-y-full z-0 group-hover:translate-y-0 transition-transform duration-1000 ease-in-out w-full h-full bg-rose-500"></span>
-              </button>
-              </Link>
-            </div>
-          </div>
-
-          {/* About & Why Choose Us */}
-          <div className="grid md:grid-cols-2 gap-12 items-start">
-            <div className="space-y-5">
-              <h2 className="text-3xl font-bold">About Us</h2>
-              <p className="text-gray-900 leading-relaxed">
-                Founded with the vision to make healthcare more accessible,
-                Harmony Care Hospital brings together advanced medical expertise
-                and patient-first care. With specialists across multiple fields,
-                digital medical records, and a seamless appointment system, we
-                ensure your journey to wellness is smooth and stress-free.
-              </p>
-            </div>
-
-            <div className="space-y-5">
-              <h2 className="text-3xl font-bold">Why Choose Us</h2>
-              <ul className="space-y-3 text-gray-800">
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-400">✔</span> Trusted doctors with
-                  10+ years average experience
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-400">✔</span> Multi-specialty care
-                  under one roof
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-400">✔</span> Secure patient data &
-                  digital ID verification
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-blue-400">✔</span> Flexible scheduling
-                  and easy cancellations
-                </li>
-              </ul>
-            </div>
-          </div>
+        <div className="relative text-center px-6 py-20 space-y-8 animate-fadeIn">
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight text-gray-900">
+            Welcome to{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-rose-500">
+              EasyCare
+            </span>
+          </h1>
+          <p className="text-lg text-zinc-700 max-w-2xl mx-auto">
+            Appointment management system
+          </p>
+          <Link to="/doctors">
+            <button className="relative group z-0 overflow-hidden px-8 py-4 bg-gradient-to-r from-blue-500 to-rose-500 hover:from-blue-600 hover:to-rose-600 text-white font-semibold rounded-full shadow-lg transition-all duration-500">
+              <span className="relative z-10">Book an Appointment</span>
+              <span className="absolute top-0 left-0 translate-y-full z-0 group-hover:translate-y-0 transition-transform duration-1000 ease-in-out w-full h-full bg-rose-600"></span>
+            </button>
+          </Link>
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-6 bg-[#F1FAEE] bg-gradient-to-br from-[#F1FAEE] via-white to-[#A8DADC]/30">
+      {/* ABOUT SECTION */}
+      <section className="max-w-6xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-start">
+        <div className="space-y-5">
+          <h2 className="text-3xl font-bold text-gray-900">About Us</h2>
+          <p className="text-gray-700 leading-relaxed">
+            <p>
+              EasyCare is a hospital appointment management system designed to
+              streamline your healthcare visits. Book appointments with
+              available doctors, manage your medical records, and track your
+              appointment history - all in one place.
+            </p>
+          </p>
+        </div>
+
+        <div className="space-y-5">
+          <h2 className="text-3xl font-bold text-gray-900">Why Choose Us</h2>
+          <ul className="space-y-3 text-gray-700">
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500">✔</span> Browse doctors by specialization
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500">✔</span> View real-time doctor availability
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500">✔</span> Secure patient data management
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-blue-500">✔</span> Easy appointment booking and rescheduling
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      {/* FEATURES SECTION */}
+      <section className="py-20 px-6">
         <div className="max-w-6xl mx-auto grid md:grid-cols-3 gap-8 text-center">
-          <div className="w-xs h-90 rounded-3xl overflow-hidden bg-white shadow hover:shadow-lg transition-all">
-            <img
-              src="/assets/assets_frontend/qualified_doctor.jpg"
-              alt="Doctors"
-              className="mx-auto w-80 h-50 mb-4"
-            />
-            <h3 className="text-xl font-semibold text-[#1D3557]">
-              Qualified Doctors
-            </h3>
-            <p className="mt-2 text-gray-600">
-              Book a consultation with certified healthcare professionals across
-              specialties.
-            </p>
-          </div>
-          <div className="w-xs h-90 rounded-3xl overflow-hidden bg-white shadow hover:shadow-lg transition-all">
-            <img
-              src="/assets/assets_frontend/book_consultation.jpg"
-              alt="Appointments"
-              className="mx-auto w-80 h-50 mb-4"
-            />
-            <h3 className="text-xl font-semibold text-[#1D3557]">
-              Easy Appointments
-            </h3>
-            <p className="mt-2 text-gray-600">
-              Book, reschedule or cancel at your convenience.
-            </p>
-          </div>
-          <div className="w-fit h-90 rounded-3xl overflow-hidden bg-white shadow hover:shadow-lg transition-all">
-            <img
-              src="/assets/assets_frontend/health_records.jpg"
-              alt="Records"
-              className="mx-auto w-80 h-50 mb-4"
-            />
-            <h3 className="text-xl font-semibold text-[#1D3557]">
-              Health Records
-            </h3>
-            <p className="mt-2 text-gray-600">
-              Keep your medical history safe, accessible, and organized.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      <section className="max-w-7xl mx-auto p-10 bg-red-100">
-        <h1 className="text-2xl font-bold mb-1">Doctors</h1>
-        <p className="text-gray-600 text-sm max-w-lg italic mb-5">
-          Simply browse through our extensive list of trusted doctors, schedule
-          your appointment hassle-free.
-        </p>
-        {gettingDoctors ? (
-          <div className="flex items-center text-teal-400 justify-center gap-1">
-            <Loader className="animate-spin" />
-            <p className="text-center text-sm text-gray-500">
-              Loading doctors...
-            </p>
-          </div>
-        ) : (
-          <div className="relative">
-            {/* Left Arrow */}
-            <button
-              onClick={() => scroll("left")}
-              className="absolute left-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md rounded-full p-2 z-10"
-            >
-              <ChevronLeft className="h-6 w-6 text-gray-700 cursor-pointer" />
-            </button>
-
-            {/* Scrollable Container */}
+          {[
+            {
+              title: "Find Doctors",
+              desc: "Book consultations with certified healthcare professionals across specialties.",
+              img: "/assets/assets_frontend/qualified_doctor.jpg",
+            },
+            {
+              title: "Quick Booking",
+              desc: "Book, reschedule, or cancel at your convenience.",
+              img: "/assets/assets_frontend/book_consultation.jpg",
+            },
+            {
+              title: "Track Records",
+              desc: "Keep your medical history safe, accessible, and organized.",
+              img: "/assets/assets_frontend/health_records.jpg",
+            },
+          ].map((feature, i) => (
             <div
-              ref={scrollRef}
-              className="flex gap-5 overflow-x-auto scroll-smooth snap-x snap-mandatory remove-scrollbar p-5"
+              key={i}
+              className="rounded-2xl"
             >
-              {doctors?.slice(0, 5).map((doctor) => (
-                <div key={doctor._id} className="snap-start shrink-0 w-72">
-                  <DoctorCard
-                    name={doctor.fullName}
-                    specialization={doctor.specialization}
-                    imageSrc={doctor.profileImage}
-                    className="bg-white shadow-lg rounded-2xl hover:scale-[1.02] transition-transform"
-                    doctorId={doctor._id}
-                    isActive={doctor.isActive}
-                  />
-                </div>
-              ))}
+              <img
+                src={feature.img}
+                alt={feature.title}
+                className="w-full h-56 object-cover"
+              />
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900">
+                  {feature.title}
+                </h3>
+                <p className="mt-2 text-gray-600">{feature.desc}</p>
+              </div>
             </div>
-
-            {/* Right Arrow */}
-            <button
-              onClick={() => scroll("right")}
-              className="absolute right-0 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white shadow-md rounded-full p-2 z-10"
-            >
-              <ChevronRight className="h-6 w-6 text-gray-700 cursor-pointer" />
-            </button>
-          </div>
-        )}
+          ))}
+        </div>
       </section>
     </div>
   );

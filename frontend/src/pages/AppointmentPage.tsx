@@ -2,16 +2,15 @@ import DoctorCard from "@/components/doctor/DoctorCard";
 import { useAdminStore } from "@/hooks/useAdminStore";
 import { useAuthStore } from "@/hooks/useAuthStore";
 import { useFormStore } from "@/hooks/useFormStore";
-import { useEffect } from "react";
-import toast from "react-hot-toast";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDatePicker, StaticTimePicker } from "@mui/x-date-pickers";
-import { Dayjs } from "dayjs";
-import { useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import type { Dayjs } from "dayjs";
 
 const AppointmentPage = () => {
   const navigate = useNavigate();
@@ -19,13 +18,37 @@ const AppointmentPage = () => {
   const user = useAuthStore((state) => state.user);
   const patient = useFormStore((state) => state.patient);
 
+  const { doctorId } = useParams();
+  const getDoctorById = useAdminStore((state) => state.getDoctorById);
+  const doctor = useAdminStore((state) => state.doctor);
+  const doctors = useAdminStore((state) => state.doctors);
+
+  useEffect(() => {
+    getDoctorById(doctorId || "");
+  }, [doctorId, getDoctorById]);
+
+  const relatedDoctors = doctors?.filter(
+    (doc) =>
+      doc._id !== doctorId && doc.specialization === doctor?.specialization
+  );
+
+  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
+  const [selectedTime, setSelectedTime] = useState<Dayjs | null>(null);
+  const canBook = selectedDate && selectedTime;
+
+  const darkTheme = createTheme({
+    palette: { mode: "light", primary: { main: "#2563EB" } },
+  });
+
   const handleClick = (doctor: CreateDoctorParams) => {
     if (!user) {
       toast.error("Please login to continue");
       return navigate("/login");
     } else if (!patient) {
       toast.error("You need to register as a patient first");
+      return;
     }
+
     navigate("/book-appointment", {
       state: {
         doctor: {
@@ -40,162 +63,125 @@ const AppointmentPage = () => {
     });
   };
 
-  const { doctorId } = useParams();
-
-  const getDoctorById = useAdminStore((state) => state.getDoctorById);
-  const doctor = useAdminStore((state) => state.doctor);
-  const doctors = useAdminStore((state) => state.doctors);
-
-  useEffect(() => {
-    getDoctorById(doctorId || "");
-  }, [getDoctorById, doctorId]);
-
-  const relatedDoctors = doctors?.filter(
-    (doc) =>
-      doc._id !== doctorId && doc.specialization === doctor?.specialization
-  );
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: "light",
-    },
-  });
-
-  const [selectedDate, setSelectedDate] = useState<Dayjs | null>(null);
-  const [selectedTime, setSelectedTime] = useState<Dayjs | null>(null);
-
-  const canBook = selectedDate && selectedTime;
-
   return (
-    <div className="relative min-h-screen">
-      <div className="relative min-h-screen bg-gradient-to-br from-zinc-100 via-white to-zinc-200 text-white px-6 py-10">
-        <div className="absolute top-0 left-0 w-[50%] h-full bg-blue-500/10"></div>
-        <div className="absolute bottom-0 right-0 w-[50%] h-full bg-pink-500/10"></div>
+    <div className="min-h-screen bg-gray-50 text-gray-800">
+      {/* Doctor Section */}
+      {doctor && (
+        <section className="max-w-6xl mx-auto px-6 py-16 grid lg:grid-cols-2 gap-12 items-start">
+          <div className="flex justify-center">
+            <img
+              src={
+                Array.isArray(doctor.profileImage)
+                  ? URL.createObjectURL(new Blob(doctor.profileImage))
+                  : doctor.profileImage
+              }
+              alt={doctor.fullName}
+              className="rounded-2xl shadow-md border border-gray-200 object-cover w-[90%] max-w-md"
+            />
+          </div>
 
-        {/* Doctor Info */}
-        {doctor && (
-          <div className="relative grid lg:grid-cols-2 gap-12 items-start mb-20">
-            <div className="space-y-5">
-              {/* "/assets/doctors/doctor-riya.jpg" */}
-              <img
-                src={
-                  Array.isArray(doctor.profileImage) ? URL.createObjectURL(new Blob(doctor.profileImage)) : doctor.profileImage
-                }
-                alt="Dr. Ananya Sharma"
-                width={550}
-                height={500}
-                className="object-contain max-h-80 shadow-xl shadow-black/40"
-              />
-            </div>
-            <div className="space-y-4">
-              <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-gray-100">
-                {doctor?.fullName}
-              </h1>
+          <div className="space-y-4">
+            <h1 className="text-3xl md:text-4xl font-semibold text-gray-900">
+              {doctor.fullName}
+            </h1>
+            <p className="text-blue-600 font-medium capitalize text-lg">
+              {doctor.specialization}
+            </p>
 
-              {/* Keep specialization pink */}
-              <p className="text-pink-500 font-medium capitalize">
-                {doctor.specialization}
-              </p>
+            <p className="text-gray-600">
+              MBBS, MD ({doctor.specialization})
+            </p>
+            <p className="text-gray-600">
+              Experience: {doctor.experience}+ years
+            </p>
+            <p className="text-gray-600 leading-relaxed">
+              Expert healthcare professional specializing in{" "}
+              {doctor.specialization}. Choose your preferred date and time to
+              schedule a consultation.
+            </p>
 
-              <p className="text-gray-700 dark:text-gray-300">
-                MBBS, MD ({doctor.specialization})
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                Experience: {doctor?.experience}+ years
-              </p>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                "Dr. Sharma is a highly experienced cardiologist specializing in
-                preventive heart care, advanced diagnostics, and minimally
-                invasive treatments."
-              </p>
-              <div className="text-gray-500 dark:text-gray-400 italic">
-                Availability:{" "}
-                <div className="inline-flex flex-wrap gap-2">
-                  {doctor.availableDays.map((day, index) => (
-                    <span
-                      key={index}
-                      className="px-3 py-1 text-xs font-medium bg-pink-200 text-gray-700 rounded-full"
-                    >
-                      {day}
-                    </span>
-                  ))}
-                </div>{" "}
-                | {doctor.availableFrom} - {doctor.availableTo}
+            <div>
+              <span className="font-medium text-gray-700">Availability:</span>
+              <div className="mt-2 flex flex-wrap gap-2">
+                {doctor.availableDays.map((day, index) => (
+                  <span
+                    key={index}
+                    className="px-3 py-1 text-xs font-medium bg-blue-100 text-blue-700 rounded-full"
+                  >
+                    {day}
+                  </span>
+                ))}
               </div>
+              <p className="text-sm text-gray-500 mt-1">
+                {doctor.availableFrom} – {doctor.availableTo}
+              </p>
             </div>
           </div>
-        )}
+        </section>
+      )}
 
-        {/* Date & Time Pickers */}
-        <div className="max-w-6xl mx-auto bg-white/5 p-8">
-          <h2 className="text-2xl font-semibold mb-6 text-black">
-            Select a date and time for your consultation
+      {/* Date & Time Picker Section */}
+      <section className="bg-white border-t border-gray-200 py-10">
+        <div className="max-w-6xl mx-auto px-6">
+          <h2 className="text-2xl font-semibold mb-8 text-gray-900">
+            Select Date & Time
           </h2>
 
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-10">
-              <ThemeProvider theme={darkTheme}>
+            <ThemeProvider theme={darkTheme}>
+              <div className="flex flex-col lg:flex-row gap-10 justify-between items-center">
                 <StaticDatePicker
                   value={selectedDate}
                   onChange={(newValue) => setSelectedDate(newValue)}
-                  className="text-black"
                 />
                 <StaticTimePicker
                   value={selectedTime}
                   onChange={(newValue) => setSelectedTime(newValue)}
                 />
-              </ThemeProvider>
-            </div>
+              </div>
+            </ThemeProvider>
           </LocalizationProvider>
         </div>
+      </section>
 
-        {/* Floating Book Appointment Button */}
-        {canBook && (
-          <div className="fixed bottom-25 right-6">
-            <button
-              onClick={() => handleClick(doctor || ({} as CreateDoctorParams))}
-              className="relative group overflow-hidden px-8 py-4 bg-pink-600 text-lg font-bold rounded-full shadow-lg cursor-pointer"
-            >
-              <span className="relative z-20">Proceed</span>
+      {/* Proceed Button */}
+      {canBook && (
+        <div className="fixed bottom-8 right-8">
+          <button
+            onClick={() => handleClick(doctor || ({} as CreateDoctorParams))}
+            className="px-8 py-4 rounded-full bg-blue-600 text-white font-semibold shadow-md hover:bg-blue-700 transition"
+          >
+            Proceed
+          </button>
+        </div>
+      )}
 
-              {/* expanding circle */}
-              <span
-                className="absolute left-1/2 top-1/2 w-0 h-1/2 bg-purple-500 rounded-full z-10 
-                -translate-x-1/2 -translate-y-1/2 
-                transition-all duration-1000 ease-in-out 
-                group-hover:w-[100%] group-hover:h-[100%]"
-              ></span>
-            </button>
-          </div>
-        )}
-      </div>
-
-      <div className="p-6 max-w-7xl mx-auto">
-        {/* Related Doctors */}
-        <div className="mt-16">
-          <div className="text-center">
-            <h2 className="text-xl font-bold text-gray-700 mb-1">
+      {/* Related Doctors */}
+      {relatedDoctors?.length && relatedDoctors?.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 py-16">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-800">
               Related Doctors
             </h2>
-            <p className="text-sm text-gray-500">
-              Simply browse through our extensive list of trusted doctors.
+            <p className="text-gray-500 text-sm">
+              You might also be interested in these specialists.
             </p>
           </div>
 
-          <div className="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5 p-1 mt-5">
-            {relatedDoctors?.map((relatedDoctor) => (
+          <div className="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-6">
+            {relatedDoctors.map((relatedDoctor) => (
               <DoctorCard
                 key={relatedDoctor._id}
                 name={relatedDoctor.fullName}
                 specialization={relatedDoctor.specialization}
                 imageSrc={relatedDoctor.profileImage}
-                className="bg-white shadow hover:shadow-lg hover:scale-105 transition-transform rounded-xl overflow-hidden"
+                className="bg-white border border-gray-200 rounded-xl hover:shadow-md transition"
                 doctorId={relatedDoctor._id}
               />
             ))}
           </div>
-        </div>
-      </div>
+        </section>
+      )}
     </div>
   );
 };

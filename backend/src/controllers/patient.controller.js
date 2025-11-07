@@ -23,8 +23,6 @@ export const createPatient = async (req, res) => {
             return res.status(400).json({ message: "Identification document is required" });
         }
 
-        console.log("File uploaded:", req.file);
-
         const result = await cloudinary.uploader.upload(req.file.path);
         const fileUrl = result.secure_url;
 

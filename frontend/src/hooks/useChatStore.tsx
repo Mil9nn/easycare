@@ -15,7 +15,6 @@ export const useChatStore = create<ChatStore>((set) => ({
         set({ isSending: true });
         try {
             const response = await axiosInstance.post('/chatbot/chat', { message })
-            console.log(response.data.data);
             const botMessage = response.data.data;
             
             set({ messages: [botMessage] });

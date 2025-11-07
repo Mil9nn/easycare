@@ -18,12 +18,12 @@ export const sendAppointmentEmail = async (appointmentData) => {
     const mailOptions = {
         from: `"Easy Care App" <${process.env.EMAIL_USER}>`,
         to: process.env.ADMIN_EMAIL,
-        subject: 'New Appointment Request',
+        subject: 'EasyCare - New Appointment Request',
         html: `
             <div style="font-family: Arial, sans-serif; background: #f9fafb; padding: 20px; border-radius: 8px;">
                 <img src="cid:logo-icon" alt="Easy Care Logo" width="80" style="display: block; margin-bottom: 16px;" />
                 
-                <h2 style="color: #111827;">📅 New Appointment Request</h2>
+                <h2 style="color: #111827;">New Appointment Request</h2>
                 
                 <p><strong>Patient:</strong> ${fullName}</p>
                 <p><strong>Email:</strong> ${email}</p>

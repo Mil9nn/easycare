@@ -1,4 +1,4 @@
-# 🏥 HarmonyCare - Healthcare Appointment Management System
+# EasyCare - Healthcare Appointment Management System
 
 A healthcare appointment management platform that streamlines the process of booking, managing, and tracking medical appointments. Built with React, TypeScript, Node.js, and MongoDB.
 
@@ -98,8 +98,8 @@ A healthcare appointment management platform that streamlines the process of boo
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/yourusername/harmonycare.git
-cd harmonycare
+git clone https://github.com/yourusername/easyycare.git
+cd easycare
 ```
 
 ### 2. Install Backend Dependencies
@@ -143,9 +143,9 @@ PORT=5000
 NODE_ENV=development
 
 # Database
-MONGO_URI=mongodb://localhost:27017/harmonycare
+MONGO_URI=
 # Or use MongoDB Atlas:
-# MONGO_URI=mongodb+srv://username:password@cluster.mongodb.net/harmonycare
+# MONGO_URI=
 
 # JWT Secret
 JWT_SECRET=your_super_secret_jwt_key_here
@@ -161,7 +161,7 @@ CLOUDINARY_API_SECRET=your_cloudinary_api_secret
 # Email Configuration (Gmail)
 EMAIL_USER=your.email@gmail.com
 EMAIL_PASS=your_gmail_app_password
-ADMIN_EMAIL=admin@harmonycare.com
+ADMIN_EMAIL=admin@easycare.com
 
 # OpenAI API
 OPENAI_API_KEY=sk-your-openai-api-key
@@ -184,7 +184,7 @@ OPENAI_API_KEY=sk-your-openai-api-key
 
 ## 📂 Project Structure
 ```
-harmonycare/
+easycare/
 ├── backend/
 │   ├── src/
 │   │   ├── controllers/        # Route controllers

@@ -1,5 +1,4 @@
 import { useAdminStore } from "@/hooks/useAdminStore";
-import DoctorCard from "../doctor/DoctorCard";
 import { Loader, Search } from "lucide-react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Specializations } from "../form/constants";
@@ -7,7 +6,6 @@ import { type ChangeEvent } from "react";
 
 const AllDoctors = () => {
   const navigate = useNavigate();
-
   const [searchParams] = useSearchParams();
   const specialization = searchParams.get("specialization");
 
@@ -22,107 +20,111 @@ const AllDoctors = () => {
     : doctors;
 
   const handleChange = (e: ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = e.target.value;
-    if (selectedValue === "all") {
-      navigate("/doctors"); // Navigate without filters
-    } else {
-      navigate(`/doctors?specialization=${selectedValue}`);
-    }
+    const value = e.target.value;
+    navigate(value === "all" ? "/doctors" : `/doctors?specialization=${value}`);
   };
 
   return (
-    <section className="max-sm:p-0 px-10 py-5">
-      <div className="relative min-h-screen px-6 py-10 space-y-12">
-        {/* Intro */}
-        <header className="relative mx-auto text-center space-y-4 max-w-2xl">
-          <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-rose-500 drop-shadow-lg">
-            Our Trusted Doctors
-          </h1>
-          <p className="text-gray-600 text-lg md:text-xl leading-relaxed">
-            Choose from our expert doctors, select a convenient time slot, and
-            confirm your visit — all in just a few clicks.
-            <span className="block mt-1 font-semibold text-blue-400">
-              Your health, simplified.
-            </span>
-          </p>
-        </header>
+    <section className="px-6 md:px-10 py-10 bg-gray-50 min-h-screen">
+      {/* Header */}
+      <header className="text-center mb-10">
+        <h1 className="text-3xl md:text-4xl font-semibold text-gray-900">
+          Our Doctors
+        </h1>
+        <p className="text-gray-600 mt-2 max-w-xl mx-auto text-sm md:text-base">
+          Browse our verified specialists and choose the right expert for your needs.
+        </p>
+      </header>
 
-        {/* Floating Search + Filter Bar */}
-        <section className="flex flex-col sm:flex-row sm:items-center gap-4 w-[90%] max-w-3xl mx-auto bg-white border border-white/20 backdrop-blur-md rounded-2xl px-5 py-4 shadow-lg shadow-black/40 z-50">
-          {/* Search Bar */}
-          <div className="relative flex-1">
-            <input
-              type="search"
-              placeholder="Search by doctor name or specialty…"
-              className="w-full max-w-md shadow-2xl shadow-black/70 pl-12 pr-4 py-3 rounded-full
-                 bg-transparent border border-white/20
-                 text-gray-200 placeholder-gray-400
-                 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            />
-            <Search className="absolute top-1/2 left-4 -translate-y-1/2 text-gray-400 w-5 h-5" />
-          </div>
-
-          {/* Specialization Filter */}
-          <div className="w-44">
-            <select
-              id="specialization"
-              onChange={handleChange}
-              value={specialization || "all"}
-              className="w-full py-3 px-3 rounded-xl cursor-pointer
-                 bg-transparent border  border-black
-                 text-gray-500 backdrop-blur-md
-                 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-            >
-              {Specializations.map((spec) => (
-                <option
-                  key={spec.value}
-                  value={spec.value}
-                  className="text-black"
-                >
-                  {spec.name}
-                </option>
-              ))}
-            </select>
-          </div>
-        </section>
-
-        <div>
-          <p className="flex flex-col gap-1">
-            <span className="text-indigo-500 text-2xl font-semibold">
-              {specialization
-                ? `Showing doctors specialized in ${specialization}`
-                : "Showing all doctors"}
-            </span>
-            <span className="text-gray-500 text-md font-normal">
-              Click on a doctor to continue...
-            </span>
-          </p>
+      {/* Filter Bar */}
+      <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center gap-4 p-4">
+        {/* Search */}
+        <div className="relative flex-1 w-full">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
+          <input
+            type="search"
+            placeholder="Search by name or specialty..."
+            className="w-full pl-12 pr-4 py-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none text-gray-800 placeholder-gray-400 transition"
+          />
         </div>
-        {gettingDoctors ? (
-          <div className="flex items-center text-teal-400 justify-center gap-1">
-            <Loader className="animate-spin" />
-            <p className="text-center text-sm text-gray-500">
-              Loading doctors...
-            </p>
-          </div>
-        ) : (
-          <div className="grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5 p-1">
-            {filteredDoctors?.map((doctor) => (
-              <DoctorCard
-                key={doctor._id}
-                name={doctor.fullName}
-                specialization={doctor.specialization}
-                imageSrc={doctor.profileImage}
-                className="bg-teal-200"
-                doctorId={doctor._id}
-                isActive={doctor.isActive}
-              />
-            ))}
-          </div>
-        )}
+
+        {/* Specialization Filter */}
+        <select
+          id="specialization"
+          onChange={handleChange}
+          value={specialization || "all"}
+          className="w-full sm:w-44 py-2.5 px-3 rounded-lg border border-gray-300 text-gray-700 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none cursor-pointer"
+        >
+          {Specializations.map((spec) => (
+            <option key={spec.value} value={spec.value}>
+              {spec.name}
+            </option>
+          ))}
+        </select>
       </div>
+
+      {/* Subheader */}
+      <div className="mt-8 text-center">
+        <p className="text-lg font-medium text-gray-800">
+          {specialization
+            ? `Doctors specialized in ${specialization}`
+            : "All available doctors"}
+        </p>
+        <p className="text-sm text-gray-500">
+          Click on a doctor to view details or book a consultation.
+        </p>
+      </div>
+
+      {/* Doctor List */}
+      {gettingDoctors ? (
+        <div className="flex items-center justify-center gap-2 mt-10 text-blue-500">
+          <Loader className="animate-spin h-5 w-5" />
+          <p>Loading doctors...</p>
+        </div>
+      ) : (
+        <div className="max-w-5xl mx-auto mt-10 bg-white rounded-xl border border-gray-200 divide-y divide-gray-100 shadow-sm">
+          {filteredDoctors?.map((doctor) => (
+            <button
+              key={doctor._id}
+              onClick={() => navigate(`/doctor/${doctor._id}`)}
+              className="w-full text-left px-6 py-4 flex items-center gap-4 hover:bg-gray-50 transition"
+            >
+              <img
+                src={doctor.profileImage as unknown as string}
+                alt={doctor.fullName}
+                className="w-14 h-14 rounded-full object-cover border border-gray-200"
+              />
+              <div className="flex-1 text-start">
+                <h3 className="font-semibold text-gray-900">
+                  {doctor.fullName}
+                </h3>
+                <p className="text-gray-600 text-sm">
+                  {doctor.specialization}
+                </p>
+                <p
+                  className={`text-xs mt-1 ${
+                    doctor.isActive ? "text-green-600" : "text-gray-400"
+                  }`}
+                >
+                  {doctor.isActive ? "Available" : "Offline"}
+                </p>
+              </div>
+              <span className="text-blue-500 text-sm font-medium hover:underline">
+                View
+              </span>
+            </button>
+          ))}
+
+          {filteredDoctors?.length === 0 && (
+            <p className="text-center text-gray-500 py-10">
+              No doctors found for this specialization.
+            </p>
+          )}
+        </div>
+      )}
     </section>
   );
 };
 
 export default AllDoctors;
+

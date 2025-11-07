@@ -10,7 +10,7 @@ const SuccessPage = () => {
 
   const getAppointment = useAppointmentStore((state) => state.getAppointment);
   const appointment = useAppointmentStore((state) => state.appointment);
-  
+
   const doctors = useAdminStore((state) => state.doctors);
 
   useEffect(() => {
@@ -33,11 +33,14 @@ const SuccessPage = () => {
             width={300}
             alt="success"
           />
-          <h2 className="header mb-6 max-w-[600px] text-center">
+          <h2>
             Your <span className="text-green-500">appointment request</span> has
             been successfully submitted!
           </h2>
-          <p>We&apos;ll be in touch shortly to confirm.</p>
+          <p>
+            Admin will review and confirm your appointment soon. You'll receive
+            an email notification.
+          </p>
         </section>
 
         <section className="request-details">
@@ -79,7 +82,7 @@ const SuccessPage = () => {
           </Link>
         </Button> */}
 
-        <p className="copyright">© 2024 EasyCare</p>
+        <p className="copyright">© 2025 EasyCare</p>
       </div>
     </div>
   );

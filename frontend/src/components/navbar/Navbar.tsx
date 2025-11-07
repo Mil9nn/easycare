@@ -41,9 +41,9 @@ const Navbar = () => {
       <nav className="flex items-center justify-between px-6 py-3 shadow-md">
         {/* Logo + Branding */}
         <div className="flex items-center gap-2 group">
-          <img src="/assets/icons/logo-icon.svg" alt="HarmonyCare Logo" className="w-8 h-8" />
+          <img src="/assets/icons/logo-icon.svg" alt="EasyCare Logo" className="w-8 h-8" />
           <p className="text-lg font-semibold text-teal-500 tracking-tight">
-            HarmonyCare
+            EasyCare
           </p>
         </div>
 

@@ -1,143 +1,156 @@
 import { useAppointmentStore } from "@/hooks/useAppointmentStore";
 import type { PatientFormData } from "@/lib/validation";
-import { Loader } from "lucide-react";
+import { Loader, FileDown } from "lucide-react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 type FullPatient = PatientFormData & {
-    identificationDocument?: {
-      fileUrl: string;
-      fileName: string;
-    };
-  }
+  identificationDocument?: {
+    fileUrl: string;
+    fileName: string;
+  };
+};
 
 const Patient = () => {
   const { patientId } = useParams<{ patientId: string }>();
-
   const appointment = useAppointmentStore((state) => state.appointment);
   const getAppointment = useAppointmentStore((state) => state.getAppointment);
+  const isLoading = useAppointmentStore((state) => state.isLoading);
 
   useEffect(() => {
-    if (patientId) {
-      getAppointment(patientId);
-    }
+    if (patientId) getAppointment(patientId);
   }, [getAppointment, patientId]);
 
-  type CustomFieldProps = {
-    title: string;
-    className?: string;
-    content?: string | null;
-  };
+  const patient = appointment?.patient as unknown as FullPatient;
 
-  const CustomField = ({ title, content, className = "" }: CustomFieldProps) => (
-    <div className={`mb-5 last:mb-0 ${className}`}>
-      <h3 className="text-md font-medium text-gray-500 mb-1">{title}</h3>
-      <p className="text-lg font-light text-gray-800">
-        {content || <span className="text-gray-400">Not Provided</span>}
-      </p>
+  const Field = ({ label, value }: { label: string; value?: string | null }) => (
+    <div className="flex flex-col gap-1">
+      <span className="text-sm text-gray-500 font-medium">{label}</span>
+      <span className="text-base text-gray-800 font-light">
+        {value || <span className="text-gray-400">Not provided</span>}
+      </span>
     </div>
   );
 
-  const patient = appointment?.patient as unknown as FullPatient;
-  const isLoading = useAppointmentStore((state) => state.isLoading);
-
   if (isLoading) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen space-y-4">
-        <Loader className="animate-spin h-8 w-8 text-blue-500" />
-        <span className="text-gray-600 font-light">Loading patient details...</span>
+      <div className="flex flex-col items-center justify-center h-screen space-y-3">
+        <Loader className="animate-spin h-6 w-6 text-teal-500" />
+        <p className="text-gray-500 text-sm">Loading patient details...</p>
       </div>
     );
   }
 
+  if (!patient)
+    return (
+      <div className="text-center text-gray-500 py-40 text-sm">
+        No patient data found.
+      </div>
+    );
+
   return (
-    <div className="min-h-screen py-4 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        <div className="bg-white rounded shadow-sm overflow-hidden">
-          {/* Header */}
-          <div className="bg-emerald-50 px-6 py-8 border-b border-emerald-200">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <h1 className="text-3xl font-light text-gray-900 mb-1">{patient?.fullName}</h1>
-                <p className="text-blue-600 font-medium">Patient ID: {patientId}</p>
-              </div>
-              <div className="mt-4 sm:mt-0">
-                <span className="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full uppercase font-semibold tracking-wide">
-                  Patient
-                </span>
-              </div>
-            </div>
+    <div className="min-h-screen bg-gray-50 p-2">
+      <div className="max-w-6xl mx-auto bg-white rounded-xl border border-gray-200 shadow-sm p-8">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between border-b border-gray-100 pb-6 mb-8">
+          <div>
+            <h1 className="text-3xl font-semibold text-gray-800">
+              {patient.fullName}
+            </h1>
+            <p className="text-sm text-gray-500 mt-1">
+              Patient ID:{" "}
+              <span className="font-mono text-gray-700">{patientId}</span>
+            </p>
           </div>
+          <span className="inline-flex items-center gap-2 mt-4 sm:mt-0 text-sm font-medium bg-teal-50 text-teal-700 border border-teal-100 px-3 py-1 rounded-full">
+            Patient Profile
+          </span>
+        </div>
 
-          {/* Main Content */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-6">
-            {/* Personal Information */}
-            <section className="bg-gray-50 p-6 rounded-xl">
-              <h2 className="text-xl font-semibold text-gray-700 mb-6 pb-2 border-b border-gray-200">
-                Personal Information
-              </h2>
-              <CustomField title="Full Name" content={patient?.fullName} />
-              <CustomField title="Email" content={patient?.email} />
-              <CustomField title="Phone" content={patient?.phone} />
-              <CustomField title="Birth Date" content={patient?.birthDate.toLocaleString()} />
-              <CustomField title="Address" content={patient?.address} />
-              <CustomField title="Gender" content={patient?.gender} />
-            </section>
+        {/* Information Sections */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {/* Personal Info */}
+          <section>
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">
+              Personal Information
+            </h2>
+            <div className="space-y-4">
+              <Field label="Full Name" value={patient.fullName} />
+              <Field label="Email" value={patient.email} />
+              <Field label="Phone" value={patient.phone} />
+              <Field label="Birth Date" value={patient.birthDate?.toLocaleString()} />
+              <Field label="Address" value={patient.address} />
+              <Field label="Gender" value={patient.gender} />
+            </div>
+          </section>
 
-            {/* Medical Information */}
-            <section className="bg-gray-50 p-6 rounded-xl">
-              <h2 className="text-xl font-semibold text-gray-700 mb-6 pb-2 border-b border-gray-200">
-                Medical Information
-              </h2>
-              <CustomField title="Allergies" content={patient?.allergies} />
-              <CustomField 
-                title="Current Medication" 
-                content={patient?.currentMedication} 
-                className={!patient?.currentMedication ? "text-gray-400" : ""}
+          {/* Medical Info */}
+          <section>
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">
+              Medical Information
+            </h2>
+            <div className="space-y-4">
+              <Field label="Allergies" value={patient.allergies} />
+              <Field label="Current Medication" value={patient.currentMedication} />
+              <Field label="Past Medical History" value={patient.pastMedicalHistory} />
+              <Field
+                label="Family Medical History"
+                value={patient.familyMedicalHistory}
               />
-              <CustomField 
-                title="Past Medical History" 
-                content={patient?.pastMedicalHistory} 
-              />
-              <CustomField
-                title="Family Medical History"
-                content={patient?.familyMedicalHistory || "No medical history available"}
-              />
-            </section>
+            </div>
+          </section>
 
-            {/* Insurance & Emergency */}
-            <section className="bg-gray-50 p-6 rounded-xl">
-              <h2 className="text-xl font-semibold text-gray-700 mb-6 pb-2 border-b border-gray-200">
-                Insurance & Emergency
-              </h2>
-              <CustomField 
-                title="Emergency Contact" 
-                content={`${patient?.emergencyContactName} (${patient?.emergencyContactNumber})`} 
+          {/* Insurance Info */}
+          <section>
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">
+              Insurance & Emergency
+            </h2>
+            <div className="space-y-4">
+              <Field
+                label="Emergency Contact"
+                value={
+                  patient.emergencyContactName
+                    ? `${patient.emergencyContactName} (${patient.emergencyContactNumber})`
+                    : ""
+                }
               />
-              <CustomField title="Insurance Provider" content={patient?.insuranceProvider} />
-              <CustomField title="Policy Number" content={patient?.insurancePolicyNumber} />
-            </section>
+              <Field label="Insurance Provider" value={patient.insuranceProvider} />
+              <Field label="Policy Number" value={patient.insurancePolicyNumber} />
+            </div>
+          </section>
 
-            {/* Showing the identify document patient shared with the clinic */}
-            <section className="bg-gray-50 p-6 rounded-xl col-span-full">
-              <h2 className="text-xl font-semibold text-gray-700 mb-6 pb-2 border-b border-gray-200">
-                Identification Document
-              </h2>
-              {/* identification type */}
-              <CustomField title="ID Type" content={patient?.identificationType} />
-              {patient?.identificationDocument ? (
-                <div className="flex items-center justify-center">
-                  <img
-                    src={patient.identificationDocument.fileUrl}
-                    alt="Patient Identification Document"
-                    className="max-w-full h-auto rounded-lg shadow-md"
-                  />
+          {/* ID Document */}
+          <section className="col-span-full">
+            <h2 className="text-lg font-semibold text-gray-700 mb-4">
+              Identification Document
+            </h2>
+            <div className="space-y-4">
+              <Field label="ID Type" value={patient.identificationType} />
+              {patient.identificationDocument ? (
+                <div className="flex flex-col items-start gap-3 mt-4 overflow-x-auto">
+                  <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 w-full sm:w-auto">
+                    <img
+                      src={patient.identificationDocument.fileUrl}
+                      alt="Patient ID"
+                      className="max-w-xs rounded-md shadow-sm border border-gray-100"
+                    />
+                  </div>
+                  <a
+                    href={patient.identificationDocument.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 text-sm text-teal-600 hover:text-teal-700 font-medium transition"
+                  >
+                    <FileDown size={16} /> Download {patient.identificationDocument.fileName}
+                  </a>
                 </div>
               ) : (
-                <p className="text-gray-400">No identification document provided.</p>
+                <p className="text-gray-400 text-sm">
+                  No identification document provided.
+                </p>
               )}
-            </section>
-          </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
